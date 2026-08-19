@@ -1,10 +1,41 @@
-node_modules
-dist
-.astro
-.wrangler
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.astro/
+.wrangler/
+
+# Environment & secrets
 .env
 .env.*
 !.env.example
-.vercel
-.DS_Store
+.dev.vars
+.dev.vars.*
+*.pem
+*.p12
+
+# Logs
 *.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor / local IDE — Cursor config stays local, not on GitHub
+.cursor/
+.claude/
+.vscode/
+*.swp
+*.swo
+
+# Deploy platforms
+.vercel/
+
+# Test / coverage
+coverage/
+
+# Optional local overrides
+*.local
