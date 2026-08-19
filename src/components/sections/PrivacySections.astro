@@ -1,0 +1,56 @@
+---
+import { type Language } from '../../lib/i18n';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import Tag from '../ui/Tag.astro';
+
+interface Props { lang: Language; }
+const { lang } = Astro.props;
+const heading = lang === 'fr' ? 'Politique de confidentialité' : 'Privacy Policy';
+const kicker = lang === 'fr' ? 'DONNÉES & CONFIDENTIALITÉ' : 'DATA & PRIVACY';
+const updated = lang === 'fr'
+  ? 'Dernière mise à jour : Août 2026 — Statut : à valider par le conseiller juridique.'
+  : 'Last update: August 2026 — Status: to be validated by legal counsel.';
+const notice = lang === 'fr'
+  ? 'Document légal modèle préparé pour le lancement d\'AgenStudio.'
+  : 'Draft legal document prepared for the AgenStudio launch.';
+const s1Title = lang === 'fr' ? '1. Collecte des données du formulaire' : '1. Contact form data collection';
+const s1Body = lang === 'fr'
+  ? "Les données transmises via notre formulaire (nom, e-mail, entreprise, description du besoin) sont collectées uniquement pour traiter votre demande et communiquer avec vous."
+  : 'Data submitted through our form (name, email, company, request description) is collected solely to process your inquiry and reply to you.';
+const s2Title = lang === 'fr' ? '2. Absence de traçage publicitaire' : '2. No advertising tracking';
+const s2Body = lang === 'fr'
+  ? "AgenStudio ne revend et ne partage aucune donnée personnelle. Nous n'utilisons aucun tracker publicitaire ni cookie tiers de profilage commercial."
+  : 'AgenStudio does not sell or share personal data. We use no advertising trackers or third-party profiling cookies.';
+const s3Title = lang === 'fr' ? "3. Vos droits d'accès et de rectification" : '3. Your access and rectification rights';
+const s3Body = lang === 'fr'
+  ? "Vous pouvez demander l'accès, la rectification ou la suppression de vos données à : contact@agenstudio.com."
+  : 'You may request access, rectification or deletion of your data at: contact@agenstudio.com.';
+---
+
+<Section variant="canvas" class="py-12 border-b border-ink/10">
+  <Container>
+    <div class="max-w-3xl space-y-3">
+      <Tag variant="ink">{kicker}</Tag>
+      <h1 class="font-heading text-3xl sm:text-4xl font-bold text-ink">{heading}</h1>
+      <p class="text-sm font-mono text-teal">{updated}</p>
+    </div>
+  </Container>
+</Section>
+
+<Section variant="white">
+  <Container>
+    <div class="max-w-prose space-y-6 text-sm text-ink-muted leading-relaxed">
+      <p class="p-4 bg-canvas border border-ink/10 rounded-lg text-xs font-mono text-ink flex items-center gap-2">
+        <span aria-hidden="true">⚠</span>
+        <span>{notice}</span>
+      </p>
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">{s1Title}</h2>
+      <p>{s1Body}</p>
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">{s2Title}</h2>
+      <p>{s2Body}</p>
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">{s3Title}</h2>
+      <p>{s3Body}</p>
+    </div>
+  </Container>
+</Section>

@@ -1,0 +1,77 @@
+---
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  ariaLabel?: string;
+  class?: string;
+  id?: string;
+  formId?: string;
+  target?: '_blank' | '_self';
+  rel?: string;
+}
+
+const {
+  href,
+  type = 'button',
+  variant = 'primary',
+  size = 'md',
+  disabled = false,
+  ariaLabel,
+  class: className = '',
+  id,
+  target,
+  rel,
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg min-h-[44px]';
+
+const sizes: Record<NonNullable<Props['size']>, string> = {
+  sm: 'px-3.5 py-1.5 text-xs font-mono tracking-wider min-h-[36px]',
+  md: 'px-5 py-2.5 text-sm font-sans tracking-wide',
+  lg: 'px-7 py-3.5 text-base font-sans tracking-wide',
+};
+
+const variants: Record<NonNullable<Props['variant']>, string> = {
+  primary: 'bg-teal text-white hover:bg-teal-deep active:bg-teal-deep shadow-sm hover:shadow-md',
+  secondary: 'bg-ink text-white hover:bg-[#25333D] active:bg-[#0E151A] shadow-sm',
+  outline:
+    'bg-transparent text-ink border border-ink/20 hover:border-teal hover:text-teal active:bg-teal/5',
+  ghost: 'bg-transparent text-teal hover:bg-ink/5 active:bg-ink/10',
+  danger: 'bg-coral text-white hover:bg-[#C84635] active:bg-[#A33526]',
+};
+
+const classes = [base, sizes[size], variants[variant], className];
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      id={id}
+      class:list={classes}
+      aria-label={ariaLabel}
+      target={target}
+      rel={rel}
+    >
+      <slot name="leftIcon" />
+      <span><slot /></span>
+      <slot name="rightIcon" />
+    </a>
+  ) : (
+    <button
+      id={id}
+      type={type}
+      disabled={disabled}
+      class:list={classes}
+      aria-label={ariaLabel}
+    >
+      <slot name="leftIcon" />
+      <span><slot /></span>
+      <slot name="rightIcon" />
+    </button>
+  )
+}

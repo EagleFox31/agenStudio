@@ -1,0 +1,47 @@
+---
+interface Props {
+  variant?: 'light' | 'dark' | 'glass';
+  hoverEffect?: boolean;
+  accentBorder?: boolean;
+  class?: string;
+}
+const {
+  variant = 'light',
+  hoverEffect = true,
+  accentBorder = true,
+  class: className = '',
+} = Astro.props;
+
+const variants: Record<NonNullable<Props['variant']>, string> = {
+  light: 'bg-white text-ink border border-ink/10 shadow-sm',
+  dark: 'bg-ink text-white border border-teal/30 shadow-md',
+  glass: 'glass-panel text-ink',
+};
+
+const hover = hoverEffect
+  ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-teal/40 motion-reduce:hover:translate-y-0'
+  : '';
+---
+
+<div
+  class:list={[
+    'relative rounded-xl p-6 sm:p-8 overflow-hidden',
+    variants[variant],
+    hover,
+    className,
+  ]}
+>
+  {
+    accentBorder && (
+      <>
+        <span class="absolute top-0 right-0 w-8 h-8 pointer-events-none opacity-20" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" class="w-full h-full text-current">
+            <path d="M32 0H0L32 32V0Z" fill="currentColor" />
+          </svg>
+        </span>
+        <span class="absolute bottom-0 left-0 w-2 h-6 bg-teal/30" aria-hidden="true" />
+      </>
+    )
+  }
+  <slot />
+</div>

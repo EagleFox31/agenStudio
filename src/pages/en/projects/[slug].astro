@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ProjectDetailSections from '../../../components/sections/ProjectDetailSections.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { project: entry.data },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<BaseLayout
+  lang="en"
+  title={`${project.title.en} — AgenStudio case study`}
+  description={project.subtitle.en}
+>
+  <ProjectDetailSections lang="en" project={project} />
+</BaseLayout>

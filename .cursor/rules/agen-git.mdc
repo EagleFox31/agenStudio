@@ -1,0 +1,28 @@
+---
+description: Commits Git AgenStudio — conventional commits, jamais de Co-authored-by, commit sur demande explicite uniquement
+alwaysApply: false
+paths:
+  - ".git/**"
+  - ".gitignore"
+---
+
+# Git AgenStudio — rappel rapide
+
+Utiliser le skill `/agen-git` pour toute opération git.
+
+## Non négociable
+
+- **JAMAIS** `Co-authored-by:` ni attribution IA/Cursor/Copilot
+- **JAMAIS** commit sans demande explicite user
+- **JAMAIS** `.env` ou secrets dans un commit
+- **JAMAIS** `git config` · `--no-verify` · `push --force` main
+
+## Format
+
+```
+type(scope): description impérative
+```
+
+Types : feat · fix · docs · style · refactor · perf · chore · ci
+
+Référence complète : `gestion-projet/conventions-commits.md` · `.cursor/skills/agen-git/SKILL.md`

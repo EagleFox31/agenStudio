@@ -1,0 +1,49 @@
+{
+  "slug": "kaziflow-approval-engine",
+  "type": "rd",
+  "order": 20,
+  "featured": true,
+  "title": {
+    "fr": "KaziFlow — Moteur d'automatisation des validations budgétaires",
+    "en": "KaziFlow — Operational Budget & Workflow Approval Engine"
+  },
+  "subtitle": {
+    "fr": "Système de règles métiers guidant les demandes de dépense et les signatures hiérarchiques.",
+    "en": "Business rules engine orchestrating purchase requisitions and hierarchical approvals."
+  },
+  "sector": {
+    "fr": "Finance & Opérations PME",
+    "en": "SME Operations & Finance"
+  },
+  "context": {
+    "fr": "Les processus d'approbation d'achats nécessitaient des validations physiques signées sur papier, bloquant fréquemment les achats urgents pendant plusieurs jours.",
+    "en": "Purchase approval workflows required paper sign-offs, frequently blocking urgent field procurement for several days."
+  },
+  "friction": {
+    "fr": "Lenteur des circuits de décision, manque d'historique auditable et dépassements de budget imprévus.",
+    "en": "Sluggish decision loops, lack of audit trail, and unmonitored budget overruns."
+  },
+  "decision": {
+    "fr": "Créer un moteur de règles conditionnelles automatisé notifiant les décideurs par lien sécurisé à action rapide sans besoin de connexion complexe.",
+    "en": "Build an automated rules engine notifying decision-makers via secure one-click action links without tedious portal logins."
+  },
+  "solution": {
+    "fr": "Workflow dynamique capturant les pièces justificatives, calculant les plafonds par rôle et conservant un journal d'audit cryptographique.",
+    "en": "Dynamic workflow capturing receipts, calculating threshold limits per role, and maintaining a cryptographic audit trail."
+  },
+  "stack": ["React", "TypeScript", "State Machine Architecture", "Webhooks", "Tailwind CSS"],
+  "statusLabel": {
+    "fr": "Recherche & Développement — Prototypes validés",
+    "en": "R&D — Prototype Validated"
+  },
+  "metrics": [
+    {
+      "label": { "fr": "Délai moyen de signature", "en": "Avg. approval time" },
+      "value": "Passé de 4j à 2h"
+    },
+    {
+      "label": { "fr": "Traçabilité des décisions", "en": "Audit completeness" },
+      "value": "100% Conforme"
+    }
+  ]
+}

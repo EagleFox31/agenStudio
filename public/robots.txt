@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /fr/confidentialite
+Disallow: /fr/mentions-legales
+Disallow: /en/privacy
+Disallow: /en/legal
+
+Sitemap: https://agenstudio.com/sitemap-index.xml

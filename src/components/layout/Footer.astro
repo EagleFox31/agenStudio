@@ -1,0 +1,95 @@
+---
+import { translations, type Language } from '../../lib/i18n';
+import { route } from '../../lib/routes';
+
+interface Props {
+  lang: Language;
+}
+const { lang } = Astro.props;
+const t = translations[lang].footer;
+const nav = translations[lang].nav;
+const year = new Date().getFullYear();
+
+const links = [
+  { label: nav.home, href: route('home', lang) },
+  { label: nav.expertises, href: route('expertises', lang) },
+  { label: nav.projects, href: route('projects', lang) },
+  { label: nav.studio, href: route('studio', lang) },
+  { label: nav.contact, href: route('contact', lang) },
+];
+
+const tagline =
+  lang === 'fr'
+    ? 'Studio numérique indépendant spécialisé dans les logiciels métier, les automatisations et les systèmes sur-mesure pour PME et organisations.'
+    : 'Independent digital studio designing business software, automations, and bespoke systems for SMEs and organizations.';
+const contactLabel = lang === 'fr' ? 'Contact direct' : 'Direct contact';
+const replyLabel = lang === 'fr' ? 'Réponse sous 24h ouvrées.' : 'Reply within 24 business hours.';
+const navHeading = 'Navigation';
+---
+
+<footer class="bg-ink text-white pt-16 pb-12 border-t border-white/10 relative overflow-hidden">
+  <div class="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+      <div class="md:col-span-2 space-y-4">
+        <img
+          src="/logo.jpg"
+          alt="AgenStudio"
+          width="80"
+          height="40"
+          class="h-10 w-auto object-contain rounded bg-white p-0.5"
+        />
+        <p class="font-heading font-semibold text-lg text-canvas italic">
+          &ldquo;{t.tagline}&rdquo;
+        </p>
+        <p class="text-sm text-ink-light max-w-md">{tagline}</p>
+        <p class="flex items-center gap-2 text-xs font-mono text-teal pt-2">
+          <span aria-hidden="true">📍</span>
+          <span>{t.location}</span>
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        <h2 class="font-mono text-xs text-ink-light uppercase tracking-wider">
+          {navHeading}
+        </h2>
+        <ul class="space-y-2 text-sm">
+          {
+            links.map((l) => (
+              <li>
+                <a href={l.href} class="hover:text-teal transition-colors">
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="space-y-3">
+        <h2 class="font-mono text-xs text-ink-light uppercase tracking-wider">
+          {contactLabel}
+        </h2>
+        <a
+          href="mailto:contact@agenstudio.com"
+          class="inline-flex items-center gap-2 text-white hover:text-teal transition-colors text-sm"
+        >
+          <span aria-hidden="true">✉︎</span>
+          <span>contact@agenstudio.com</span>
+        </a>
+        <p class="text-xs text-ink-light">{replyLabel}</p>
+      </div>
+    </div>
+
+    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-ink-light gap-4">
+      <p>© {year} AgenStudio. {t.rights}</p>
+      <div class="flex items-center gap-6">
+        <a href={route('privacy', lang)} class="hover:text-white transition-colors">
+          {t.privacy}
+        </a>
+        <a href={route('legal', lang)} class="hover:text-white transition-colors">
+          {t.legal}
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,49 @@
+{
+  "slug": "njiacore-fleet-maintenance",
+  "type": "concept",
+  "order": 30,
+  "featured": true,
+  "title": {
+    "fr": "NjiaCore — Architecture de suivi de flotte et télémesure terrain",
+    "en": "NjiaCore — Fleet Telemetry & Preventive Maintenance Architecture"
+  },
+  "subtitle": {
+    "fr": "Concept d'interface temps réel pour centraliser la maintenance préventive des véhicules de service.",
+    "en": "Interface concept for centralizing real-time vehicle maintenance telemetry."
+  },
+  "sector": {
+    "fr": "Transport & Logistique",
+    "en": "Logistics & Transport"
+  },
+  "context": {
+    "fr": "Étude d'un modèle d'interfaçage entre des boîtiers GPS embarqués et la planification des révisions de véhicules de transport.",
+    "en": "Exploratory study on bridging vehicle GPS telematics with scheduled fleet maintenance workflows."
+  },
+  "friction": {
+    "fr": "Pannes inopinées sur la route, surconsommation de carburant et oublis récurrents des contrôles obligatoires.",
+    "en": "Unscheduled highway breakdowns, fuel anomalies, and missed routine inspection windows."
+  },
+  "decision": {
+    "fr": "Concevoir un tableau de bord à haute densité visuelle mettant l'accent sur les alertes préventives simples à interpréter par les mécaniciens.",
+    "en": "Design a high-density operational dashboard emphasizing clear preventive alerts for workshop mechanics."
+  },
+  "solution": {
+    "fr": "Interface épurée en mode sombre/clair adaptatif avec composants graphiques haute performance pour le suivi kilométrique.",
+    "en": "Clean adaptive dark/light interface built with high-performance visualization components for mileage monitoring."
+  },
+  "stack": ["React", "TypeScript", "Canvas Charts", "Motion", "Tailwind CSS"],
+  "statusLabel": {
+    "fr": "Concept & Modélisation d'interface",
+    "en": "Concept & UI Architecture"
+  },
+  "metrics": [
+    {
+      "label": { "fr": "Densité d'information", "en": "Data density" },
+      "value": "Optimisée 1080p/Mobile"
+    },
+    {
+      "label": { "fr": "Temps de réponse UI", "en": "UI Latency" },
+      "value": "< 16ms (60 FPS)"
+    }
+  ]
+}

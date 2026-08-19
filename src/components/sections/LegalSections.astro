@@ -1,0 +1,55 @@
+---
+import { type Language } from '../../lib/i18n';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import Tag from '../ui/Tag.astro';
+
+interface Props { lang: Language; }
+const { lang } = Astro.props;
+const heading = lang === 'fr' ? 'Mentions légales' : 'Legal Notice';
+const kicker = lang === 'fr' ? 'INFORMATIONS ÉDITORIALES' : 'PUBLISHER INFORMATION';
+const updated = lang === 'fr'
+  ? "Dernière mise à jour : Août 2026 — Statut : à valider selon l'immatriculation."
+  : 'Last update: August 2026 — Status: to validate against registration.';
+const s1Title = lang === 'fr' ? '1. Éditeur du site' : '1. Site publisher';
+const s2Title = lang === 'fr' ? '2. Hébergement & infrastructure' : '2. Hosting & infrastructure';
+const s3Title = lang === 'fr' ? '3. Propriété intellectuelle' : '3. Intellectual property';
+const s2Body = lang === 'fr'
+  ? 'Le site est hébergé sur la plateforme Cloudflare Pages (Cloudflare Inc., San Francisco, CA, USA).'
+  : 'The site is hosted on the Cloudflare Pages platform (Cloudflare Inc., San Francisco, CA, USA).';
+const s3Body = lang === 'fr'
+  ? "L'ensemble des contenus, visuels, concepts d'interface et codes sources sont la propriété exclusive d'AgenStudio, sauf mention contraire explicite."
+  : 'All content, visuals, interface concepts and source code are the exclusive property of AgenStudio unless explicitly stated otherwise.';
+---
+
+<Section variant="canvas" class="py-12 border-b border-ink/10">
+  <Container>
+    <div class="max-w-3xl space-y-3">
+      <Tag variant="ink">{kicker}</Tag>
+      <h1 class="font-heading text-3xl sm:text-4xl font-bold text-ink">{heading}</h1>
+      <p class="text-sm font-mono text-teal">{updated}</p>
+    </div>
+  </Container>
+</Section>
+
+<Section variant="white">
+  <Container>
+    <div class="max-w-prose space-y-6 text-sm text-ink-muted leading-relaxed">
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">{s1Title}</h2>
+      <p>
+        {lang === 'fr' ? 'Le présent site est édité par ' : 'This site is published by '}
+        <strong class="text-ink">AgenStudio</strong>
+        {lang === 'fr'
+          ? ', studio numérique indépendant basé au Cameroun (Douala / Yaoundé).'
+          : ', an independent digital studio based in Cameroon (Douala / Yaoundé).'}
+        <br />
+        {lang === 'fr' ? 'Contact e-mail : ' : 'Email contact: '}
+        <strong class="text-ink">contact@agenstudio.com</strong>
+      </p>
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">{s2Title}</h2>
+      <p>{s2Body}</p>
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">{s3Title}</h2>
+      <p>{s3Body}</p>
+    </div>
+  </Container>
+</Section>

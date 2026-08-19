@@ -1,0 +1,176 @@
+---
+import { translations, type Language } from '../../lib/i18n';
+import { route } from '../../lib/routes';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import Button from '../ui/Button.astro';
+import Tag from '../ui/Tag.astro';
+import Reveal from '../ui/Reveal.tsx';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  lang: Language;
+  project: CollectionEntry<'projects'>['data'];
+}
+
+const { lang, project } = Astro.props;
+const t = translations[lang].projects;
+const contactHref = route('contact', lang);
+const projectsHref = route('projects', lang);
+
+const back = lang === 'fr' ? 'Retour aux projets' : 'Back to projects';
+const sections = lang === 'fr'
+  ? {
+      context: '01. Contexte opérationnel',
+      friction: '02. Problème & frictions rencontrées',
+      decision: "03. Décision d'architecture",
+      solution: '04. Solution mise en œuvre',
+      results: 'Résultats & indicateurs',
+      tech: 'Technologies mobilisées',
+      similar: 'Vous faites face à un défi similaire ?',
+      subSimilar: "Étudions vos flux et évaluons la pertinence d'une solution sur-mesure.",
+      cta: 'Discuter de votre projet',
+    }
+  : {
+      context: '01. Operational context',
+      friction: '02. Problem & friction encountered',
+      decision: '03. Architectural decision',
+      solution: '04. Implemented solution',
+      results: 'Results & KPIs',
+      tech: 'Technologies used',
+      similar: 'Facing a similar challenge?',
+      subSimilar: "Let's map your workflows and assess a custom solution.",
+      cta: 'Discuss your project',
+    };
+---
+
+<Section variant="canvas" class="py-12 border-b border-ink/10">
+  <Container>
+    <div class="space-y-6">
+      <a
+        href={projectsHref}
+        class="inline-flex items-center gap-1 text-xs font-mono text-teal hover:underline"
+      >
+        <span aria-hidden="true">←</span>
+        <span>{back}</span>
+      </a>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <Tag variant="ink">{project.sector[lang]}</Tag>
+        <Tag
+          variant={
+            project.type === 'internal'
+              ? 'teal'
+              : project.type === 'rd'
+                ? 'magenta'
+                : project.type === 'client'
+                  ? 'bordeaux'
+                  : 'gold'
+          }
+        >
+          {t.types[project.type]}
+        </Tag>
+        <span class="font-mono text-xs text-teal">{project.statusLabel[lang]}</span>
+      </div>
+
+      <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink">
+        {project.title[lang]}
+      </h1>
+
+      <p class="text-base sm:text-xl text-ink-muted max-w-3xl leading-relaxed">
+        {project.subtitle[lang]}
+      </p>
+    </div>
+  </Container>
+</Section>
+
+<Section variant="white">
+  <Container>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-8 space-y-10">
+        <Reveal client:visible direction="up">
+          <div class="space-y-3">
+            <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-teal" aria-hidden="true"></span>
+              <span>{sections.context}</span>
+            </h2>
+            <p class="text-base text-ink-muted leading-relaxed">{project.context[lang]}</p>
+          </div>
+        </Reveal>
+
+        <Reveal client:visible direction="up">
+          <div class="space-y-3 p-6 bg-coral/5 border border-coral/20 rounded-xl">
+            <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-coral" aria-hidden="true"></span>
+              <span>{sections.friction}</span>
+            </h2>
+            <p class="text-base text-ink leading-relaxed">{project.friction[lang]}</p>
+          </div>
+        </Reveal>
+
+        <Reveal client:visible direction="up">
+          <div class="space-y-3">
+            <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-gold" aria-hidden="true"></span>
+              <span>{sections.decision}</span>
+            </h2>
+            <p class="text-base text-ink-muted leading-relaxed">{project.decision[lang]}</p>
+          </div>
+        </Reveal>
+
+        <Reveal client:visible direction="up">
+          <div class="space-y-3 p-6 bg-teal/5 border border-teal/20 rounded-xl">
+            <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-teal" aria-hidden="true"></span>
+              <span>{sections.solution}</span>
+            </h2>
+            <p class="text-base text-ink leading-relaxed">{project.solution[lang]}</p>
+          </div>
+        </Reveal>
+      </div>
+
+      <aside class="lg:col-span-4 space-y-8">
+        {
+          project.metrics.length > 0 && (
+            <div class="bg-ink text-white p-6 rounded-xl space-y-4 border border-teal/30">
+              <h3 class="font-mono text-xs text-teal uppercase tracking-wider font-bold">
+                {sections.results}
+              </h3>
+              <dl class="space-y-4">
+                {project.metrics.map((m) => (
+                  <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                    <dt class="text-xs text-ink-light">{m.label[lang]}</dt>
+                    <dd class="font-mono text-xl font-bold text-canvas mt-0.5">{m.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )
+        }
+
+        <div class="p-6 bg-canvas rounded-xl border border-ink/10 space-y-3">
+          <h3 class="font-mono text-xs text-ink uppercase tracking-wider font-bold">
+            {sections.tech}
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {
+              project.stack.map((tech) => (
+                <span class="px-2.5 py-1 bg-white rounded border border-ink/10 font-mono text-xs text-ink">
+                  {tech}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="p-6 bg-teal/10 rounded-xl border border-teal/20 space-y-4">
+          <h3 class="font-heading font-bold text-base text-ink">{sections.similar}</h3>
+          <p class="text-xs text-ink-muted">{sections.subSimilar}</p>
+          <Button href={contactHref} variant="primary" size="sm" class="w-full">
+            {sections.cta}
+          </Button>
+        </div>
+      </aside>
+    </div>
+  </Container>
+</Section>

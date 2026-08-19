@@ -1,0 +1,64 @@
+---
+description: Règle permanente AgenStudio — force le workflow et la mémoire à CHAQUE session Agent
+alwaysApply: true
+---
+
+# Workflow AgenStudio — OBLIGATOIRE
+
+Tu travailles sur le projet **AgenStudio**. Ce workflow est **non négociable** sur toute tâche autre qu'une question purement informative (sans modification de fichiers).
+
+## Au début de toute tâche (LIRE)
+
+Avant de coder, designer ou modifier des fichiers :
+
+1. Identifier la **phase Playbook** (00-14) et la **gate** (G1-G4) concernées.
+2. Lire `gestion-projet/memoire/erreurs-globales.md` (règles transversales).
+3. Lire `references/lecons-apprises.md` du skill concerné dans `.cursor/skills/agen-*/`.
+4. Consulter les **3 dernières entrées** de `gestion-projet/memoire/journal-evolutions.md`.
+
+Skills disponibles : `/agen-workflow` · `/agen-da` · `/agen-ui-ux` · `/agen-dev` · `/agen-contenu` · `/agen-qa` · `/agen-rssi`
+
+Pour toute tâche multi-étapes ou non triviale → commencer par `/agen-workflow`.
+
+## Pendant la tâche (AGIR)
+
+- Mobiliser le skill métier adapté (dev, da, contenu, qa, rssi).
+- Plus petit diff cohérent · tokens Tailwind · jamais inventer de contenu.
+- Dev : `npm run check && npm run build` avant de terminer.
+- North Star : premium · créatif · moderne · pro · africain (subtil) · flamboyant.
+
+## En fin de tâche (APPRENDRE) — OBLIGATOIRE
+
+Si tu as **modifié des fichiers** ou **livré un livrable**, tu DOIS avant de conclure :
+
+1. Exécuter `/agen-retrospective` (skill agen-retrospective).
+2. Mettre à jour `gestion-projet/memoire/journal-evolutions.md`.
+3. Enrichir le `lecons-apprises.md` du rôle concerné si une erreur ou leçon existe.
+4. Promouvoir dans `erreurs-globales.md` si transversal ou P0/P1.
+
+**Ne termine jamais une réponse de travail sans section :**
+```markdown
+## Rétrospective
+- Mémoire mise à jour : oui/non
+- Leçons enregistrées : ...
+- Prochaine action : ...
+```
+
+Si aucune leçon → écrire « Aucune erreur — évolution #N enregistrée » quand même dans le journal.
+
+## Ce qui déclenche le workflow
+
+| Type de demande | Workflow |
+|---|---|
+| Implémenter, corriger, redesigner | Complet (LIRE → AGIR → APPRENDRE) |
+| Planifier, prioriser | `/agen-workflow` + `/agen-orchestrateur` |
+| Question info sans changement | Réponse directe, pas de rétrospective |
+| Go-live, sécurité, RGPD | + `/agen-rssi` obligatoire |
+| Commit, push, branche git | `/agen-git` uniquement · jamais Co-authored-by · demande explicite |
+
+## Références
+
+- `.cursor/skills/agen-workflow/SKILL.md`
+- `.cursor/skills/agen-retrospective/SKILL.md`
+- `gestion-projet/memoire/INDEX.md`
+- `agents.md` · `gestion-projet/equipe-workflow.md`

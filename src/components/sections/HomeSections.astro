@@ -1,0 +1,403 @@
+---
+import { translations, type Language } from '../../lib/i18n';
+import { route, projectPath } from '../../lib/routes';
+import { getCollection } from 'astro:content';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import Button from '../ui/Button.astro';
+import Card from '../ui/Card.astro';
+import Tag from '../ui/Tag.astro';
+import Reveal from '../ui/Reveal.tsx';
+import HeroVisual from './HeroVisual.tsx';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const t = translations[lang];
+
+const projects = (await getCollection('projects'))
+  .map((entry) => entry.data)
+  .sort((a, b) => a.order - b.order);
+
+const contactHref = route('contact', lang);
+const projectsHref = route('projects', lang);
+const expertisesHref = route('expertises', lang);
+const studioHref = route('studio', lang);
+
+const seeAll = lang === 'fr' ? 'Toutes nos expertises' : 'All our expertise';
+const exploreCases = lang === 'fr' ? 'Explorer les études de cas' : 'Explore case studies';
+const impactLabel = lang === 'fr' ? 'Impact' : 'Impact';
+const problemLabel = lang === 'fr' ? 'Problème' : 'Problem';
+const deliverableLabel = lang === 'fr' ? 'Livrable' : 'Deliverable';
+const benefitLabel = lang === 'fr' ? 'Bénéfice direct' : 'Direct benefit';
+const exampleLabel = lang === 'fr' ? 'Ex' : 'e.g.';
+const detailsLabel = lang === 'fr' ? 'Détails' : 'Details';
+const consultLabel = lang === 'fr' ? 'Consulter' : 'View';
+const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Principle';
+---
+
+<!-- 01. HERO -->
+<Section variant="canvas" class="pt-10 pb-16 md:pt-16 md:pb-24 border-b border-ink/10">
+  <Container>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div class="lg:col-span-7 space-y-6">
+        <Reveal client:visible direction="up" delay={0.1}>
+          <span class="inline-flex items-center gap-2 bg-teal/10 border border-teal/20 px-3 py-1 rounded-full text-xs font-mono text-teal">
+            <span class="w-2 h-2 rounded-full bg-teal" aria-hidden="true"></span>
+            <span>{t.hero.badge}</span>
+          </span>
+        </Reveal>
+
+        <Reveal client:visible direction="up" delay={0.2}>
+          <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink leading-[1.1] tracking-tight">
+            Think sharp. <span class="font-serif-italic text-teal font-normal tracking-normal">Build what matters.</span>
+          </h1>
+        </Reveal>
+
+        <Reveal client:visible direction="up" delay={0.3}>
+          <p class="font-heading font-semibold text-lg sm:text-xl text-teal leading-snug">
+            {t.hero.subtitle}
+          </p>
+        </Reveal>
+
+        <Reveal client:visible direction="up" delay={0.4}>
+          <p class="text-base sm:text-lg text-ink-muted leading-relaxed max-w-2xl">
+            {t.hero.description}
+          </p>
+        </Reveal>
+
+        <Reveal client:visible direction="up" delay={0.5}>
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <Button href={contactHref} variant="primary" size="lg">{t.hero.primaryCta}</Button>
+            <Button href={projectsHref} variant="outline" size="lg">{t.hero.secondaryCta}</Button>
+          </div>
+        </Reveal>
+      </div>
+
+      <div class="lg:col-span-5">
+        <HeroVisual client:load lang={lang} />
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<!-- 02. FRICTIONS -->
+<Section variant="white" class="border-b border-ink/10">
+  <Container>
+    <div class="max-w-3xl mb-12">
+      <Tag variant="bordeaux" class="mb-3">{t.frictions.tag}</Tag>
+      <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-ink leading-tight">
+        {t.frictions.title}
+      </h2>
+      <p class="text-ink-muted text-base sm:text-lg mt-3">{t.frictions.subtitle}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      {
+        t.frictions.items.map((item, idx) => (
+          <Reveal client:visible direction="up" delay={idx * 0.12}>
+            <Card variant="light" class="h-full flex flex-col justify-between hover:border-bordeaux/30">
+              <div class="space-y-3">
+                <span class="inline-flex w-10 h-10 rounded-lg bg-bordeaux/10 text-bordeaux items-center justify-center text-lg font-mono font-bold">
+                  !
+                </span>
+                <h3 class="font-heading font-bold text-lg text-ink">{item.title}</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">{item.description}</p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-ink/10">
+                <p class="font-mono text-xs text-bordeaux font-bold">{impactLabel} : {item.impact}</p>
+              </div>
+            </Card>
+          </Reveal>
+        ))
+      }
+    </div>
+
+    <div class="bg-ink text-white p-6 sm:p-8 rounded-xl border border-teal/30 flex items-center justify-between gap-4 flex-wrap">
+      <blockquote class="font-heading font-semibold text-base sm:text-lg text-canvas italic">
+        &ldquo;{t.frictions.quote}&rdquo;
+      </blockquote>
+      <Tag variant="gold" class="shrink-0">{principleLabel}</Tag>
+    </div>
+  </Container>
+</Section>
+
+<!-- 03. EXPERTISES PREVIEW -->
+<Section variant="canvas" class="border-b border-ink/10">
+  <Container>
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+      <div>
+        <Tag variant="teal" class="mb-3">{t.expertises.tag}</Tag>
+        <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-ink">
+          {t.expertises.title}
+        </h2>
+        <p class="text-ink-muted text-base mt-2 max-w-xl">{t.expertises.subtitle}</p>
+      </div>
+      <Button href={expertisesHref} variant="outline" size="sm">{seeAll}</Button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {
+        t.expertises.items.map((item, idx) => (
+          <Reveal client:visible direction="up" delay={idx * 0.1}>
+            <Card variant="light" class="h-full flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <Tag variant="teal">{`0${idx + 1}`}</Tag>
+                  <span class="font-mono text-xs text-ink-light uppercase">
+                    {lang === 'fr' ? 'Capacité technique' : 'Technical capability'}
+                  </span>
+                </div>
+                <h3 class="font-heading font-bold text-xl text-ink">{item.title}</h3>
+                <div class="space-y-2 text-sm text-ink-muted">
+                  <p><strong class="text-ink">{problemLabel} :</strong> {item.problem}</p>
+                  <p><strong class="text-teal">{deliverableLabel} :</strong> {item.deliverable}</p>
+                </div>
+                <div class="p-3 bg-teal/5 rounded-lg border border-teal/15 text-xs text-teal-deep">
+                  <strong>{benefitLabel} :</strong> {item.benefit}
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between">
+                <span class="text-xs font-mono text-ink-light truncate max-w-[240px]">
+                  {exampleLabel} : {item.example}
+                </span>
+                <a
+                  href={`${expertisesHref}#${item.id}`}
+                  class="text-xs font-mono text-teal font-semibold hover:underline"
+                >
+                  {detailsLabel} →
+                </a>
+              </div>
+            </Card>
+          </Reveal>
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+
+<!-- 04. SELECTED PROJECTS -->
+<Section variant="white" class="border-b border-ink/10">
+  <Container>
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+      <div>
+        <Tag variant="gold" class="mb-3">{t.projects.tag}</Tag>
+        <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-ink">
+          {t.projects.title}
+        </h2>
+        <p class="text-ink-muted text-base mt-2 max-w-xl">{t.projects.subtitle}</p>
+      </div>
+      <Button href={projectsHref} variant="secondary" size="sm">{exploreCases}</Button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {
+        projects.map((project, idx) => (
+          <Reveal client:visible direction="up" delay={idx * 0.12}>
+            <Card variant="light" class="h-full flex flex-col justify-between">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <Tag variant="ink">{project.sector[lang]}</Tag>
+                  <Tag
+                    variant={
+                      project.type === 'internal'
+                        ? 'teal'
+                        : project.type === 'rd'
+                          ? 'magenta'
+                          : project.type === 'client'
+                            ? 'bordeaux'
+                            : 'gold'
+                    }
+                  >
+                    {t.projects.types[project.type]}
+                  </Tag>
+                </div>
+                <h3 class="font-heading font-bold text-lg text-ink leading-snug">
+                  {project.title[lang]}
+                </h3>
+                <p class="text-xs text-ink-muted leading-relaxed">{project.subtitle[lang]}</p>
+                <div class="flex flex-wrap gap-1.5 pt-2">
+                  {project.stack.slice(0, 3).map((tech) => (
+                    <span class="px-2 py-0.5 rounded bg-ink/5 text-ink text-[10px] font-mono">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between">
+                <span class="text-[11px] font-mono text-teal font-medium">
+                  {project.statusLabel[lang]}
+                </span>
+                <a
+                  href={projectPath(project.slug, lang)}
+                  class="inline-flex items-center gap-1 text-xs font-semibold text-ink hover:text-teal"
+                >
+                  <span>{consultLabel}</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </Card>
+          </Reveal>
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+
+<!-- 05. METHOD -->
+<Section variant="dark" class="border-b border-white/10">
+  <Container>
+    <div class="max-w-2xl mb-12">
+      <Tag variant="teal" class="mb-3">{t.method.tag}</Tag>
+      <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+        {t.method.title}
+      </h2>
+      <p class="text-ink-light text-base mt-2">{t.method.subtitle}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        t.method.steps.map((step, idx) => (
+          <Reveal client:visible direction="up" delay={idx * 0.1}>
+            <div class="h-full p-6 rounded-2xl border border-white/10 bg-white/5 flex flex-col justify-between">
+              <div class="space-y-3">
+                <span class="font-mono text-sm font-bold px-3 py-1 rounded-md bg-teal text-white inline-block">
+                  {step.number}
+                </span>
+                <h3 class="font-heading font-bold text-lg text-white">{step.title}</h3>
+                <p class="text-sm text-ink-light leading-relaxed">{step.description}</p>
+              </div>
+              <div class="pt-4 mt-4 border-t border-white/10 text-xs font-mono text-teal">
+                {lang === 'fr' ? 'Livrable' : 'Deliverable'} : {step.outcome}
+              </div>
+            </div>
+          </Reveal>
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+
+<!-- 06. POINT OF VIEW -->
+<Section variant="canvas" class="border-b border-ink/10">
+  <Container>
+    <div class="max-w-2xl mb-12">
+      <Tag variant="magenta" class="mb-3">{t.pov.tag}</Tag>
+      <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-ink">
+        {t.pov.title}
+      </h2>
+      <p class="text-ink-muted text-base mt-2">{t.pov.subtitle}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        t.pov.cards.map((card, idx) => (
+          <Reveal client:visible direction="up" delay={idx * 0.12}>
+            <Card variant="light" class="h-full">
+              <div class="w-8 h-8 rounded bg-ink text-teal flex items-center justify-center mb-4 font-mono text-sm font-bold">
+                {String(idx + 1).padStart(2, '0')}
+              </div>
+              <h3 class="font-heading font-bold text-lg text-ink mb-2">{card.title}</h3>
+              <p class="text-sm text-ink-muted leading-relaxed">{card.body}</p>
+            </Card>
+          </Reveal>
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+
+<!-- 07. STUDIO TEASER -->
+<Section variant="white" class="border-b border-ink/10">
+  <Container>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-6 space-y-6">
+        <Tag variant="teal">{t.studioIntro.tag}</Tag>
+        <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-ink">
+          {t.studioIntro.title}
+        </h2>
+        <p class="text-ink-muted text-base sm:text-lg leading-relaxed">
+          {t.studioIntro.description}
+        </p>
+
+        <div class="space-y-3 pt-2">
+          {
+            t.studioIntro.values.map((v, idx) => (
+              <div class="p-4 rounded-xl border border-ink/10 bg-canvas flex items-start gap-3">
+                <span class="w-6 h-6 rounded-md bg-teal/10 text-teal flex items-center justify-center shrink-0 mt-0.5 font-mono text-xs font-bold">
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 class="font-heading font-bold text-sm text-ink">{v.title}</h3>
+                  <p class="text-xs text-ink-muted mt-0.5">{v.desc}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="p-4 bg-canvas rounded-lg border border-ink/10 text-xs font-mono text-teal flex items-center gap-2">
+          <span aria-hidden="true">📍</span>
+          <span>{t.studioIntro.anchorage}</span>
+        </div>
+
+        <Button href={studioHref} variant="primary">{t.studioIntro.cta}</Button>
+      </div>
+
+      <div class="lg:col-span-6">
+        <div class="rounded-2xl border border-teal/30 bg-ink text-white p-8 space-y-6 relative overflow-hidden min-h-[420px] flex flex-col justify-between">
+          <div class="absolute inset-0 bg-dots-pattern opacity-10 pointer-events-none" aria-hidden="true"></div>
+          <div class="relative z-10 space-y-3">
+            <span class="font-mono text-xs text-teal uppercase tracking-widest">
+              {lang === 'fr' ? 'Standards de fabrication' : 'Craft standards'}
+            </span>
+            <p class="font-heading text-2xl leading-snug text-white">
+              {lang === 'fr'
+                ? 'Systèmes précis, adoption réelle, résultats vérifiables sur le terrain.'
+                : 'Precise systems, real adoption, results verified on the ground.'}
+            </p>
+          </div>
+
+          <ul class="relative z-10 grid grid-cols-2 gap-3 text-xs font-mono text-ink-light">
+            <li class="p-3 border border-white/10 rounded-lg">
+              <div class="text-teal font-bold">WCAG 2.2</div>
+              <div>{lang === 'fr' ? 'Accessibilité AA visée' : 'AA accessibility'}</div>
+            </li>
+            <li class="p-3 border border-white/10 rounded-lg">
+              <div class="text-teal font-bold">LCP ≤ 2.5s</div>
+              <div>{lang === 'fr' ? 'Core Web Vitals verts' : 'Green Web Vitals'}</div>
+            </li>
+            <li class="p-3 border border-white/10 rounded-lg">
+              <div class="text-teal font-bold">TypeScript</div>
+              <div>{lang === 'fr' ? 'Strict, testable' : 'Strict, testable'}</div>
+            </li>
+            <li class="p-3 border border-white/10 rounded-lg">
+              <div class="text-teal font-bold">i18n</div>
+              <div>{lang === 'fr' ? 'FR / EN natifs' : 'Native FR / EN'}</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<!-- 08. FINAL CTA -->
+<Section variant="teal">
+  <Container>
+    <div class="max-w-3xl mx-auto text-center space-y-6">
+      <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+        {t.finalCta.title}
+      </h2>
+      <p class="text-white/80 text-base sm:text-lg">{t.finalCta.subtitle}</p>
+      <div class="pt-4 flex items-center justify-center">
+        <Button href={contactHref} variant="secondary" size="lg">
+          {t.finalCta.button}
+        </Button>
+      </div>
+      <p class="text-xs font-mono text-white/70 pt-2">{t.finalCta.altContact}</p>
+    </div>
+  </Container>
+</Section>

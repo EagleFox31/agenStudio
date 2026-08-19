@@ -1,0 +1,129 @@
+---
+import { translations, type Language } from '../../lib/i18n';
+import { route, equivalentPath, alternateLang, NAV_ITEMS } from '../../lib/routes';
+import Button from '../ui/Button.astro';
+import MobileMenu from './MobileMenu.tsx';
+
+interface Props {
+  lang: Language;
+  pathname: string;
+}
+
+const { lang, pathname } = Astro.props;
+const nav = translations[lang].nav;
+const contactHref = route('contact', lang);
+const altLang = alternateLang(lang);
+const altHref = equivalentPath(pathname, altLang);
+
+const items = NAV_ITEMS.map((it) => {
+  const label =
+    it.key === 'home'
+      ? nav.home
+      : it.key === 'expertises'
+        ? nav.expertises
+        : it.key === 'projects'
+          ? nav.projects
+          : it.key === 'studio'
+            ? nav.studio
+            : nav.contact;
+  const href = route(it.key, lang);
+  const active =
+    it.key === 'home'
+      ? pathname === href
+      : pathname === href || pathname.startsWith(href + '/');
+  return { label, href, active };
+});
+---
+
+<header
+  data-agen-header
+  class="fixed top-0 left-0 right-0 z-40 bg-canvas/95 backdrop-blur-md border-b border-ink/10 py-2.5 shadow-sm transition-all duration-300"
+>
+  <div class="max-w-content mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <a
+      href={route('home', lang)}
+      class="flex items-center group py-1 focus-visible:outline-none"
+      aria-label="AgenStudio — Accueil"
+    >
+      <img
+        src="/logo.jpg"
+        alt="AgenStudio"
+        width="120"
+        height="48"
+        class="h-10 sm:h-12 w-auto object-contain rounded-md transition-transform group-hover:scale-105 shadow-sm"
+      />
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8" aria-label="Navigation principale">
+      {
+        items.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'text-sm font-medium transition-colors hover:text-teal relative py-1',
+              item.active ? 'text-teal font-semibold' : 'text-ink/80',
+            ]}
+            aria-current={item.active ? 'page' : undefined}
+          >
+            {item.label}
+            {item.active && (
+              <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-teal rounded-full" aria-hidden="true" />
+            )}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="hidden md:flex items-center gap-4">
+      <a
+        href={altHref}
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-ink/15 hover:border-teal text-xs font-mono font-medium text-ink hover:text-teal transition-colors min-h-[36px]"
+        aria-label={altLang === 'en' ? 'Switch language to English' : 'Passer en français'}
+        hreflang={altLang}
+      >
+        <span aria-hidden="true">◐</span>
+        <span>{nav.langSwitchLabel}</span>
+      </a>
+
+      <Button href={contactHref} variant="primary" size="sm">
+        {nav.ctaButton}
+      </Button>
+    </div>
+
+    <MobileMenu
+      client:idle
+      lang={lang}
+      items={items}
+      ctaLabel={nav.ctaButton}
+      contactHref={contactHref}
+      altLangHref={altHref}
+      altLangLabel={nav.langSwitchLabel}
+    />
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-agen-header]');
+  if (header) {
+    let ticking = false;
+    const update = () => {
+      if (window.scrollY > 20) {
+        header.classList.add('shadow-md');
+      } else {
+        header.classList.remove('shadow-md');
+      }
+      ticking = false;
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+    update();
+  }
+</script>

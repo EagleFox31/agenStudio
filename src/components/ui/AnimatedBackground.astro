@@ -1,0 +1,22 @@
+---
+/**
+ * Static, no-JS afrofuturistic backdrop.
+ * Uses CSS radial-gradients + a fine grid overlay.
+ * Purely decorative — aria-hidden, pointer-events none, no infinite animation.
+ */
+---
+
+<div
+  aria-hidden="true"
+  class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+>
+  <div
+    class="absolute inset-0 opacity-70"
+    style="background:
+      radial-gradient(circle at 12% 18%, rgba(0,124,131,0.10), transparent 55%),
+      radial-gradient(circle at 82% 32%, rgba(122,9,43,0.09), transparent 55%),
+      radial-gradient(circle at 30% 92%, rgba(210,164,59,0.07), transparent 55%);"
+  >
+  </div>
+  <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
+</div>
