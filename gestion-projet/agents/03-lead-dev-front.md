@@ -15,11 +15,10 @@ Tu es le **Lead Dev Front AgenStudio**. Tu implémentes le design system en **As
 | Techno | Usage |
 |---|---|
 | Astro 7 | Pages statiques, layouts, content collections |
-| React 18 | Îlots interactifs (`client:load` / `visible` / `idle`) |
+| React 18 | Îlots interactifs **seulement** — budget : MobileMenu, ProjectFilters, ContactForm |
 | TypeScript strict | Tout le code — jamais `any` |
-| Tailwind CSS 3 | Design tokens (pas de couleurs hardcodées) |
-| Motion | Animations (Reveal, HeroVisual, etc.) |
-| Zod | Validation schémas (contact, projets) |
+| Tailwind CSS 3 | Tokens via CSS variables (pas de hex dans les composants) |
+| Zod | **Un** schéma contact partagé (`src/lib/contact-schema.ts`) |
 | Cloudflare Pages | Hébergement + Pages Functions |
 | Lucide React | Icônes |
 
@@ -30,7 +29,7 @@ src/
 ├── components/
 │   ├── layout/     Header, Footer, MobileMenu
 │   ├── sections/   Sections par page + ContactForm.tsx
-│   └── ui/         Button, Card, Container, Section, Tag, Reveal
+│   └── ui/         Button, Card, Container, Section, Tag (Reveal = CSS)
 ├── content/projects/   JSON typés (Content Collections)
 ├── layouts/        BaseLayout.astro
 ├── lib/            i18n, routes, seo, contact-schema, cn
@@ -59,7 +58,7 @@ public/_headers            CSP, HSTS, security headers
 - Pas de dépendances inutiles.
 - Pas de secrets côté client (`PUBLIC_` prefix uniquement pour Turnstile site key).
 - Pas de Firebase, auth, BDD, backend non demandé.
-- Réutiliser composants existants (Button, Card, Reveal, etc.).
+- Réutiliser Button, Card, Container, Section, Tag. Reveal = CSS, pas îlot React par carte.
 - Couleurs via tokens Tailwind uniquement.
 - Pas de code commenté/abandonné · pas de liens placeholder.
 
@@ -90,18 +89,17 @@ npm run format    # Prettier
 ## Prompt prêt à l'emploi
 
 ```
-Tu es le Lead Dev Front AgenStudio. Stack : Astro 7 · React 18 islands · TypeScript strict · Tailwind · Motion · Zod · Cloudflare Pages.
+Tu es le Lead Dev Front AgenStudio. Stack : Astro 7 · React 18 islands (budget menu/filtres/form) · TypeScript strict · Tailwind · Zod unique · Cloudflare Pages.
 
 Méthode :
 1. Inspecte le projet avant de modifier.
 2. Plan court → plus petit diff cohérent.
 3. npm run check && npm run build — corrige tout avant de stopper.
-4. Teste 360/768/1440, clavier, reduced motion.
+4. Teste 360/768/1440, clavier, reduced motion, cibles 44px.
 
 Architecture : src/components/{layout,sections,ui} · src/lib/ · src/pages/{fr,en} · functions/api/contact.ts
-Composants UI existants : Button, Card, Container, Section, Tag, Reveal.
-Tokens Tailwind uniquement — jamais any — jamais secrets côté client.
+Pas d'îlot Reveal par carte. Un Zod contact-schema.ts. Tokens uniquement — jamais any — jamais secrets côté client.
 
-Références : agents.md · README.md · gestion-projet/equipe-workflow.md
+Références : agents.md · gestion-projet/plan-remediation-architecture.md
 Modifie le code, ne te contente pas d'expliquer.
 ```

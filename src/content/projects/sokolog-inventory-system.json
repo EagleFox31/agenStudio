@@ -4,50 +4,37 @@
   "order": 10,
   "featured": true,
   "title": {
-    "fr": "SokoLog — Système de suivi de stocks & logistique multi-sites",
-    "en": "SokoLog — Multi-Site Inventory & Logistics System"
+    "fr": "SokoLog — Le stock de quatre dépôts au même endroit",
+    "en": "SokoLog — Four warehouses, one stock list"
   },
   "subtitle": {
-    "fr": "Plateforme centralisée pour harmoniser la chaîne d'approvisionnement et supprimer la double saisie.",
-    "en": "Centralized platform harmonizing supply chains and eliminating redundant data entry."
+    "fr": "Un seul état du stock, tenu depuis le terrain, lisible sur le téléphone du magasinier.",
+    "en": "One stock list, kept from the floor, readable on the storekeeper's phone."
   },
   "sector": {
-    "fr": "Distribution & Logistique",
-    "en": "Logistics & Distribution"
+    "fr": "Distribution et logistique",
+    "en": "Distribution and logistics"
   },
   "context": {
-    "fr": "Une structure gérant 4 entrepôts régionaux suivait ses mouvements d'inventaire via des tableurs partagés manuellement par WhatsApp et e-mail à chaque fin de journée.",
-    "en": "An organization managing 4 regional warehouses tracked inventory movements through manual spreadsheets shared via WhatsApp and email at the end of each shift."
+    "fr": "Quatre dépôts régionaux. Chaque soir, chaque responsable envoyait son tableur par WhatsApp et par mail. Le stock réel n'existait sur aucun écran.",
+    "en": "Four regional warehouses. Every evening, each manager sent their spreadsheet by WhatsApp and email. The real stock existed on no screen."
   },
   "friction": {
-    "fr": "Bilan d'inventaire réconcilié avec 48h de retard, ruptures de stock non anticipées et pertes inexplicables sur le fret intermédiaire.",
-    "en": "Reconciled inventory balances delayed by 48 hours, unpredicted stockouts, and untracked losses during inter-site transit."
+    "fr": "L'inventaire se recollait avec deux jours de retard. Des ruptures qu'on découvrait au comptoir. Des écarts entre deux dépôts que personne ne savait expliquer.",
+    "en": "Stock was reconciled two days late. Shortages discovered at the counter. Gaps between two warehouses nobody could account for."
   },
   "decision": {
-    "fr": "Concevoir un système web léger avec saisie hors-ligne synchrone et tableau de bord en direct accessible sur smartphone et tablette terrain.",
-    "en": "Architect a lightweight web system with offline-first input sync and real-time dashboard accessible on smartphones and rugged tablets."
+    "fr": "Faire marcher la saisie même sans réseau, et la remonter quand la connexion revient. Un seul écran, lisible sur un téléphone au dépôt comme sur un poste au bureau.",
+    "en": "Make entry work with no network, and sync it when the connection returns. One screen, readable on a phone in the warehouse and on a desktop at the office."
   },
   "solution": {
-    "fr": "Mise en place d'une application React + TypeScript ultra-rapide avec génération automatique de bons de transfert et alertes de seuil critique.",
-    "en": "Deployment of an ultra-fast React + TypeScript application with automated transfer notes and critical threshold alerts."
+    "fr": "Le magasinier saisit l'entrée ou la sortie depuis son téléphone, hors ligne s'il le faut. Les bons de transfert se génèrent seuls. Quand un article passe sous son seuil, l'alerte part avant la rupture.",
+    "en": "The storekeeper records what comes in and out from their phone, offline if need be. Transfer notes write themselves. When an item drops below its threshold, the alert goes out before the shelf is empty."
   },
   "stack": ["React", "TypeScript", "Tailwind CSS", "PWA Offline Sync", "Node REST API"],
   "statusLabel": {
-    "fr": "Produit Interne — En exploitation",
-    "en": "Internal Product — Production Ready"
+    "fr": "Outil interne — en service",
+    "en": "Internal tool — running"
   },
-  "metrics": [
-    {
-      "label": { "fr": "Temps de réconciliation", "en": "Reconciliation time" },
-      "value": "< 5 minutes"
-    },
-    {
-      "label": { "fr": "Saisie hors-ligne", "en": "Offline capability" },
-      "value": "100% Fonctionnelle"
-    },
-    {
-      "label": { "fr": "Erreurs de transfert", "en": "Transit discrepancies" },
-      "value": "Réduites à zéro"
-    }
-  ]
+  "metrics": []
 }

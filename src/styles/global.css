@@ -100,4 +100,30 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(0, 124, 131, 0.2);
   }
+
+  .reveal {
+    --reveal-delay: 0ms;
+  }
+
+  .js .reveal:not(.is-in) {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+
+  .js .reveal.is-in {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay),
+      transform 0.42s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal:not(.is-in),
+    .js .reveal.is-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 }

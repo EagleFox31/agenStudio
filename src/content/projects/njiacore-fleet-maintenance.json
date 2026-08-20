@@ -4,46 +4,37 @@
   "order": 30,
   "featured": true,
   "title": {
-    "fr": "NjiaCore — Architecture de suivi de flotte et télémesure terrain",
-    "en": "NjiaCore — Fleet Telemetry & Preventive Maintenance Architecture"
+    "fr": "NjiaCore — Voir venir la panne avant la route",
+    "en": "NjiaCore — Seeing the breakdown before the road does"
   },
   "subtitle": {
-    "fr": "Concept d'interface temps réel pour centraliser la maintenance préventive des véhicules de service.",
-    "en": "Interface concept for centralizing real-time vehicle maintenance telemetry."
+    "fr": "Un écran d'atelier qui relie les boîtiers GPS des véhicules au calendrier d'entretien. Concept, jamais mis en service.",
+    "en": "A workshop screen linking vehicle GPS trackers to the service calendar. A concept, never put into service."
   },
   "sector": {
-    "fr": "Transport & Logistique",
-    "en": "Logistics & Transport"
+    "fr": "Transport et logistique",
+    "en": "Transport and logistics"
   },
   "context": {
-    "fr": "Étude d'un modèle d'interfaçage entre des boîtiers GPS embarqués et la planification des révisions de véhicules de transport.",
-    "en": "Exploratory study on bridging vehicle GPS telematics with scheduled fleet maintenance workflows."
+    "fr": "Une étude, pas un produit. On a cherché comment relier ce que remontent les boîtiers GPS embarqués à la planification des révisions.",
+    "en": "A study, not a product. We looked at how to link what onboard GPS trackers report to the way services are scheduled."
   },
   "friction": {
-    "fr": "Pannes inopinées sur la route, surconsommation de carburant et oublis récurrents des contrôles obligatoires.",
-    "en": "Unscheduled highway breakdowns, fuel anomalies, and missed routine inspection windows."
+    "fr": "Des pannes en pleine route. Du carburant qui part sans qu'on sache où. Des contrôles obligatoires oubliés jusqu'au jour du contrôle.",
+    "en": "Breakdowns on the road. Fuel going somewhere nobody can name. Mandatory inspections forgotten until inspection day."
   },
   "decision": {
-    "fr": "Concevoir un tableau de bord à haute densité visuelle mettant l'accent sur les alertes préventives simples à interpréter par les mécaniciens.",
-    "en": "Design a high-density operational dashboard emphasizing clear preventive alerts for workshop mechanics."
+    "fr": "Dessiner l'écran pour le mécanicien de l'atelier, pas pour un comité de direction. Une alerte doit se lire en passant, sans formation.",
+    "en": "Design the screen for the mechanic in the workshop, not for a board meeting. An alert has to be readable in passing, with no training."
   },
   "solution": {
-    "fr": "Interface épurée en mode sombre/clair adaptatif avec composants graphiques haute performance pour le suivi kilométrique.",
-    "en": "Clean adaptive dark/light interface built with high-performance visualization components for mileage monitoring."
+    "fr": "Un écran dense mais lisible : kilométrage, prochaine révision, alertes classées par urgence. Sombre pour l'atelier, clair pour le bureau. Des écrans, pas encore un logiciel.",
+    "en": "A dense but readable screen: mileage, next service, alerts ranked by urgency. Dark for the workshop, light for the office. Screens, not yet software."
   },
   "stack": ["React", "TypeScript", "Canvas Charts", "Motion", "Tailwind CSS"],
   "statusLabel": {
-    "fr": "Concept & Modélisation d'interface",
-    "en": "Concept & UI Architecture"
+    "fr": "Idée testée — écrans seulement, jamais mise en service",
+    "en": "Idea we tested — screens only, never put into service"
   },
-  "metrics": [
-    {
-      "label": { "fr": "Densité d'information", "en": "Data density" },
-      "value": "Optimisée 1080p/Mobile"
-    },
-    {
-      "label": { "fr": "Temps de réponse UI", "en": "UI Latency" },
-      "value": "< 16ms (60 FPS)"
-    }
-  ]
+  "metrics": []
 }

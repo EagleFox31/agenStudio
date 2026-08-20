@@ -1,6 +1,9 @@
-import { defineCollection } from 'astro:content';
+// `z` vient d'`astro:content`, pas du paquet `zod` : Astro 7 embarque zod v4 en
+// interne. Importer zod v3 (dépendance du projet, utilisée par contact-schema)
+// donnait deux instances distinctes — le Content Layer ne savait plus lire le
+// schéma et ne générait plus les types des collections.
+import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { z } from 'zod';
 
 const bilingual = z.object({ fr: z.string(), en: z.string() });
 
@@ -18,11 +21,14 @@ const projectSchema = z.object({
   solution: bilingual,
   stack: z.array(z.string()),
   statusLabel: bilingual,
+  // `value` est bilingue comme `label` : un chiffre s'accompagne presque
+  // toujours d'une unité ou d'une mention qui se traduit. En monolingue, la
+  // valeur fuyait d'une langue à l'autre sur la même page.
   metrics: z
     .array(
       z.object({
         label: bilingual,
-        value: z.string(),
+        value: bilingual,
       })
     )
     .default([]),
@@ -34,4 +40,9 @@ const projects = defineCollection({
 });
 
 export const collections = { projects };
-export type ProjectFrontmatter = z.infer<typeof projectSchema>;
+
+// Pas de `z.infer` ici : `z` importé d'`astro:content` est une valeur, pas un
+// namespace de types. Pour typer les données d'un projet, utiliser la forme
+// idiomatique Astro, déjà employée dans les composants :
+//   import type { CollectionEntry } from 'astro:content';
+//   CollectionEntry<'projects'>['data']

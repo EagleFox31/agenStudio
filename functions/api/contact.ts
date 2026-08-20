@@ -1,27 +1,37 @@
 /// <reference types="@cloudflare/workers-types" />
-import { z } from 'zod';
+import {
+  ContactPayload,
+  contactFieldErrors,
+  type ContactPayloadType,
+  type TimelineId,
+} from '../../src/lib/contact-schema';
 
 interface Env {
-  TURNSTILE_SECRET_KEY: string;
-  RESEND_API_KEY: string;
-  CONTACT_TO_EMAIL: string;
-  CONTACT_FROM_EMAIL: string;
+  TURNSTILE_SECRET_KEY?: string;
+  RESEND_API_KEY?: string;
+  CONTACT_TO_EMAIL?: string;
+  CONTACT_FROM_EMAIL?: string;
   RATE_LIMIT?: KVNamespace;
 }
 
-const ContactPayload = z.object({
-  name: z.string().trim().min(2).max(120),
-  email: z.string().trim().toLowerCase().email().max(200),
-  company: z.string().trim().max(200).optional().default(''),
-  problem: z.string().trim().min(20).max(4000),
-  timeline: z.string().trim().max(100).optional().default(''),
-  lang: z.enum(['fr', 'en']).default('fr'),
-  website: z.string().max(0).optional().default(''),
-  turnstileToken: z.string().min(10),
-});
+type ProblemBody = {
+  type: 'about:blank';
+  title: string;
+  status: number;
+  code: string;
+  errors?: { pointer: string; code: string }[];
+};
 
 const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW_SECONDS = 60 * 15;
+const IDEMPOTENCY_TTL_SECONDS = 60 * 15;
+
+const TIMELINE_LABEL: Record<TimelineId, string> = {
+  asap: 'Urgent (< 1 mois)',
+  '1_3m': '1–3 mois',
+  '3_6m': '3 mois et +',
+  tbd: 'À définir',
+};
 
 function json(data: unknown, init: ResponseInit = {}): Response {
   return new Response(JSON.stringify(data), {
@@ -31,6 +41,69 @@ function json(data: unknown, init: ResponseInit = {}): Response {
       'Cache-Control': 'no-store',
       ...(init.headers ?? {}),
     },
+  });
+}
+
+function problem(
+  status: number,
+  code: string,
+  extra?: { errors?: ProblemBody['errors']; headers?: HeadersInit }
+): Response {
+  const body: ProblemBody = {
+    type: 'about:blank',
+    title: code,
+    status,
+    code,
+    ...(extra?.errors ? { errors: extra.errors } : {}),
+  };
+  return json(body, { status, headers: extra?.headers });
+}
+
+function envReady(env: Env): env is Env & {
+  TURNSTILE_SECRET_KEY: string;
+  RESEND_API_KEY: string;
+  CONTACT_TO_EMAIL: string;
+  CONTACT_FROM_EMAIL: string;
+} {
+  return Boolean(
+    env.TURNSTILE_SECRET_KEY &&
+      env.RESEND_API_KEY &&
+      env.CONTACT_TO_EMAIL &&
+      env.CONTACT_FROM_EMAIL
+  );
+}
+
+function readIdempotencyKey(request: Request): string | null {
+  const raw = request.headers.get('Idempotency-Key')?.trim() ?? '';
+  if (raw.length < 16 || raw.length > 255) return null;
+  if (!/^[\w.-]+$/.test(raw)) return null;
+  return raw;
+}
+
+async function replayIdempotent(
+  kv: KVNamespace | undefined,
+  key: string | null
+): Promise<Response | null> {
+  if (!kv || !key) return null;
+  const raw = await kv.get(`idem:${key}`);
+  if (!raw) return null;
+  try {
+    const cached = JSON.parse(raw) as { status: number; body: unknown };
+    return json(cached.body, { status: cached.status });
+  } catch {
+    return null;
+  }
+}
+
+async function rememberIdempotent(
+  kv: KVNamespace | undefined,
+  key: string | null,
+  status: number,
+  body: unknown
+): Promise<void> {
+  if (!kv || !key || status !== 200) return;
+  await kv.put(`idem:${key}`, JSON.stringify({ status, body }), {
+    expirationTtl: IDEMPOTENCY_TTL_SECONDS,
   });
 }
 
@@ -76,15 +149,14 @@ function escape(s: string): string {
   );
 }
 
-function renderEmail(payload: z.infer<typeof ContactPayload>, ip: string): { subject: string; html: string; text: string } {
+function renderEmail(payload: ContactPayloadType): { subject: string; html: string; text: string } {
   const subject = `[AgenStudio] Nouvelle demande — ${payload.name}`;
   const rows: [string, string][] = [
     ['Nom', payload.name],
     ['Email', payload.email],
     ['Organisation', payload.company || '—'],
-    ['Délai', payload.timeline || '—'],
+    ['Délai', TIMELINE_LABEL[payload.timeline]],
     ['Langue', payload.lang],
-    ['IP', ip],
   ];
   const html = `
   <div style="font-family:Inter,system-ui,sans-serif;background:#F7F4EE;padding:24px;color:#172128;">
@@ -107,21 +179,21 @@ function renderEmail(payload: z.infer<typeof ContactPayload>, ip: string): { sub
       ${escape(payload.problem)}
     </div>
   </div>`;
-  const text = [
-    ...rows.map(([k, v]) => `${k}: ${v}`),
-    '',
-    'Besoin décrit:',
-    payload.problem,
-  ].join('\n');
+  const text = [...rows.map(([k, v]) => `${k}: ${v}`), '', 'Besoin décrit:', payload.problem].join(
+    '\n'
+  );
   return { subject, html, text };
 }
 
-async function sendEmail(env: Env, payload: z.infer<typeof ContactPayload>, ip: string): Promise<boolean> {
-  const { subject, html, text } = renderEmail(payload, ip);
+async function sendEmail(
+  env: Env & { RESEND_API_KEY: string; CONTACT_TO_EMAIL: string; CONTACT_FROM_EMAIL: string },
+  payload: ContactPayloadType
+): Promise<boolean> {
+  const { subject, html, text } = renderEmail(payload);
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -137,6 +209,10 @@ async function sendEmail(env: Env, payload: z.infer<typeof ContactPayload>, ip: 
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  const idempotencyKey = readIdempotencyKey(request);
+  const replayed = await replayIdempotent(env.RATE_LIMIT, idempotencyKey);
+  if (replayed) return replayed;
+
   const ip =
     request.headers.get('CF-Connecting-IP') ??
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
@@ -146,39 +222,47 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     body = await request.json();
   } catch {
-    return json({ error: 'invalid_json' }, { status: 400 });
+    return problem(400, 'invalid_json');
   }
 
   const parsed = ContactPayload.safeParse(body);
   if (!parsed.success) {
-    return json({ error: 'validation_failed' }, { status: 400 });
+    return problem(422, 'validation_failed', { errors: contactFieldErrors(parsed.error) });
   }
 
   const payload = parsed.data;
 
-  if (payload.website) {
-    return json({ ok: true }, { status: 200 });
+  if (payload.hp_confirm.trim()) {
+    const ok = { ok: true as const };
+    await rememberIdempotent(env.RATE_LIMIT, idempotencyKey, 200, ok);
+    return json(ok, { status: 200 });
+  }
+
+  if (!envReady(env)) {
+    return problem(503, 'misconfigured');
   }
 
   if (await isRateLimited(env.RATE_LIMIT, ip)) {
-    return json({ error: 'rate_limited' }, { status: 429 });
+    return problem(429, 'rate_limited', { headers: { 'Retry-After': '900' } });
   }
 
-  const turnstileOk = await verifyTurnstile(
-    env.TURNSTILE_SECRET_KEY,
-    payload.turnstileToken,
-    ip
-  );
+  if (payload.turnstileToken.length < 10) {
+    return problem(400, 'turnstile_failed');
+  }
+
+  const turnstileOk = await verifyTurnstile(env.TURNSTILE_SECRET_KEY, payload.turnstileToken, ip);
   if (!turnstileOk) {
-    return json({ error: 'turnstile_failed' }, { status: 400 });
+    return problem(400, 'turnstile_failed');
   }
 
-  const emailOk = await sendEmail(env, payload, ip);
+  const emailOk = await sendEmail(env, payload);
   if (!emailOk) {
-    return json({ error: 'send_failed' }, { status: 502 });
+    return problem(502, 'send_failed');
   }
 
-  return json({ ok: true }, { status: 200 });
+  const ok = { ok: true as const };
+  await rememberIdempotent(env.RATE_LIMIT, idempotencyKey, 200, ok);
+  return json(ok, { status: 200 });
 };
 
 export const onRequest: PagesFunction<Env> = async ({ request }) => {
@@ -186,10 +270,10 @@ export const onRequest: PagesFunction<Env> = async ({ request }) => {
     return new Response(null, {
       status: 204,
       headers: {
-        'Allow': 'POST, OPTIONS',
+        Allow: 'POST, OPTIONS',
         'Cache-Control': 'no-store',
       },
     });
   }
-  return json({ error: 'method_not_allowed' }, { status: 405 });
+  return problem(405, 'method_not_allowed');
 };

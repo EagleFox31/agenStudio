@@ -5,23 +5,16 @@ import Container from '../ui/Container.astro';
 import Section from '../ui/Section.astro';
 import Button from '../ui/Button.astro';
 import Tag from '../ui/Tag.astro';
-import Reveal from '../ui/Reveal.tsx';
 
 interface Props {
   lang: Language;
 }
 const { lang } = Astro.props;
 const t = translations[lang].expertises;
+const cta = translations[lang].nav.ctaButton;
+const cases = translations[lang].projects.exploreCases;
 const contactHref = route('contact', lang);
 const projectsHref = route('projects', lang);
-
-const frictionLabel = lang === 'fr' ? 'Friction / Problème' : 'Friction / Problem';
-const deliverableLabel = lang === 'fr' ? 'Livrable produit' : 'Product deliverable';
-const benefitLabel = lang === 'fr' ? 'Bénéfice opérationnel direct' : 'Direct operational benefit';
-const exampleLabel = lang === 'fr' ? 'Exemple concrétisé' : 'Concrete example';
-const ctaFrame = lang === 'fr' ? 'Cadrer ce besoin avec nous' : 'Frame this need with us';
-const seeCases = lang === 'fr' ? 'Voir les études de cas' : 'See related case studies';
-const capacityLabel = lang === 'fr' ? 'Capacité' : 'Capability';
 ---
 
 <Section variant="canvas" class="py-12 md:py-16 border-b border-ink/10">
@@ -41,21 +34,21 @@ const capacityLabel = lang === 'fr' ? 'Capacité' : 'Capability';
     <div class="space-y-16">
       {
         t.items.map((item, idx) => (
-          <Reveal client:visible direction="up">
-            <div
-              id={item.id}
-              class="scroll-mt-28 border border-ink/10 rounded-2xl p-6 sm:p-10 bg-canvas/50 hover:bg-canvas transition-colors"
-            >
+          <div
+            id={item.id}
+            class="reveal scroll-mt-28 border border-ink/10 rounded-2xl p-6 sm:p-10 bg-canvas/50 hover:bg-canvas transition-colors"
+            style={`--reveal-delay: ${idx * 80}ms`}
+          >
               <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div class="lg:col-span-4 space-y-4">
                   <div class="w-12 h-12 rounded-xl bg-teal text-white flex items-center justify-center shadow-md font-mono text-lg font-bold">
                     {String(idx + 1).padStart(2, '0')}
                   </div>
-                  <Tag variant="ink">{capacityLabel} {String(idx + 1).padStart(2, '0')}</Tag>
+                  <Tag variant="ink">{t.capabilityLabel} {String(idx + 1).padStart(2, '0')}</Tag>
                   <h2 class="font-heading text-2xl font-bold text-ink">{item.title}</h2>
                   <div class="pt-2">
                     <Button href={contactHref} variant="primary" size="sm">
-                      {ctaFrame}
+                      {cta}
                     </Button>
                   </div>
                 </div>
@@ -64,13 +57,13 @@ const capacityLabel = lang === 'fr' ? 'Capacité' : 'Capability';
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="p-4 bg-white rounded-xl border border-ink/10">
                       <h3 class="font-mono text-xs text-magenta font-semibold uppercase mb-1">
-                        {frictionLabel}
+                        {t.problemLabel}
                       </h3>
                       <p class="text-sm text-ink">{item.problem}</p>
                     </div>
                     <div class="p-4 bg-white rounded-xl border border-ink/10">
                       <h3 class="font-mono text-xs text-teal font-semibold uppercase mb-1">
-                        {deliverableLabel}
+                        {t.deliverableLabel}
                       </h3>
                       <p class="text-sm text-ink">{item.deliverable}</p>
                     </div>
@@ -80,7 +73,7 @@ const capacityLabel = lang === 'fr' ? 'Capacité' : 'Capability';
                     <span class="text-teal shrink-0 mt-0.5" aria-hidden="true">✓</span>
                     <div>
                       <h4 class="font-mono text-xs text-teal-deep font-bold uppercase">
-                        {benefitLabel}
+                        {t.benefitLabel}
                       </h4>
                       <p class="text-sm text-ink mt-0.5">{item.benefit}</p>
                     </div>
@@ -88,16 +81,15 @@ const capacityLabel = lang === 'fr' ? 'Capacité' : 'Capability';
 
                   <div class="flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-ink-light pt-2">
                     <span>
-                      {exampleLabel} : <strong class="text-ink">{item.example}</strong>
+                      {t.exampleLabel} : <strong class="text-ink">{item.example}</strong>
                     </span>
                     <a href={projectsHref} class="text-teal hover:underline font-semibold">
-                      {seeCases} →
+                      {cases} →
                     </a>
                   </div>
                 </div>
               </div>
-            </div>
-          </Reveal>
+          </div>
         ))
       }
     </div>

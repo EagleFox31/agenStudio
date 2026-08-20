@@ -152,8 +152,8 @@ export default function ProjectFilters({
       {filtered.length === 0 && (
         <p className="mt-8 p-6 rounded-xl border border-dashed border-ink/20 text-sm text-ink-muted text-center">
           {lang === 'fr'
-            ? 'Aucun projet ne correspond à ce filtre pour le moment.'
-            : 'No project matches this filter yet.'}
+            ? 'Rien dans cette catégorie pour l’instant.'
+            : 'Nothing in this category yet.'}
         </p>
       )}
     </>

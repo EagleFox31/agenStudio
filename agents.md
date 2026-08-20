@@ -31,15 +31,25 @@ When asked to build, fix or redesign something, modify the actual project. Do no
 
 TECHNICAL RULES
 
+This is an **Astro 7 static site**, not a Vite SPA. Do not introduce React Router, Vite-as-app, Next.js or a client-side app shell.
+
 Use:
 
-- React;
+- Astro 7 (pages, layouts, Content Collections);
+- React 18 **islands only** (`client:idle` / `client:visible` / `client:load` — never the default for decoration);
 - TypeScript strict;
-- Vite;
-- Tailwind CSS;
-- Motion;
-- React Router;
-- Lucide React.
+- Tailwind CSS (design tokens);
+- Lucide React;
+- Zod (one shared schema for contact: `src/lib/contact-schema.ts`).
+
+Do not add Motion unless a real interaction requires it. Reveal is CSS (or one observer), never a React island per card.
+
+Island budget:
+
+- Home: MobileMenu only (plus hero tabs if they stay interactive).
+- Projects: ProjectFilters (`client:visible`).
+- Contact: ContactForm (`client:load`).
+- Zero `Reveal client:visible` wrappers.
 
 Keep components small, reusable and clearly named.
 
@@ -68,7 +78,7 @@ Avoid:
 - console errors;
 - broken routes.
 
-Do not introduce Firebase, authentication, a database, Gemini features or backend services unless explicitly requested.
+Do not introduce Firebase, authentication, a database, Gemini features or backend services unless explicitly requested. The contact API is owned by `/agen-backend`. Stores and the no-SQL rule: `gestion-projet/architecture-donnees.md`.
 
 Never expose secrets or API keys in client-side code.
 

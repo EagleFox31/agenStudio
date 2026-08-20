@@ -26,6 +26,14 @@
 |---|---|---|
 | [journal-evolutions.md](./journal-evolutions.md) | Chronologie de toutes les évolutions | `/agen-retrospective` |
 | [erreurs-globales.md](./erreurs-globales.md) | Patterns d'erreurs transversaux (tous rôles) | `/agen-retrospective` |
+| [../plan-unifie.md](../plan-unifie.md) | Plan vivant : Playbook × sprints, PERT, missions GitOps / RSSI / Front / Backend / Contenu | `/agen-orchestrateur` |
+| [../plan-remediation-architecture.md](../plan-remediation-architecture.md) | Checklists sprints P0→P2 | `/agen-orchestrateur` |
+| [../references-immersif.md](../references-immersif.md) | Immersion **graphique** (typo, champ, cadrage) · WebGL en annexe | `/agen-da` |
+| `.cursor/skills/agen-contenu/references/copy-editorial.md` | Voix, H1 artwork, jobs de section, Copy Review | `/agen-contenu` |
+| [../architecture-donnees.md](../architecture-donnees.md) | Stores réels, interdiction BDD leads, contrat contact | `/agen-backend` |
+| [../strategie-contenu-cms.md](../strategie-contenu-cms.md) | Content Layer → Keystatic → loader CMS | `/agen-contenu` |
+| [../references-industrie.md](../references-industrie.md) | Pratiques API/UX sourcées (Zod, RFC 9457, Stripe, GOV.UK, CF) | `/agen-backend` · `/agen-produit` |
+| `.cursor/skills/agen-git/references/sante-git.md` | GitOps-lite vitrine, secrets, promotion SHA | `/agen-git` |
 | `.cursor/skills/agen-*/references/lecons-apprises.md` | Erreurs et bonnes pratiques par rôle | Skill concerné via rétrospective |
 
 ## Format d'une leçon

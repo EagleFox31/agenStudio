@@ -7,8 +7,7 @@ import Section from '../ui/Section.astro';
 import Button from '../ui/Button.astro';
 import Card from '../ui/Card.astro';
 import Tag from '../ui/Tag.astro';
-import Reveal from '../ui/Reveal.tsx';
-import HeroVisual from './HeroVisual.tsx';
+import HeroVisual from './HeroVisual.astro';
 
 interface Props {
   lang: Language;
@@ -16,26 +15,21 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = translations[lang];
-
-const projects = (await getCollection('projects'))
-  .map((entry) => entry.data)
-  .sort((a, b) => a.order - b.order);
+const h = t.hero;
+const f = t.frictions;
+const e = t.expertises;
+const p = t.projects;
+const m = t.method;
+const studio = t.studioIntro;
 
 const contactHref = route('contact', lang);
 const projectsHref = route('projects', lang);
 const expertisesHref = route('expertises', lang);
 const studioHref = route('studio', lang);
 
-const seeAll = lang === 'fr' ? 'Toutes nos expertises' : 'All our expertise';
-const exploreCases = lang === 'fr' ? 'Explorer les études de cas' : 'Explore case studies';
-const impactLabel = lang === 'fr' ? 'Impact' : 'Impact';
-const problemLabel = lang === 'fr' ? 'Problème' : 'Problem';
-const deliverableLabel = lang === 'fr' ? 'Livrable' : 'Deliverable';
-const benefitLabel = lang === 'fr' ? 'Bénéfice direct' : 'Direct benefit';
-const exampleLabel = lang === 'fr' ? 'Ex' : 'e.g.';
-const detailsLabel = lang === 'fr' ? 'Détails' : 'Details';
-const consultLabel = lang === 'fr' ? 'Consulter' : 'View';
-const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Principle';
+const projects = (await getCollection('projects'))
+  .map((entry) => entry.data)
+  .sort((a, b) => a.order - b.order);
 ---
 
 <!-- 01. HERO -->
@@ -43,41 +37,42 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
   <Container>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
       <div class="lg:col-span-7 space-y-6">
-        <Reveal client:visible direction="up" delay={0.1}>
-          <span class="inline-flex items-center gap-2 bg-teal/10 border border-teal/20 px-3 py-1 rounded-full text-xs font-mono text-teal">
-            <span class="w-2 h-2 rounded-full bg-teal" aria-hidden="true"></span>
-            <span>{t.hero.badge}</span>
-          </span>
-        </Reveal>
+        <span class="inline-flex items-center gap-2 bg-teal/10 border border-teal/20 px-3 py-1 rounded-full text-xs font-mono text-teal">
+          <span class="w-2 h-2 rounded-full bg-teal" aria-hidden="true"></span>
+          <span>{h.badge}</span>
+        </span>
 
-        <Reveal client:visible direction="up" delay={0.2}>
-          <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink leading-[1.1] tracking-tight">
-            Think sharp. <span class="font-serif-italic text-teal font-normal tracking-normal">Build what matters.</span>
-          </h1>
-        </Reveal>
+        <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink leading-[1.1] tracking-tight">
+          {h.title}
+        </h1>
+        {
+          h.tagline ? (
+            <p class="mt-3 font-serif-italic text-teal text-xl sm:text-2xl font-normal tracking-normal">
+              {h.tagline}
+            </p>
+          ) : null
+        }
 
-        <Reveal client:visible direction="up" delay={0.3}>
-          <p class="font-heading font-semibold text-lg sm:text-xl text-teal leading-snug">
-            {t.hero.subtitle}
-          </p>
-        </Reveal>
+        <p class="font-heading font-semibold text-lg sm:text-xl text-teal leading-snug">
+          {h.subtitle}
+        </p>
 
-        <Reveal client:visible direction="up" delay={0.4}>
-          <p class="text-base sm:text-lg text-ink-muted leading-relaxed max-w-2xl">
-            {t.hero.description}
-          </p>
-        </Reveal>
+        {
+          h.description ? (
+            <p class="text-base sm:text-lg text-ink-muted leading-relaxed max-w-2xl">
+              {h.description}
+            </p>
+          ) : null
+        }
 
-        <Reveal client:visible direction="up" delay={0.5}>
-          <div class="flex flex-wrap items-center gap-4 pt-2">
-            <Button href={contactHref} variant="primary" size="lg">{t.hero.primaryCta}</Button>
-            <Button href={projectsHref} variant="outline" size="lg">{t.hero.secondaryCta}</Button>
-          </div>
-        </Reveal>
+        <div class="flex flex-wrap items-center gap-4 pt-2">
+          <Button href={contactHref} variant="primary" size="lg">{h.primaryCta}</Button>
+          <Button href={projectsHref} variant="outline" size="lg">{h.secondaryCta}</Button>
+        </div>
       </div>
 
       <div class="lg:col-span-5">
-        <HeroVisual client:load lang={lang} />
+        <HeroVisual lang={lang} />
       </div>
     </div>
   </Container>
@@ -87,17 +82,17 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
 <Section variant="white" class="border-b border-ink/10">
   <Container>
     <div class="max-w-3xl mb-12">
-      <Tag variant="bordeaux" class="mb-3">{t.frictions.tag}</Tag>
+      <Tag variant="bordeaux" class="mb-3">{f.tag}</Tag>
       <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-ink leading-tight">
-        {t.frictions.title}
+        {f.title}
       </h2>
-      <p class="text-ink-muted text-base sm:text-lg mt-3">{t.frictions.subtitle}</p>
+      <p class="text-ink-muted text-base sm:text-lg mt-3">{f.subtitle}</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
       {
         t.frictions.items.map((item, idx) => (
-          <Reveal client:visible direction="up" delay={idx * 0.12}>
+          <div class="reveal h-full" style={`--reveal-delay: ${idx * 80}ms`}>
             <Card variant="light" class="h-full flex flex-col justify-between hover:border-bordeaux/30">
               <div class="space-y-3">
                 <span class="inline-flex w-10 h-10 rounded-lg bg-bordeaux/10 text-bordeaux items-center justify-center text-lg font-mono font-bold">
@@ -107,19 +102,19 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
                 <p class="text-sm text-ink-muted leading-relaxed">{item.description}</p>
               </div>
               <div class="mt-6 pt-4 border-t border-ink/10">
-                <p class="font-mono text-xs text-bordeaux font-bold">{impactLabel} : {item.impact}</p>
+                <p class="font-mono text-xs text-bordeaux font-bold">{f.impactLabel} : {item.impact}</p>
               </div>
             </Card>
-          </Reveal>
+          </div>
         ))
       }
     </div>
 
     <div class="bg-ink text-white p-6 sm:p-8 rounded-xl border border-teal/30 flex items-center justify-between gap-4 flex-wrap">
       <blockquote class="font-heading font-semibold text-base sm:text-lg text-canvas italic">
-        &ldquo;{t.frictions.quote}&rdquo;
+        &ldquo;{f.quote}&rdquo;
       </blockquote>
-      <Tag variant="gold" class="shrink-0">{principleLabel}</Tag>
+      <Tag variant="gold" class="shrink-0">{f.principleLabel}</Tag>
     </div>
   </Container>
 </Section>
@@ -129,49 +124,49 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
   <Container>
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
       <div>
-        <Tag variant="teal" class="mb-3">{t.expertises.tag}</Tag>
+        <Tag variant="teal" class="mb-3">{e.tag}</Tag>
         <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-ink">
-          {t.expertises.title}
+          {e.title}
         </h2>
-        <p class="text-ink-muted text-base mt-2 max-w-xl">{t.expertises.subtitle}</p>
+        <p class="text-ink-muted text-base mt-2 max-w-xl">{e.subtitle}</p>
       </div>
-      <Button href={expertisesHref} variant="outline" size="sm">{seeAll}</Button>
+      <Button href={expertisesHref} variant="outline" size="sm">{e.seeAll}</Button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       {
-        t.expertises.items.map((item, idx) => (
-          <Reveal client:visible direction="up" delay={idx * 0.1}>
+        e.items.map((item, idx) => (
+          <div class="reveal h-full" style={`--reveal-delay: ${idx * 80}ms`}>
             <Card variant="light" class="h-full flex flex-col justify-between">
               <div class="space-y-4">
                 <div class="flex items-center justify-between">
                   <Tag variant="teal">{`0${idx + 1}`}</Tag>
                   <span class="font-mono text-xs text-ink-light uppercase">
-                    {lang === 'fr' ? 'Capacité technique' : 'Technical capability'}
+                    {e.capabilityLabel}
                   </span>
                 </div>
                 <h3 class="font-heading font-bold text-xl text-ink">{item.title}</h3>
                 <div class="space-y-2 text-sm text-ink-muted">
-                  <p><strong class="text-ink">{problemLabel} :</strong> {item.problem}</p>
-                  <p><strong class="text-teal">{deliverableLabel} :</strong> {item.deliverable}</p>
+                  <p><strong class="text-ink">{e.problemLabel} :</strong> {item.problem}</p>
+                  <p><strong class="text-teal">{e.deliverableLabel} :</strong> {item.deliverable}</p>
                 </div>
                 <div class="p-3 bg-teal/5 rounded-lg border border-teal/15 text-xs text-teal-deep">
-                  <strong>{benefitLabel} :</strong> {item.benefit}
+                  <strong>{e.benefitLabel} :</strong> {item.benefit}
                 </div>
               </div>
               <div class="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between">
                 <span class="text-xs font-mono text-ink-light truncate max-w-[240px]">
-                  {exampleLabel} : {item.example}
+                  {e.exampleLabel} : {item.example}
                 </span>
                 <a
                   href={`${expertisesHref}#${item.id}`}
                   class="text-xs font-mono text-teal font-semibold hover:underline"
                 >
-                  {detailsLabel} →
+                  {e.detailsLabel} →
                 </a>
               </div>
             </Card>
-          </Reveal>
+          </div>
         ))
       }
     </div>
@@ -183,19 +178,19 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
   <Container>
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
       <div>
-        <Tag variant="gold" class="mb-3">{t.projects.tag}</Tag>
+        <Tag variant="gold" class="mb-3">{p.tag}</Tag>
         <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-ink">
-          {t.projects.title}
+          {p.title}
         </h2>
-        <p class="text-ink-muted text-base mt-2 max-w-xl">{t.projects.subtitle}</p>
+        <p class="text-ink-muted text-base mt-2 max-w-xl">{p.subtitle}</p>
       </div>
-      <Button href={projectsHref} variant="secondary" size="sm">{exploreCases}</Button>
+      <Button href={projectsHref} variant="secondary" size="sm">{p.exploreCases}</Button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       {
         projects.map((project, idx) => (
-          <Reveal client:visible direction="up" delay={idx * 0.12}>
+          <div class="reveal h-full" style={`--reveal-delay: ${idx * 80}ms`}>
             <Card variant="light" class="h-full flex flex-col justify-between">
               <div class="space-y-4">
                 <div class="flex items-center justify-between">
@@ -211,7 +206,7 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
                             : 'gold'
                     }
                   >
-                    {t.projects.types[project.type]}
+                    {p.types[project.type]}
                   </Tag>
                 </div>
                 <h3 class="font-heading font-bold text-lg text-ink leading-snug">
@@ -234,12 +229,12 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
                   href={projectPath(project.slug, lang)}
                   class="inline-flex items-center gap-1 text-xs font-semibold text-ink hover:text-teal"
                 >
-                  <span>{consultLabel}</span>
+                  <span>{p.consultLabel}</span>
                   <span aria-hidden="true">↗</span>
                 </a>
               </div>
             </Card>
-          </Reveal>
+          </div>
         ))
       }
     </div>
@@ -250,18 +245,20 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
 <Section variant="dark" class="border-b border-white/10">
   <Container>
     <div class="max-w-2xl mb-12">
-      <Tag variant="teal" class="mb-3">{t.method.tag}</Tag>
+      <Tag variant="teal" class="mb-3">{m.tag}</Tag>
       <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-        {t.method.title}
+        {m.title}
       </h2>
-      <p class="text-ink-light text-base mt-2">{t.method.subtitle}</p>
+      <p class="text-ink-light text-base mt-2">{m.subtitle}</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {
-        t.method.steps.map((step, idx) => (
-          <Reveal client:visible direction="up" delay={idx * 0.1}>
-            <div class="h-full p-6 rounded-2xl border border-white/10 bg-white/5 flex flex-col justify-between">
+        m.steps.map((step, idx) => (
+          <div
+            class="reveal h-full p-6 rounded-2xl border border-white/10 bg-white/5 flex flex-col justify-between"
+            style={`--reveal-delay: ${idx * 80}ms`}
+          >
               <div class="space-y-3">
                 <span class="font-mono text-sm font-bold px-3 py-1 rounded-md bg-teal text-white inline-block">
                   {step.number}
@@ -270,10 +267,9 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
                 <p class="text-sm text-ink-light leading-relaxed">{step.description}</p>
               </div>
               <div class="pt-4 mt-4 border-t border-white/10 text-xs font-mono text-teal">
-                {lang === 'fr' ? 'Livrable' : 'Deliverable'} : {step.outcome}
+                {m.outcomeLabel} : {step.outcome}
               </div>
-            </div>
-          </Reveal>
+          </div>
         ))
       }
     </div>
@@ -294,7 +290,7 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {
         t.pov.cards.map((card, idx) => (
-          <Reveal client:visible direction="up" delay={idx * 0.12}>
+          <div class="reveal h-full" style={`--reveal-delay: ${idx * 80}ms`}>
             <Card variant="light" class="h-full">
               <div class="w-8 h-8 rounded bg-ink text-teal flex items-center justify-center mb-4 font-mono text-sm font-bold">
                 {String(idx + 1).padStart(2, '0')}
@@ -302,7 +298,7 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
               <h3 class="font-heading font-bold text-lg text-ink mb-2">{card.title}</h3>
               <p class="text-sm text-ink-muted leading-relaxed">{card.body}</p>
             </Card>
-          </Reveal>
+          </div>
         ))
       }
     </div>
@@ -314,17 +310,17 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
   <Container>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
       <div class="lg:col-span-6 space-y-6">
-        <Tag variant="teal">{t.studioIntro.tag}</Tag>
+        <Tag variant="teal">{studio.tag}</Tag>
         <h2 class="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-ink">
-          {t.studioIntro.title}
+          {studio.title}
         </h2>
         <p class="text-ink-muted text-base sm:text-lg leading-relaxed">
-          {t.studioIntro.description}
+          {studio.description}
         </p>
 
         <div class="space-y-3 pt-2">
           {
-            t.studioIntro.values.map((v, idx) => (
+            studio.values.map((v, idx) => (
               <div class="p-4 rounded-xl border border-ink/10 bg-canvas flex items-start gap-3">
                 <span class="w-6 h-6 rounded-md bg-teal/10 text-teal flex items-center justify-center shrink-0 mt-0.5 font-mono text-xs font-bold">
                   {String(idx + 1).padStart(2, '0')}
@@ -340,10 +336,10 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
 
         <div class="p-4 bg-canvas rounded-lg border border-ink/10 text-xs font-mono text-teal flex items-center gap-2">
           <span aria-hidden="true">📍</span>
-          <span>{t.studioIntro.anchorage}</span>
+          <span>{studio.anchorage}</span>
         </div>
 
-        <Button href={studioHref} variant="primary">{t.studioIntro.cta}</Button>
+        <Button href={studioHref} variant="primary">{studio.cta}</Button>
       </div>
 
       <div class="lg:col-span-6">
@@ -351,31 +347,29 @@ const principleLabel = lang === 'fr' ? 'Principe AgenStudio' : 'AgenStudio Princ
           <div class="absolute inset-0 bg-dots-pattern opacity-10 pointer-events-none" aria-hidden="true"></div>
           <div class="relative z-10 space-y-3">
             <span class="font-mono text-xs text-teal uppercase tracking-widest">
-              {lang === 'fr' ? 'Standards de fabrication' : 'Craft standards'}
+              {studio.craftKicker}
             </span>
             <p class="font-heading text-2xl leading-snug text-white">
-              {lang === 'fr'
-                ? 'Systèmes précis, adoption réelle, résultats vérifiables sur le terrain.'
-                : 'Precise systems, real adoption, results verified on the ground.'}
+              {studio.craftLead}
             </p>
           </div>
 
           <ul class="relative z-10 grid grid-cols-2 gap-3 text-xs font-mono text-ink-light">
             <li class="p-3 border border-white/10 rounded-lg">
-              <div class="text-teal font-bold">WCAG 2.2</div>
-              <div>{lang === 'fr' ? 'Accessibilité AA visée' : 'AA accessibility'}</div>
+              <div class="text-teal font-bold">{studio.craftPhoneLabel}</div>
+              <div>{studio.craftMobile}</div>
             </li>
             <li class="p-3 border border-white/10 rounded-lg">
-              <div class="text-teal font-bold">LCP ≤ 2.5s</div>
-              <div>{lang === 'fr' ? 'Core Web Vitals verts' : 'Green Web Vitals'}</div>
+              <div class="text-teal font-bold">{studio.craftNetLabel}</div>
+              <div>{studio.craftPerf}</div>
             </li>
             <li class="p-3 border border-white/10 rounded-lg">
-              <div class="text-teal font-bold">TypeScript</div>
-              <div>{lang === 'fr' ? 'Strict, testable' : 'Strict, testable'}</div>
+              <div class="text-teal font-bold">{studio.craftLiveLabel}</div>
+              <div>{studio.craftTs}</div>
             </li>
             <li class="p-3 border border-white/10 rounded-lg">
-              <div class="text-teal font-bold">i18n</div>
-              <div>{lang === 'fr' ? 'FR / EN natifs' : 'Native FR / EN'}</div>
+              <div class="text-teal font-bold">{studio.craftLangLabel}</div>
+              <div>{studio.craftI18n}</div>
             </li>
           </ul>
         </div>

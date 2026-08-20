@@ -1,8 +1,10 @@
 # Équipe & Workflow — AgenStudio
 
-> **Date :** 19 août 2026  
+> **Date :** 19 août 2026 · **rév. 20 août :** unifié avec le terrain (sprints)  
 > **Objectif :** livrer un site **flamboyant, créatif, beau, moderne, pro, premium et africain** — sans jamais basculer dans le cliché ni le template SaaS générique.  
-> **Référence :** [Playbook AgenStudio](../AgenStudio_Playbook_Site_Web.docx.pdf) · [agents.md](../agents.md) · [analyse-rssi.md](./analyse-rssi.md)
+> **Plan vivant (ordre, PERT, missions GitOps / RSSI / Front / Backend / Contenu) :** [plan-unifie.md](./plan-unifie.md)  
+> **Checklists d’exécution :** [plan-remediation-architecture.md](./plan-remediation-architecture.md)  
+> **Autres :** [Playbook AgenStudio](../AgenStudio_Playbook_Site_Web.docx.pdf) · [agents.md](../agents.md) · [analyse-rssi.md](./analyse-rssi.md)
 
 ---
 
@@ -19,11 +21,11 @@ AgenStudio n'est pas « un site web de plus ». C'est une **déclaration de stud
 | **Africain** | Identité afrofuturiste **subtile** — géométrie, lumière, matière, voix — jamais folklorique. |
 | **Flamboyant** | Des moments visuels mémorables (hero, transitions, détails typographiques) dans un cadre maîtrisé. |
 
-**Test ultime :** un directeur technique européen et un entrepreneur camerounais doivent tous deux se dire *« ce studio est sérieux »* — le premier par la rigueur, le second par l'identité.
+**Test ultime :** un directeur technique européen et un entrepreneur camerounais doivent tous deux se dire *« ce studio est sérieux »* — le premier par la rigueur, le second par l'identité. Un directeur d’ops sur 4G doit envoyer un brief **sans mode d’emploi**.
 
 ---
 
-## 2. Équipe — 7 rôles, 1 direction
+## 2. Équipe — 9 rôles, 1 direction
 
 Structure légère, adaptée à un studio indépendant. Chaque rôle est un **skill Cursor** (`.cursor/skills/agen-*`) avec mémoire d'apprentissage.
 
@@ -42,9 +44,11 @@ Demande → /agen-workflow
 |---|---|
 | `/agen-workflow` | Orchestration phases + gates |
 | `/agen-orchestrateur` | Directeur de Projet |
+| `/agen-produit` | Product owner — job visiteur, sans formation |
 | `/agen-da` | Direction Artistique |
 | `/agen-ui-ux` | UI/UX Designer |
 | `/agen-dev` | Lead Dev Front |
+| `/agen-backend` | Backend / données (contact, stores, pas de BDD) |
 | `/agen-contenu` | Lead Contenu FR/EN |
 | `/agen-qa` | QA + A11Y |
 | `/agen-rssi` | RSSI / Juridique |
@@ -85,6 +89,12 @@ Mémoire : `gestion-projet/memoire/` · Leçons par rôle : `.cursor/skills/agen
 - **Ne fait pas :** du pixel-pushing ni du code.
 - **KPI :** % gates passées à la 1ère review · 0 régression visuelle en prod.
 
+#### Product owner
+- **Mission :** le visiteur non formé comprend en 8 s et envoie un brief en 2 min.
+- **Livrables :** parcours, CTA, spec formulaire (erreurs par champ), veto sur le théâtre SaaS et les claims faux.
+- **Interdit :** auth, CRM, onboarding, BDD « pour plus tard ».
+- **Référence :** `gestion-projet/architecture-donnees.md`
+
 #### Directeur·trice Artistique (DA)
 - **Mission :** garantir la cohérence visuelle afrofuturiste premium sur tout le site.
 - **Livrables :** moodboards, grilles de composition, directives motion, revue visuelle de chaque page.
@@ -100,15 +110,20 @@ Mémoire : `gestion-projet/memoire/` · Leçons par rôle : `.cursor/skills/agen
 
 #### Lead Dev Front
 - **Mission :** implémenter le design system en Astro + React islands, maintenir la perf et la qualité code.
-- **Livrables :** composants réutilisables, pages, API contact, build vert.
-- **Stack :** Astro 7 · TypeScript strict · Tailwind · Motion · Zod · Cloudflare Pages.
+- **Livrables :** composants réutilisables, pages, build vert. Branche le contrat Zod, ne le recopie pas.
+- **Stack :** Astro 7 · TypeScript strict · Tailwind · Zod · Cloudflare Pages.
 - **Interdit :** `any`, secrets côté client, dépendances inutiles, composants > 200 lignes sans justification.
 
+#### Backend / données
+- **Mission :** unique API POST `/api/contact` — contrat, abuse, fail-closed, stores honnêtes.
+- **Livrables :** schema unique, Function, KV, env. **Pas de SQL** tant qu’il n’y a pas de job de requête.
+- **Référence :** `gestion-projet/architecture-donnees.md`
+
 #### Lead Contenu (FR/EN)
-- **Mission :** rédiger et valider tous les textes bilingues dans la voix AgenStudio.
-- **Livrables :** copy dans `src/lib/i18n.ts`, fiches projets JSON, meta SEO, alt text.
-- **Voix :** autorité calme · clarté stratégique · intelligence technique · standards internationaux · identité africaine subtile · confiance sans arrogance.
-- **Interdit :** Lorem Ipsum · clients/testimonials/awards inventés · métriques non validées.
+- **Mission :** rédiger et valider tous les textes bilingues. H1 = artwork + job visiteur. Honnêteté = sol, voix = plafond. **PERT A de :** A1 · A8 · B8 · C1 · **G3** (`plan-unifie.md`).
+- **Livrables :** copy pages (i18n puis Content Layer), fiches projets JSON, meta SEO, alt text, Copy Review G3.
+- **Voix :** percutant · witty · élégant · faits africains (lieu, outils, terrain) — pas beige consultant. Doctrine : `.cursor/skills/agen-contenu/references/copy-editorial.md`.
+- **Interdit :** Lorem · clients/métriques inventés · lexique « sur mesure / scalable / exceptionnel » · Think sharp en H1 · SLA non sourcé.
 
 #### QA Tech + Accessibilité
 - **Mission :** garantir que rien ne casse, que tout est accessible, que le build passe.
@@ -140,24 +155,26 @@ Mémoire : `gestion-projet/memoire/` · Leçons par rôle : `.cursor/skills/agen
 
 ## 3. Workflow — du Playbook à la production
 
-Le workflow reprend les **15 phases du Playbook** (00 → 14) enrichies de **4 gates de qualité** et de **rituels d'équipe**.
+Le Playbook (phases 00 → 14) est la **carte**. Le site existe déjà : l’exécution est le **terrain** (sprints G / 0 / 1 / 2). Les deux se parlent dans [plan-unifie.md](./plan-unifie.md). En cas de conflit de calendrier, le terrain gagne. En cas de conflit d’identité, le North Star §1 gagne.
 
 ### 3.1 Les 4 Gates (points de contrôle)
 
 ```
-Phase 00-03          Phase 04-08          Phase 09-11          Phase 12-14
-Fondations      →    Design & Build   →   Polish & Contenu  →  Launch
+Phase 00-03          Phase 08 (+ Sprint 0)   Phase 09-11          Phase 12-14
+Fondations      →    Tuyau brief        →   Contenu & punch  →  Launch
      │                      │                    │                  │
    GATE 1               GATE 2               GATE 3            GATE 4
-  Fondations OK        Design OK           Contenu OK         Go-Live OK
+  Fondations OK        Contact OK          Contenu OK         Go-Live OK
 ```
+
+Le sign-off DA (6 critères ≥ 4/5, §4.1) reste obligatoire pour **montrer** une page. Il n’est **pas** G2 : un site beau sans brief = échec produit.
 
 | Gate | Nom | Critères de passage | Valideur |
 |---|---|---|---|
-| **G1** | Fondations | Git init · env vars · design tokens · structure composants · build vert | DP + Dev |
-| **G2** | Design OK | Chaque page maquettée 360→1920 · DA sign-off · 0 placeholder visuel | DA + UI/UX |
-| **G3** | Contenu OK | Copy FR/EN validé · projets JSON complets · SEO meta · 0 « À valider » bloquant | Contenu + DP |
-| **G4** | Go-Live OK | Build prod · formulaire testé · RGPD · rate limit KV · perf Lighthouse > 90 | RSSI + QA + DP |
+| **G1** | Fondations | Git · env · tokens · budget îlots · build vert. CI = dette G1, pas un prérequis J1 | DP + GitOps + Front |
+| **G2** | Contact OK | Un Zod · honeypot vivant · Turnstile fail-closed · erreurs par champ · 0 claim « jamais de tiers » | Backend + RSSI + Produit |
+| **G3** | Contenu OK | Copy honnête **et** distinctif (swap test · H1 artwork · 1 verbe CTA) · JSON · OG réel · 0 KPI inventé. « À valider » légal → G4 | Contenu + DP |
+| **G4** | Go-Live OK | KV prod · secrets dashboard · RGPD **validé avocat** · Lighthouse mesuré · rollback = revert | RSSI + QA + DP |
 
 ### 3.2 Phases détaillées
 
@@ -230,7 +247,7 @@ Fondations      →    Design & Build   →   Polish & Contenu  →  Launch
 | **Durée** | 2 jours |
 | **Équipe** | Dev · RSSI · UI/UX |
 | **Livrables** | ContactForm · Turnstile · API `/api/contact` · états success/error/loading · rate limit KV |
-| **Gate** | → **G2** |
+| **Gate** | → **G2 Contact OK** (terrain : Sprint 0.4–0.9). Le DA sign-off des pages n’attend pas cette phase. |
 
 #### Phase 09 — Contenu & SEO
 | | |
@@ -285,12 +302,12 @@ Fondations      →    Design & Build   →   Polish & Contenu  →  Launch
 
 | Rituel | Fréquence | Durée | Participants | Objectif |
 |---|---|---|---|---|
-| **Stand-up** | Quotidien | 15 min | Tous | Blocages · priorités du jour |
-| **Design Review** | 2×/semaine | 45 min | DA · UI/UX · Dev · DP | Valider/comparer maquettes vs implémentation |
-| **Copy Review** | 1×/semaine | 30 min | Contenu · DA · DP | Voix, ton, traductions EN |
-| **Demo** | Fin de phase | 30 min | Tous | Montrer l'avancement · célébrer |
-| **Retro** | Fin de gate | 30 min | Tous | Améliorer le workflow |
-| **QA Blitz** | Avant G4 | 2h | QA · Dev | Passer la matrice de recette complète |
+| **Sync décision** | Quand un fund / kill / revise | 15 min | DP + owner PERT | Pas de daily théâtre. Une décision ou rien |
+| **Design Review** | Fin de Cycle B, ou page prête à montrer | 45 min | DA · UI/UX · Front · DP | Grille §4.1 ≥ 4/5 — **pas** une gate G2 |
+| **Copy Review** | Fin de Cycle A (0.10+0.11) puis G3 | 30 min | Contenu · DA · DP | Voix, swap test, CTA unique, KPI, « À valider » |
+| **Demo** | Fin de cycle A / B / C | 30 min | Tous | Montrer l’OKR, pas une phase Playbook vide |
+| **Retro** | Fin de cycle | 30 min | Tous | `/agen-retrospective` + mémoire |
+| **QA Blitz** | Avant G4 | 2h | QA · Front · RSSI | Matrice Playbook §9 |
 
 ### 4.1 Design Review — grille d'évaluation
 
@@ -360,6 +377,7 @@ main              ← production
 - PR obligatoire avec screenshot mobile + desktop
 - Build + lint + check verts avant merge
 - Squash merge sur `staging`, merge commit sur `main`
+- GitOps-lite : prod = SHA `main` · secrets Cloudflare · rollback = `git revert` · jamais `Co-authored-by` · commit sur demande explicite seulement (`/agen-git`)
 
 ---
 
@@ -403,48 +421,12 @@ Une tâche n'est **terminée** que si **tous** ces critères sont remplis :
 
 ## 8. Plan d'action immédiat
 
-### Semaine 1 — Fondations (Phases 00-03)
+Le calendrier 7 semaines (cases vides du 19/08) est **archivé** : le site n’est plus un greenfield. Ordre réel, PERT et missions :
 
-| Jour | Action | Responsable | Statut |
-|---|---|---|---|
-| J1 | Initialiser Git + CI (lint, check, audit) | Dev | ⬜ |
-| J1 | Moodboard afrofuturiste premium (Figma) | DA | ⬜ |
-| J2 | Configurer env vars + Turnstile + Resend staging | Dev + RSSI | ⬜ |
-| J2 | Valider sitemap + backlog complet | DP | ⬜ |
-| J3 | Finaliser composants UI de base | Dev | ⬜ |
-| J3 | Specs motion + tokens documentés | DA | ⬜ |
-| J4 | Layout (Header, Footer, MobileMenu, BaseLayout) | Dev | ⬜ |
-| J5 | **Gate G1** — fondations validées | DP | ⬜ |
+→ **[plan-unifie.md](./plan-unifie.md)** — Cycle A (board) → B (punch) → C (G3/G4)  
+→ **[plan-remediation-architecture.md](./plan-remediation-architecture.md)** — checklists 0.1 … 2.8
 
-### Semaine 2-3 — Design & Build (Phases 04-08)
-
-| Action | Responsable | Statut |
-|---|---|---|
-| Hero flamboyant + sections home FR/EN | DA · Dev · Contenu | ⬜ |
-| Pages expertises | UI/UX · Dev | ⬜ |
-| Content Collections + 3 projets JSON | Dev · Contenu | ⬜ |
-| Pages studio + contact | Dev · UI/UX | ⬜ |
-| **Gate G2** — design validé sur toutes les pages | DA | ⬜ |
-
-### Semaine 4-5 — Polish & Contenu (Phases 09-11)
-
-| Action | Responsable | Statut |
-|---|---|---|
-| SEO complet (meta, JSON-LD, sitemap, hreflang) | Contenu · Dev | ⬜ |
-| Micro-interactions + polish motion | DA · Dev | ⬜ |
-| Copy final FR/EN · alt text | Contenu | ⬜ |
-| **Gate G3** — contenu validé | Contenu · DP | ⬜ |
-| QA blitz · matrice recette Playbook §9 | QA | ⬜ |
-
-### Semaine 6-7 — Launch (Phases 12-14)
-
-| Action | Responsable | Statut |
-|---|---|---|
-| Politique confidentialité + mentions légales | RSSI · Contenu | ⬜ |
-| Self-host fonts · activer KV rate limit | Dev · RSSI | ⬜ |
-| Staging + recette client | DP · tous | ⬜ |
-| **Gate G4** — go-live | RSSI · QA · DP | ⬜ |
-| DNS · HTTPS · monitoring · annonce | Dev · DP | ⬜ |
+**Maintenant :** G.1 (commit si demandé) → A1 ∥ A8 ∥ **A9** ∥ A2 ∥ A3 → G2 ∥ A10. B3 attend le H1 lock, pas le pass accueil. Contenu = A de A1 A8 A9 A10 B8 G3.
 
 ---
 
@@ -483,3 +465,4 @@ Une tâche n'est **terminée** que si **tous** ces critères sont remplis :
 | Date | Action |
 |---|---|
 | 19/08/2026 | Création du document — équipe, workflow, plan d'action 7 semaines |
+| 20/08/2026 | Unification : G2 = Contact OK · §8 pointe vers plan-unifie.md · rituels sans daily |

@@ -9,12 +9,12 @@ import Tag from '../ui/Tag.astro';
 interface Props { lang: Language; }
 const { lang } = Astro.props;
 
-const heading = lang === 'fr' ? 'Page hors itinéraire' : 'Page off-route';
+const heading = lang === 'fr' ? "Cette page n'existe pas" : "This page doesn't exist";
 const body = lang === 'fr'
-  ? "La page ou la ressource que vous recherchez n'existe pas ou a été déplacée."
-  : 'The page or resource you are looking for does not exist or has been moved.';
+  ? "Le lien est peut-être ancien, ou l'adresse mal recopiée. Voici par où repartir."
+  : 'The link may be old, or the address mistyped. Here is where to pick up.';
 const homeLabel = lang === 'fr' ? 'Retour à l\'accueil' : 'Back to home';
-const projectsLabel = lang === 'fr' ? 'Voir les projets' : 'View projects';
+const projectsLabel = lang === 'fr' ? 'Voir nos réalisations' : 'See our work';
 const contactLabel = lang === 'fr' ? 'Contact' : 'Contact';
 ---
 

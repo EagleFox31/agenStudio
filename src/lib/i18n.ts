@@ -13,17 +13,33 @@ export interface TranslationStructure {
   hero: {
     badge: string;
     title: string;
+    tagline: string;
     subtitle: string;
     description: string;
     primaryCta: string;
     secondaryCta: string;
     systemNodesLabel: string;
   };
+  heroVisual: {
+    tablistLabel: string;
+    tabSystem: string;
+    tabPreview: string;
+    tabVision: string;
+    mockLabel: string;
+    mockNote: string;
+    mockCaption: string;
+    visionKicker: string;
+    visionTitle: string;
+    visionBody: string;
+    visionFoot: string;
+  };
   frictions: {
     tag: string;
     title: string;
     subtitle: string;
     quote: string;
+    impactLabel: string;
+    principleLabel: string;
     items: {
       title: string;
       description: string;
@@ -34,6 +50,13 @@ export interface TranslationStructure {
     tag: string;
     title: string;
     subtitle: string;
+    seeAll: string;
+    problemLabel: string;
+    deliverableLabel: string;
+    benefitLabel: string;
+    exampleLabel: string;
+    detailsLabel: string;
+    capabilityLabel: string;
     items: {
       id: string;
       title: string;
@@ -50,6 +73,8 @@ export interface TranslationStructure {
     subtitle: string;
     viewCaseStudy: string;
     filterAll: string;
+    exploreCases: string;
+    consultLabel: string;
     types: {
       client: string;
       internal: string;
@@ -61,6 +86,7 @@ export interface TranslationStructure {
     tag: string;
     title: string;
     subtitle: string;
+    outcomeLabel: string;
     steps: {
       number: string;
       title: string;
@@ -87,6 +113,16 @@ export interface TranslationStructure {
       desc: string;
     }[];
     cta: string;
+    craftKicker: string;
+    craftLead: string;
+    craftPhoneLabel: string;
+    craftMobile: string;
+    craftNetLabel: string;
+    craftPerf: string;
+    craftLiveLabel: string;
+    craftTs: string;
+    craftLangLabel: string;
+    craftI18n: string;
   };
   finalCta: {
     title: string;
@@ -96,12 +132,17 @@ export interface TranslationStructure {
   };
   footer: {
     tagline: string;
+    blurb: string;
     rights: string;
     privacy: string;
     legal: string;
     location: string;
+    contactLabel: string;
+    replyLabel: string;
+    navHeading: string;
   };
   contactForm: {
+    tag: string;
     title: string;
     subtitle: string;
     nameLabel: string;
@@ -118,7 +159,35 @@ export interface TranslationStructure {
     submitting: string;
     successMessage: string;
     errorMessage: string;
+    errorSummary: string;
+    missingTurnstile: string;
+    turnstileRequired: string;
+    networkError: string;
     directEmailText: string;
+    directLabel: string;
+    emailHeading: string;
+    engageLabel: string;
+    engageBody: string;
+    privacyLabel: string;
+    privacyBody: string;
+    requiredLabel: string;
+    againLabel: string;
+    successHeading: string;
+    apiErrors: {
+      turnstile_failed: string;
+      rate_limited: string;
+      misconfigured: string;
+      send_failed: string;
+    };
+    fieldErrors: {
+      name_too_short: string;
+      name_too_long: string;
+      email_invalid: string;
+      email_too_long: string;
+      company_too_long: string;
+      problem_too_short: string;
+      problem_too_long: string;
+    };
   };
 }
 
@@ -126,409 +195,538 @@ export const translations: Record<Language, TranslationStructure> = {
   fr: {
     nav: {
       home: "Accueil",
-      expertises: "Expertises",
-      projects: "Projets",
-      studio: "Le Studio",
+      expertises: "Ce qu’on fait",
+      projects: "Réalisations",
+      studio: "Qui on est",
       contact: "Contact",
-      ctaButton: "Parler de votre projet",
+      ctaButton: "Nous écrire",
       langSwitchLabel: "EN"
     },
     hero: {
-      badge: "STUDIO NUMÉRIQUE INDÉPENDANT",
-      title: "Think sharp. Build what matters.",
-      subtitle: "Des systèmes numériques conçus autour de vos vraies opérations.",
-      description: "AgenStudio transforme les processus dispersés, les tâches répétitives et les outils mal connectés en logiciels métier clairs, fiables et capables d’évoluer.",
-      primaryCta: "Parler de votre projet",
-      secondaryCta: "Voir nos projets",
-      systemNodesLabel: "Flux opérationnels & Nœuds d'intégration"
+      badge: "Douala / Yaoundé",
+      title: "Le logiciel qui n’existe pas en rayon, on le fabrique.",
+      tagline: "",
+      subtitle: "Stock, factures, qui a dit oui : au même endroit, et sur le téléphone de vos équipes.",
+      description: "",
+      primaryCta: "Nous écrire",
+      secondaryCta: "Voir nos réalisations",
+      systemNodesLabel: "Exemple de suivi de stock"
+    },
+    heroVisual: {
+      tablistLabel: "Aperçus",
+      tabSystem: "Stock",
+      tabPreview: "Écran",
+      tabVision: "L’équipe",
+      mockLabel: "FABRIQUÉ ICI",
+      mockNote: "Aperçu",
+      mockCaption: "Écrit pour votre métier. Pas adapté depuis celui d’un autre.",
+      visionKicker: "Où on est",
+      visionTitle: "On est à Douala et à Yaoundé.",
+      visionBody: "On fait des logiciels pour le dépôt, le magasin, le téléphone. Pas pour une présentation.",
+      visionFoot: "Cameroun — sur place et à distance"
     },
     frictions: {
-      tag: "FRICTIONS MÉTIER",
+      tag: "LE PROBLÈME",
       title: "Votre entreprise ne devrait pas dépendre d'un fichier Excel que personne n'ose modifier.",
-      subtitle: "Nous résolvons les blocages opérationnels discrets qui freinent les équipes ambitieuses.",
-      quote: "Les pertes de données et les doubles saisies ne sont pas une fatalité : ce sont des défauts d'architecture.",
+      subtitle: "Les fichiers passent d’une personne à l’autre. Le logiciel du commerce ne va pas. Le petit bricolage casse.",
+      quote: "Perdre une info ou la retaper deux fois, ce n’est pas « comme ça ». C’est un outil mal fait pour vous.",
+      impactLabel: "Résultat",
+      principleLabel: "Notre avis",
       items: [
         {
-          title: "Fichiers dispersés & double saisie",
-          description: "Les informations clés naviguent par e-mails, fichiers de calcul manuels et messageries éphémères.",
-          impact: "Risque de pertes, incohérences de données et temps précieux gaspillé."
+          title: "Excel, WhatsApp, et on retape tout",
+          description: "Les infos passent par mail, tableur et WhatsApp. Le soir, plus personne n’est sûr de la bonne version.",
+          impact: "On perd du temps. On se trompe. Personne n’a vraiment les chiffres."
         },
         {
-          title: "Outils génériques inadaptés",
-          description: "Des SaaS trop rigides ou sur-dimensionnés qui forcent vos équipes à adapter leurs méthodes au logiciel.",
-          impact: "Baisse de productivité et rejet d'adoption par les équipes terrain."
+          title: "Un logiciel trop grand, ou trop rigide",
+          description: "On vous demande de changer votre façon de travailler pour coller au logiciel. Au magasin, les gens l’évitent.",
+          impact: "Retour à WhatsApp. Le logiciel reste ouvert « pour le bureau »."
         },
         {
-          title: "Automatisations fragiles",
-          description: "Des scripts bricolés sans surveillance qui cassent au moindre changement d'API ou de format.",
-          impact: "Ruptures de service impromptues et manque de traçabilité."
+          title: "Les petits bricolages qui cassent",
+          description: "Un fichier ou un script que personne ne surveille. Un format change, tout s’arrête.",
+          impact: "La journée est bloquée, et on ne sait pas ce qui s’est passé."
         }
       ]
     },
     expertises: {
-      tag: "NOS CAPACITÉS",
-      title: "Une ingénierie claire au service du terrain",
-      subtitle: "Chaque système est conçu sur-mesure avec une exigence de sobriété et de durabilité.",
+      tag: "CE QU’ON FAIT",
+      title: "Trois problèmes qu’on voit souvent",
+      subtitle: "Pas une liste de services. Trois cas fréquents, et ce que vous recevez.",
+      seeAll: "Voir les trois",
+      problemLabel: "Le problème",
+      deliverableLabel: "Ce que vous recevez",
+      benefitLabel: "Au quotidien",
+      exampleLabel: "Exemple",
+      detailsLabel: "En savoir plus",
+      capabilityLabel: "Cas",
       items: [
         {
           id: "software-engineering",
-          title: "Logiciels Métier & Mini-ERP",
-          problem: "Processus métiers spécifiques mal pris en charge par les outils standards du marché.",
-          deliverable: "Application web sur-mesure centralisant opérations, stocks et validations.",
-          benefit: "Vérité unique sur les données et fluidité de travail pour l'ensemble des collaborateurs.",
-          example: "Plateforme de gestion logistique et de suivi d'inventaire multi-sites."
+          title: "Un logiciel pour le stock et le suivi",
+          problem: "Tout est dans des tableurs que personne n’ose modifier.",
+          deliverable: "Un logiciel web : stock, accords, historique — au même endroit.",
+          benefit: "La même info sur le téléphone et au bureau.",
+          example: "Stock sur plusieurs sites — voir SokoLog."
         },
         {
           id: "process-automation",
-          title: "Automatisations & Flux de données",
-          problem: "Tâches répétitives à faible valeur ajoutée chronophages pour les équipes.",
-          deliverable: "Pipelines de traitement automatique, notifications et synchronisation temps réel.",
-          benefit: "Zéro erreur manuelle et gain d'heures qualifiées chaque semaine.",
-          example: "Validation automatique des commandes et génération de rapports de conformité."
+          title: "Arrêter de retaper la même chose",
+          problem: "La même ligne, trois fois, jusqu’à ce que quelqu’un craque.",
+          deliverable: "Ça part tout seul, et on voit où ça a bloqué.",
+          benefit: "Vos gens reviennent au travail, pas au copier-coller.",
+          example: "Qui doit dire oui, et dans quel ordre — voir KaziFlow."
         },
         {
           id: "systems-integration",
-          title: "Intégration d'API & Connecteurs",
-          problem: "Logiciels existants cloisonnés incapables de communiquer entre eux.",
-          deliverable: "Passerelles d'intégration sécurisées et synchronisation bidirectionnelle.",
-          benefit: "Écosystème unifié et circulation fluide des données décisionnelles.",
-          example: "Connexion directe entre système de facturation et solution logistique."
-        },
-        {
-          id: "web-saas-products",
-          title: "Applications Web & Produits SaaS",
-          problem: "Besoin de lancer une plateforme client moderne et hautement performante.",
-          deliverable: "Produit numérique complet, du cadrage UX à l'architecture frontend et cloud.",
-          benefit: "Expérience utilisateur d'exception et infrastructure prêle à passer à l'échelle.",
-          example: "Interface client bilingue avec tableau de bord de pilotage en direct."
+          title: "Relier vos outils entre eux",
+          problem: "Les factures d’un côté, le stock de l’autre, WhatsApp au milieu.",
+          deliverable: "On relie vos outils pour ne plus recopier à la main.",
+          benefit: "Plus besoin qu’une personne fasse le facteur.",
+          example: "Factures ↔ dépôt."
         }
       ],
-      viewDetails: "En savoir plus sur cette expertise"
+      viewDetails: "Voir ce cas"
     },
     projects: {
-      tag: "RÉALISATIONS & ÉTUDES DE CAS",
-      title: "Des preuves tangibles de notre savoir-faire",
-      subtitle: "Découvrez comment nous traduisons des enjeux métiers complexes en produits numériques précis.",
-      viewCaseStudy: "Lire l'étude de cas",
-      filterAll: "Tous les projets",
+      tag: "RÉALISATIONS",
+      title: "Ce qu’on a construit, et ce qu’on a seulement essayé",
+      subtitle: "Outils internes, essais, concepts : le statut est écrit sur chaque fiche. Pas un mur de logos.",
+      viewCaseStudy: "Lire le cas",
+      filterAll: "Tout",
+      exploreCases: "Voir les réalisations",
+      consultLabel: "Voir",
       types: {
         client: "Projet client autorisé",
-        internal: "Produit interne",
-        rd: "Recherche & Développement",
-        concept: "Concept & Prototypage"
+        internal: "Outil interne",
+        rd: "Essai",
+        concept: "Idée testée"
       }
     },
     method: {
-      tag: "MÉTHODE AGENSTUDIO",
-      title: "Rigueur, clarté et adoption progressive",
-      subtitle: "Un processus de développement structuré pour garantir un impact réel en production.",
+      tag: "COMMENT ON TRAVAILLE",
+      title: "On commence par vos journées, pas par un écran vide",
+      subtitle: "On ne livre rien si vos équipes ne peuvent pas l’ouvrir au dépôt, au magasin, ou sur le téléphone.",
+      outcomeLabel: "Vous repartez avec",
       steps: [
         {
           number: "01",
-          title: "Comprendre",
-          description: "Immersion dans vos opérations réelles, cartographie des flux et identification précise des points de friction.",
-          outcome: "Cahier des charges fonctionnel clair et indicateurs de succès définis."
+          title: "Voir comment vous travaillez",
+          description: "On vient, ou vous nous racontez : tableurs, WhatsApp, files d’attente. Le problème a un nom.",
+          outcome: "Un constat que vos équipes reconnaissent."
         },
         {
           number: "02",
-          title: "Cadrer",
-          description: "Conception de l'architecture technique, choix des tokens de design et prototypage des parcours prioritaires.",
-          outcome: "Spécification produit et maquettes d'interface haute fidélité."
+          title: "Décider ce qu’on fait",
+          description: "On choisit ensemble les écrans utiles — et ce qu’on ne fera pas. Moins de boutons, plus de gens qui s’en servent.",
+          outcome: "Une liste courte, et un aperçu des écrans."
         },
         {
           number: "03",
-          title: "Construire",
-          description: "Développement itératif en TypeScript strict, intégration des automatisations et tests de charge.",
-          outcome: "Code propre, sécurisé, rapide et documenté."
+          title: "Fabriquer",
+          description: "On fabrique, on teste avec vous, on met en route petit à petit.",
+          outcome: "Le logiciel marche vraiment. Ce n’est pas un dessin."
         },
         {
           number: "04",
-          title: "Faire adopter",
-          description: "Déploiement progressif, formation des équipes terrain et accompagnement au changement.",
-          outcome: "Adoption rapide sans rupture dans les opérations quotidiennes."
+          title: "Mettre en route",
+          description: "On montre à vos équipes. On écrit comment ça marche. Vous n’avez pas besoin de nous pour l’ouvrir.",
+          outcome: "Ça tourne sans tout arrêter."
         }
       ]
     },
     pov: {
-      tag: "NOTRE POINT DE VUE",
-      title: "Une technologie utile, conçue autour du terrain",
-      subtitle: "Nous croyons en une ingénierie exigeante qui résout de vrais problèmes sans complexité inutile.",
+      tag: "POUR ÊTRE CLAIR",
+      title: "Trois choses qu’on ne fera pas",
+      subtitle: "Mieux vaut le dire avant que vous écriviez.",
       cards: [
         {
-          title: "Précision avant accumulation",
-          body: "Nous ne rajoutons pas des fonctionnalités gadget. Chaque écran et chaque ligne de code doit servir un objectif opérationnel vérifiable."
+          title: "Pas d’écran juste pour faire joli",
+          body: "Si ça n’aide personne à décider ou à avancer, on ne le fait pas."
         },
         {
-          title: "Sobriété & Performance",
-          body: "Un logiciel rapide est un logiciel adopté. Nous privilégions les architectures légères qui se chargent instantanément, même sur connexion limitée."
+          title: "Pas un logiciel trop lourd pour le téléphone",
+          body: "Si ça rame dès que le réseau est moyen, vos équipes ne l’utiliseront pas."
         },
         {
-          title: "Autonomie du client",
-          body: "Nous construisons des systèmes transparents et documentés dont vous gardez la maîtrise totale, sans dépendance artificielle."
+          title: "Pas un outil que vous ne comprenez pas",
+          body: "Vous devez pouvoir l’ouvrir et le garder. On explique. On écrit comment ça marche."
         }
       ]
     },
     studioIntro: {
-      tag: "LE STUDIO",
-      title: "Ancrage camerounais, standards internationaux",
-      description: "Basé au Cameroun, AgenStudio est un studio numérique indépendant qui conçoit des produits logiciels pour les PME et organisations exigeantes. Nous combinons la réactivité d'une structure agile avec l'exigence des meilleurs standards d'ingénierie.",
-      anchorage: "Basé à Douala & Yaoundé — Intervention à distance et sur site.",
+      tag: "L’ÉQUIPE",
+      title: "On est à Douala et à Yaoundé.",
+      description: "On fait des logiciels pour des entreprises d’ici — et pour celles qui nous écrivent de loin. Stock, suivi, factures. Pas un discours « Afrique + international ».",
+      anchorage: "Douala et Yaoundé. On se déplace. On travaille aussi à distance.",
       values: [
         {
-          title: "Culture produit",
-          desc: "Chaque projet est traité comme un produit pérenne, non comme une simple prestation."
+          title: "Ça doit servir après qu’on soit partis",
+          desc: "On ne livre pas un outil à racheter tous les six mois pour qu’il tienne."
         },
         {
-          title: "Transparence totale",
-          desc: "Des choix techniques expliqués clairement, sans jargon ni boîte noire."
+          title: "On explique simplement",
+          desc: "Les choix, en français. Pas de mots compliqués pour cacher un doute."
         },
         {
-          title: "Exécution sur-mesure",
-          desc: "Aucun composant posé au hasard, chaque détail visuel et fonctionnel est maîtrisé."
+          title: "Chaque écran a une raison",
+          desc: "Rien n’est là « pour faire moderne »."
         }
       ],
-      cta: "Découvrir le Studio"
+      cta: "Qui on est",
+      craftKicker: "Ce que ça change pour vos équipes",
+      craftLead: "Ça s’ouvre sur un téléphone. Ça tient quand le réseau n’est pas parfait. Pas besoin d’une semaine de formation.",
+      craftPhoneLabel: "Téléphone",
+      craftMobile: "Fait pour un petit écran, pas seulement pour un grand bureau.",
+      craftNetLabel: "Réseau",
+      craftPerf: "Ça marche quand la connexion est moyenne.",
+      craftLiveLabel: "En service",
+      craftTs: "Mis en route avec vous — pas un dessin figé.",
+      craftLangLabel: "Langue",
+      craftI18n: "Français et anglais, selon vos équipes."
     },
     finalCta: {
-      title: "Prêt à clarifier et automatiser vos opérations ?",
-      subtitle: "Discutons de vos enjeux métiers et étudions ensemble la solution la plus adaptée.",
-      button: "Initier un projet",
-      altContact: "Ou envoyez-nous directement un e-mail à contact@agenstudio.com"
+      title: "Expliquez le problème en deux phrases.",
+      subtitle: "On lit. Si vous préférez le mail, ça marche aussi.",
+      button: "Nous écrire",
+      altContact: "Ou écrivez à contact@agenstudio.com"
     },
     footer: {
       tagline: "Think sharp. Build what matters.",
+      blurb: "À Douala et Yaoundé. On fait des logiciels pour le stock, les factures, le suivi — ce qui doit marcher tous les jours.",
       rights: "Tous droits réservés.",
       privacy: "Politique de confidentialité",
       legal: "Mentions légales",
-      location: "Douala / Yaoundé, Cameroun"
+      location: "Douala / Yaoundé, Cameroun",
+      contactLabel: "Nous écrire",
+      replyLabel: "Quelqu’un de l’équipe lit. On n’affiche pas de délai tant qu’on ne peut pas le tenir.",
+      navHeading: "Navigation"
     },
     contactForm: {
-      title: "Démarrer une conversation",
-      subtitle: "Partagez votre besoin opérationnel ou votre projet numérique. Nous vous répondons sous 24h ouvrées.",
-      nameLabel: "Nom complet & Fonction",
-      namePlaceholder: "ex: Jean-Luc Mbarga, Directeur Général",
-      emailLabel: "Adresse e-mail professionnelle",
-      emailPlaceholder: "ex: jl.mbarga@entreprise.cm",
-      companyLabel: "Nom de votre organisation",
-      companyPlaceholder: "ex: Logistics Central Africa",
-      problemLabel: "Quelle friction ou projet souhaitez-vous traiter ?",
-      problemPlaceholder: "Décrivez vos opérations actuelles, le problème rencontré et les objectifs visés...",
-      timelineLabel: "Délai envisagé",
+      tag: "NOUS ÉCRIRE",
+      title: "Quel est le problème aujourd’hui ?",
+      subtitle: "Nom, e-mail, deux phrases. Quelqu’un de l’équipe lit. Pas de délai affiché tant qu’on ne peut pas le tenir.",
+      nameLabel: "Nom et poste",
+      namePlaceholder: "ex. Jean-Luc Mbarga, gérant",
+      emailLabel: "E-mail de travail",
+      emailPlaceholder: "ex. jl.mbarga@entreprise.cm",
+      companyLabel: "Entreprise (pas obligatoire)",
+      companyPlaceholder: "ex. votre société",
+      problemLabel: "Que se passe-t-il, et que voulez-vous changer ?",
+      problemPlaceholder: "Comment vous travaillez, ce qui casse, ce que vous voulez. Deux phrases suffisent.",
+      timelineLabel: "Délai (pas obligatoire)",
       timelineOptions: [
         "Urgent (moins d'1 mois)",
-        "Standard (1 à 3 mois)",
-        "Cadrage stratégique (3 mois et +)",
+        "Dans 1 à 3 mois",
+        "On prend le temps (3 mois et +)",
         "À définir ensemble"
       ],
-      submitButton: "Envoyer ma demande de projet",
-      submitting: "Transmission en cours...",
-      successMessage: "Merci ! Votre message a été transmis à l'équipe d'AgenStudio. Nous reviendrons vers vous sous 24 heures.",
-      errorMessage: "Veuillez remplir correctement tous les champs obligatoires du formulaire.",
-      directEmailText: "Vous préférez un échange direct ? Écrivez-nous à"
+      submitButton: "Envoyer le message",
+      submitting: "Envoi en cours…",
+      successMessage: "C’est bien reçu. On le lit et on vous écrit. Pour aller plus vite : contact@agenstudio.com",
+      errorMessage: "Corrigez les champs indiqués ci-dessous, puis renvoyez.",
+      errorSummary: "Il y a un problème avec le formulaire :",
+      missingTurnstile:
+        "Le formulaire n’est pas prêt sur cet ordinateur (sécurité anti-spam manquante).",
+      turnstileRequired: "Cochez la case de sécurité, puis renvoyez.",
+      networkError: "Impossible de joindre le serveur. Vérifiez la connexion, ou écrivez-nous.",
+      directEmailText: "Vous pouvez aussi écrire directement à",
+      directLabel: "Par e-mail",
+      emailHeading: "Le mail marche aussi",
+      engageLabel: "Ensuite",
+      engageBody:
+        "On lit chaque message. On répond dès qu’on a pu — sans promettre un délai sur le site.",
+      privacyLabel: "Ce que devient votre message",
+      privacyBody:
+        "Le formulaire passe par Cloudflare, Turnstile et Resend. Pas de revente. Détail dans la politique de confidentialité (À valider par un avocat).",
+      requiredLabel: "Obligatoire",
+      againLabel: "Envoyer un autre message",
+      successHeading: "C’est bien reçu.",
+      apiErrors: {
+        turnstile_failed: "Le contrôle anti-spam a échoué. Réessayez.",
+        rate_limited: "Trop de tentatives. Réessayez dans quelques minutes.",
+        misconfigured: "Le formulaire n’est pas configuré sur cet environnement.",
+        send_failed: "L’envoi a échoué. Réessayez, ou passez par l’e-mail.",
+      },
+      fieldErrors: {
+        name_too_short: "Indiquez au moins 2 caractères — le nom et le poste suffisent.",
+        name_too_long: "Le nom est trop long (120 caractères maximum).",
+        email_invalid: "Entrez une adresse e-mail de travail valide.",
+        email_too_long: "L’e-mail est trop long (200 caractères maximum).",
+        company_too_long: "Le nom d’entreprise est trop long (200 caractères maximum).",
+        problem_too_short:
+          "Décrivez le problème en au moins 20 caractères — deux phrases suffisent.",
+        problem_too_long: "Le texte est trop long (4000 caractères maximum).",
+      },
     }
   },
   en: {
     nav: {
       home: "Home",
-      expertises: "Expertise",
-      projects: "Projects",
-      studio: "The Studio",
+      expertises: "What we do",
+      projects: "Work",
+      studio: "Who we are",
       contact: "Contact",
-      ctaButton: "Talk about your project",
+      ctaButton: "Write to us",
       langSwitchLabel: "FR"
     },
     hero: {
-      badge: "INDEPENDENT DIGITAL STUDIO",
-      title: "Think sharp. Build what matters.",
-      subtitle: "Digital systems engineered around your real business operations.",
-      description: "AgenStudio transforms scattered processes, repetitive tasks, and disconnected tools into clear, reliable, and scalable business software.",
-      primaryCta: "Talk about your project",
-      secondaryCta: "View our projects",
-      systemNodesLabel: "Operational Flows & Integration Nodes"
+      badge: "Douala / Yaoundé",
+      title: "We build the software you can’t buy off the shelf.",
+      tagline: "",
+      subtitle: "Stock, invoices, who said yes: in one place, and on your teams’ phones.",
+      description: "",
+      primaryCta: "Write to us",
+      secondaryCta: "See our work",
+      systemNodesLabel: "Example of stock tracking"
+    },
+    heroVisual: {
+      tablistLabel: "Previews",
+      tabSystem: "Stock",
+      tabPreview: "Screen",
+      tabVision: "The team",
+      mockLabel: "BUILT HERE",
+      mockNote: "Preview",
+      mockCaption: "Written for your trade. Not adapted from someone else’s.",
+      visionKicker: "Where we are",
+      visionTitle: "We’re in Douala and Yaoundé.",
+      visionBody: "We make software for the warehouse, the shop, the phone. Not for a presentation.",
+      visionFoot: "Cameroon — on site and remote"
     },
     frictions: {
-      tag: "BUSINESS FRICTIONS",
+      tag: "THE PROBLEM",
       title: "Your business shouldn't rely on an Excel sheet no one dares to edit.",
-      subtitle: "We resolve discrete operational bottlenecks that slow down ambitious teams.",
-      quote: "Data loss and double entries aren't inevitable: they are architecture flaws.",
+      subtitle: "Files move from person to person. The shop-bought software doesn’t fit. The little workaround breaks.",
+      quote: "Losing a record or typing it twice isn’t “just how it is”. It’s a tool that wasn’t made for you.",
+      impactLabel: "Result",
+      principleLabel: "Our view",
       items: [
         {
-          title: "Scattered files & double entry",
-          description: "Key information floats through emails, manual spreadsheets, and transient messaging apps.",
-          impact: "Risk of data loss, inconsistencies, and wasted billable hours."
+          title: "Excel, WhatsApp, and typing it all again",
+          description: "Facts go by email, spreadsheet and WhatsApp. By evening, no one is sure which version is right.",
+          impact: "Time lost. Mistakes. Nobody has the real numbers."
         },
         {
-          title: "Unfit off-the-shelf software",
-          description: "Over-engineered or rigid SaaS tools that force your team to adjust their workflow to the software.",
-          impact: "Decreased team productivity and low software adoption rates."
+          title: "Software that’s too big, or too stiff",
+          description: "You’re asked to change how you work to fit the software. In the shop, people avoid it.",
+          impact: "Back to WhatsApp. The software stays open “for the office”."
         },
         {
-          title: "Brittle automations",
-          description: "Fragile scripts built without monitoring that break upon the slightest API or schema update.",
-          impact: "Unplanned operational downtime and complete lack of audit trails."
+          title: "Little workarounds that break",
+          description: "A file or a script nobody watches. One format change and everything stops.",
+          impact: "The day is blocked, and no one can say what happened."
         }
       ]
     },
     expertises: {
-      tag: "OUR CAPABILITIES",
-      title: "Clear engineering focused on field execution",
-      subtitle: "Every system is custom-crafted with strict standards of clarity and durability.",
+      tag: "WHAT WE DO",
+      title: "Three problems we see a lot",
+      subtitle: "Not a service list. Three common cases, and what you get.",
+      seeAll: "See all three",
+      problemLabel: "The problem",
+      deliverableLabel: "What you get",
+      benefitLabel: "Day to day",
+      exampleLabel: "Example",
+      detailsLabel: "Read more",
+      capabilityLabel: "Case",
       items: [
         {
           id: "software-engineering",
-          title: "Custom Business Software & Mini-ERPs",
-          problem: "Niche operational workflows poorly supported by generic market tools.",
-          deliverable: "Custom web application centralizing operations, inventory, and approvals.",
-          benefit: "Single source of truth and effortless collaboration across teams.",
-          example: "Multi-site inventory tracking and logistics management platform."
+          title: "Software for stock and tracking",
+          problem: "Everything lives in spreadsheets no one dares to edit.",
+          deliverable: "A web tool: stock, who said yes, history — in one place.",
+          benefit: "The same facts on a phone and at a desk.",
+          example: "Stock across several sites — see SokoLog."
         },
         {
           id: "process-automation",
-          title: "Automations & Data Pipelines",
-          problem: "Low-value repetitive tasks consuming precious staff hours daily.",
-          deliverable: "Automated processing pipelines, notifications, and real-time synchronization.",
-          benefit: "Zero manual error and dozens of qualified hours saved weekly.",
-          example: "Automated order validation and compliance report generation."
+          title: "Stop typing the same thing again",
+          problem: "The same line, three times, until someone snaps.",
+          deliverable: "It runs on its own, and you can see where it stuck.",
+          benefit: "Your people go back to the work, not to copy-paste.",
+          example: "Who has to say yes, and in what order — see KaziFlow."
         },
         {
           id: "systems-integration",
-          title: "API Integration & Custom Connectors",
-          problem: "Siloed legacy systems unable to exchange data reliably.",
-          deliverable: "Secure integration gateways and bi-directional sync mechanisms.",
-          benefit: "Unified digital ecosystem with seamless decision-making metrics.",
-          example: "Direct connection between billing engines and logistics software."
-        },
-        {
-          id: "web-saas-products",
-          title: "Web Applications & SaaS Products",
-          problem: "Need to launch a modern, high-performance customer-facing digital product.",
-          deliverable: "Full product engineering from UX architecture to frontend and cloud infra.",
-          benefit: "Exceptional user experience with cloud infrastructure ready to scale.",
-          example: "Bilingual client interface with live operational analytics dashboard."
+          title: "Connect your tools",
+          problem: "Invoices on one side, stock on the other, WhatsApp in the middle.",
+          deliverable: "We connect your tools so nobody has to retype.",
+          benefit: "Nobody has to carry numbers from one tool to the next.",
+          example: "Invoices ↔ warehouse."
         }
       ],
-      viewDetails: "Learn more about this capability"
+      viewDetails: "See this case"
     },
     projects: {
-      tag: "CASE STUDIES & WORK",
-      title: "Tangible evidence of our engineering standards",
-      subtitle: "Discover how we turn complex business challenges into precise digital products.",
-      viewCaseStudy: "Read case study",
-      filterAll: "All projects",
+      tag: "WORK",
+      title: "What we’ve built, and what we only tried",
+      subtitle: "Internal tools, trials, concepts: the status is written on every card. No wall of logos.",
+      viewCaseStudy: "Read the case",
+      filterAll: "All",
+      exploreCases: "See the work",
+      consultLabel: "See",
       types: {
-        client: "Authorized Client Project",
-        internal: "Internal Product",
-        rd: "Research & Development",
-        concept: "Concept & Prototype"
+        client: "Authorized client project",
+        internal: "Internal tool",
+        rd: "Trial",
+        concept: "Idea we tested"
       }
     },
     method: {
-      tag: "AGENSTUDIO METHOD",
-      title: "Rigor, clarity, and seamless team adoption",
-      subtitle: "A structured development process ensuring tangible operational impact.",
+      tag: "HOW WE WORK",
+      title: "We start with your days, not a blank screen",
+      subtitle: "We don’t hand anything over if your teams can’t open it at the warehouse, the shop, or on a phone.",
+      outcomeLabel: "You leave with",
       steps: [
         {
           number: "01",
-          title: "Understand",
-          description: "Immersion into your actual field operations, workflow mapping, and pinpointing friction bottlenecks.",
-          outcome: "Clear functional requirements specification and agreed KPIs."
+          title: "See how you work",
+          description: "We come, or you walk us through it: spreadsheets, WhatsApp, queues. The problem gets a name.",
+          outcome: "A picture your teams recognise."
         },
         {
           number: "02",
-          title: "Frame",
-          description: "Technical architecture design, design token definition, and wireframing of priority user journeys.",
-          outcome: "High-fidelity UI mockups and complete technical specifications."
+          title: "Decide what we do",
+          description: "Together we pick the useful screens — and what we will not make. Fewer buttons, more people who actually use it.",
+          outcome: "A short list, and a look at the screens."
         },
         {
           number: "03",
-          title: "Build",
-          description: "Iterative development in strict TypeScript, integration of background automations, and stress testing.",
-          outcome: "Clean, secure, performant, and well-documented codebase."
+          title: "Make it",
+          description: "We make it, we test with you, we switch it on step by step.",
+          outcome: "The software really runs. It isn’t a drawing."
         },
         {
           number: "04",
-          title: "Adopt",
-          description: "Staged deployment, staff onboarding, and ongoing operational support.",
-          outcome: "Rapid user adoption without operational friction or downtime."
+          title: "Switch it on",
+          description: "We show your teams. We write down how it works. You don’t need us just to open it.",
+          outcome: "It runs without stopping the work."
         }
       ]
     },
     pov: {
-      tag: "OUR POINT OF VIEW",
-      title: "Useful technology, designed around field teams",
-      subtitle: "We believe in demanding software engineering that solves real problems without useless complexity.",
+      tag: "TO BE CLEAR",
+      title: "Three things we won’t do",
+      subtitle: "Better said before you write to us.",
       cards: [
         {
-          title: "Precision over clutter",
-          body: "We don't add bloated features. Every screen and line of code must serve a verifiable business goal."
+          title: "No screen just to look nice",
+          body: "If it doesn’t help someone decide or move, we don’t make it."
         },
         {
-          title: "Sobriety & Performance",
-          body: "Fast software is software that gets used. We prioritize lightweight architecture that loads instantly, even on weak connections."
+          title: "No software too heavy for a phone",
+          body: "If it crawls when the network is average, your teams won’t use it."
         },
         {
-          title: "Client Ownership",
-          body: "We build transparent, documented systems that you fully own and control without artificial lock-in."
+          title: "No tool you don’t understand",
+          body: "You should be able to open it and keep it. We explain. We write down how it works."
         }
       ]
     },
     studioIntro: {
-      tag: "THE STUDIO",
-      title: "Cameroonian roots, global engineering standards",
-      description: "Based in Cameroon, AgenStudio is an independent digital studio designing custom software products for ambitious SMEs and organizations. We blend agile responsiveness with world-class engineering standards.",
-      anchorage: "Based in Douala & Yaoundé — On-site & Remote interventions.",
+      tag: "THE TEAM",
+      title: "We’re in Douala and Yaoundé.",
+      description: "We make software for companies here — and for those who write from further away. Stock, tracking, invoices. Not a speech about “Africa plus international”.",
+      anchorage: "Douala and Yaoundé. We travel. We also work from a distance.",
       values: [
         {
-          title: "Product Culture",
-          desc: "Every project is treated as a long-term asset, not a quick disposable deliverable."
+          title: "It has to work after we’ve left",
+          desc: "We don’t hand over a tool you have to buy again every six months for it to hold."
         },
         {
-          title: "Total Transparency",
-          desc: "Clear technical choices explained in plain language, without black boxes."
+          title: "We explain in plain words",
+          desc: "The choices, in French or English. No hard words to hide a doubt."
         },
         {
-          title: "Custom Execution",
-          desc: "No random template components; every visual and functional detail is intentional."
+          title: "Every screen has a reason",
+          desc: "Nothing is there “to look modern”."
         }
       ],
-      cta: "Discover The Studio"
+      cta: "Who we are",
+      craftKicker: "What this changes for your teams",
+      craftLead: "It opens on a phone. It holds when the network isn’t perfect. No need for a week of training.",
+      craftPhoneLabel: "Phone",
+      craftMobile: "Made for a small screen, not only a big office monitor.",
+      craftNetLabel: "Network",
+      craftPerf: "It works when the connection is average.",
+      craftLiveLabel: "Running",
+      craftTs: "Switched on with you — not a frozen drawing.",
+      craftLangLabel: "Language",
+      craftI18n: "French and English, depending on your teams."
     },
     finalCta: {
-      title: "Ready to clarify and automate your operations?",
-      subtitle: "Let's discuss your business challenges and identify the optimal software architecture.",
-      button: "Start a project",
-      altContact: "Or email us directly at contact@agenstudio.com"
+      title: "Explain the problem in two sentences.",
+      subtitle: "We’ll read it. If you’d rather email, that works too.",
+      button: "Write to us",
+      altContact: "Or write to contact@agenstudio.com"
     },
     footer: {
       tagline: "Think sharp. Build what matters.",
+      blurb: "In Douala and Yaoundé. We make software for stock, invoices, tracking — the work that has to run every day.",
       rights: "All rights reserved.",
-      privacy: "Privacy Policy",
-      legal: "Legal Notice",
-      location: "Douala / Yaoundé, Cameroon"
+      privacy: "Privacy policy",
+      legal: "Legal notice",
+      location: "Douala / Yaoundé, Cameroon",
+      contactLabel: "Write to us",
+      replyLabel: "Someone on the team reads. We don’t show a deadline we can’t keep.",
+      navHeading: "Navigation"
     },
     contactForm: {
-      title: "Start a Conversation",
-      subtitle: "Share your operational bottleneck or digital project. We reply within 24 business hours.",
-      nameLabel: "Full Name & Position",
-      namePlaceholder: "e.g., Jean-Luc Mbarga, Managing Director",
-      emailLabel: "Work Email Address",
-      emailPlaceholder: "e.g., jl.mbarga@company.cm",
-      companyLabel: "Company / Organization Name",
-      companyPlaceholder: "e.g., Logistics Central Africa",
-      problemLabel: "What friction or project would you like to address?",
-      problemPlaceholder: "Describe your current operations, the issue faced, and targeted goals...",
-      timelineLabel: "Target Timeline",
+      tag: "WRITE TO US",
+      title: "What’s the problem today?",
+      subtitle: "Name, email, two sentences. Someone on the team reads. No deadline on the page until we can keep it.",
+      nameLabel: "Name and job",
+      namePlaceholder: "e.g. Jean-Luc Mbarga, manager",
+      emailLabel: "Work email",
+      emailPlaceholder: "e.g. jl.mbarga@company.cm",
+      companyLabel: "Company (not required)",
+      companyPlaceholder: "e.g. your company",
+      problemLabel: "What’s happening, and what do you want to change?",
+      problemPlaceholder: "How you work, what breaks, what you want. Two sentences will do.",
+      timelineLabel: "Timing (not required)",
       timelineOptions: [
         "Urgent (under 1 month)",
-        "Standard (1 to 3 months)",
-        "Strategic Framing (3+ months)",
+        "In 1 to 3 months",
+        "We take our time (3+ months)",
         "To be defined together"
       ],
-      submitButton: "Send Project Inquiry",
-      submitting: "Sending inquiry...",
-      successMessage: "Thank you! Your message has been received by the AgenStudio team. We will get back to you within 24 hours.",
-      errorMessage: "Please fill out all required fields correctly before submitting.",
-      directEmailText: "Prefer direct communication? Reach out to us at"
+      submitButton: "Send the message",
+      submitting: "Sending…",
+      successMessage: "Got it. We’ll read it and write back. To move faster: contact@agenstudio.com",
+      errorMessage: "Fix the fields marked below, then send again.",
+      errorSummary: "There is a problem with the form:",
+      missingTurnstile:
+        "The form isn’t ready on this computer (security check missing).",
+      turnstileRequired: "Tick the security box, then send again.",
+      networkError: "Could not reach the server. Check the connection, or email us.",
+      directEmailText: "You can also write directly to",
+      directLabel: "By email",
+      emailHeading: "Email works too",
+      engageLabel: "What happens next",
+      engageBody:
+        "We read every message. We reply once we can — without promising a deadline on the site.",
+      privacyLabel: "What happens to your message",
+      privacyBody:
+        "The form goes through Cloudflare, Turnstile and Resend. No resale. Detail in the privacy policy (to be validated by counsel).",
+      requiredLabel: "Required",
+      againLabel: "Send another message",
+      successHeading: "Got it.",
+      apiErrors: {
+        turnstile_failed: "The security check failed. Please try again.",
+        rate_limited: "Too many attempts. Please try again in a few minutes.",
+        misconfigured: "The form isn’t ready on this computer.",
+        send_failed: "Sending failed. Try again, or use email.",
+      },
+      fieldErrors: {
+        name_too_short: "Enter at least 2 characters — name and job are enough.",
+        name_too_long: "The name is too long (120 characters maximum).",
+        email_invalid: "Enter a valid work email address.",
+        email_too_long: "The email is too long (200 characters maximum).",
+        company_too_long: "The company name is too long (200 characters maximum).",
+        problem_too_short: "Describe the problem in at least 20 characters — two sentences will do.",
+        problem_too_long: "The text is too long (4000 characters maximum).",
+      },
     }
   }
 };

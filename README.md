@@ -4,10 +4,10 @@ Site vitrine bilingue (FR/EN) construit selon le [Playbook AgenStudio](./AgenStu
 
 ## Stack
 
-- **Astro 5** + **TypeScript strict** (pages statiques, JS envoyé uniquement aux îlots)
-- **React 18** en îlots (`client:load` / `client:visible` / `client:idle`)
-- **Tailwind CSS 3** (tokens Canvas / Ink / Teal / Magenta / Bordeaux / Coral / Gold)
-- **Motion** & Reveal maison (respect de `prefers-reduced-motion`)
+- **Astro 7** + **TypeScript strict** (pages statiques, JS envoyé uniquement aux îlots)
+- **React 18** en îlots (`client:idle` / `client:visible` / `client:load`) — menu, filtres, formulaire. Pas de Reveal React par carte.
+- **Tailwind CSS 3** (tokens Canvas / Ink / Teal / Magenta / Bordeaux / Coral / Gold — via CSS variables)
+- **Reveal CSS** (respect de `prefers-reduced-motion`)
 - **MDX / Content Collections** typés pour les projets
 - **Cloudflare Pages** (hébergement + Pages Functions)
 - **Resend** + **Turnstile** + **Zod** pour le formulaire de contact
@@ -46,7 +46,9 @@ Copier `.env.example` vers `.env` et remplir :
 | `CONTACT_TO_EMAIL` | Destinataire des demandes |
 | `CONTACT_FROM_EMAIL` | Expéditeur (domaine vérifié Resend) |
 
-Sur Cloudflare Pages, les configurer via **Settings → Environment variables**. Ajouter éventuellement un binding **KV** nommé `RATE_LIMIT` pour activer le rate-limiting IP.
+Sur Cloudflare Pages, les configurer via **Settings → Environment variables**.
+
+**KV `RATE_LIMIT` est obligatoire en production** (rate limit IP + rejeu `Idempotency-Key`). Sans ce binding : NO-GO go-live. Le limiteur est *soft* (get-then-put, volume studio). Local : le POST fonctionne sans KV, sans persistance d’idempotence.
 
 ## Structure
 
@@ -79,12 +81,14 @@ agenstudio/
 
 ## Sécurité du formulaire
 
-1. Validation Zod côté client puis serveur.
-2. Honeypot invisible (`website`) rejeté silencieusement.
-3. Turnstile validé par appel serveur à `siteverify` (pas seulement le widget).
-4. Rate limit par IP via KV `RATE_LIMIT` si le binding est configuré (5 req / 15 min).
-5. Envoi via Resend avec `reply_to = payload.email` et corps échappé.
-6. Aucun secret exposé côté client (préfixes `PUBLIC_` uniquement pour la site key).
+1. Un seul schéma Zod (`.strict()`) : [`src/lib/contact-schema.ts`](src/lib/contact-schema.ts), importé par le formulaire **et** la Pages Function.
+2. Honeypot hors écran (`hp_confirm`, pas `website`) : champ rempli → **200** silencieux, pas d’e-mail. Jamais `max(0)` ni `display:none`.
+3. Turnstile validé par appel serveur à `siteverify`. Sans site key locale : le client n’envoie pas de token vide.
+4. Rate limit par IP via KV `RATE_LIMIT` (**obligatoire en prod**, 5 req / 15 min, limiteur soft).
+5. Env incomplète → **503** `misconfigured`. Resend en échec → **502**. Validation → **422** `{ code, errors[] }`. JSON illisible → **400**.
+6. Header `Idempotency-Key` (UUID au premier envoi) ; rejeu 200 si la clé existe déjà en KV. Retry client uniquement sur 502 / réseau.
+7. Envoi via Resend avec `reply_to = payload.email`. Aucune IP dans l’e-mail.
+8. Aucun secret exposé côté client (préfixes `PUBLIC_` uniquement pour la site key).
 
 ## Déploiement Cloudflare Pages
 
@@ -94,7 +98,7 @@ agenstudio/
 4. Build output : `dist`
 5. Root : `/`
 6. Renseigner toutes les variables d'environnement listées ci-dessus.
-7. (Optionnel) Créer un namespace KV et lier `RATE_LIMIT`.
+7. Créer un namespace KV et lier `RATE_LIMIT` (**obligatoire en production**).
 8. Ajouter le domaine + HTTPS + redirection www / non-www.
 
 ## Playbook

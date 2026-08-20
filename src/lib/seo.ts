@@ -42,7 +42,7 @@ export function organizationJsonLd(siteUrl: string) {
     name: SITE_NAME,
     url: siteUrl,
     description:
-      'Studio numérique indépendant basé au Cameroun. Logiciels métier, automatisations, applications web et intégrations.',
+      "Studio indépendant à Douala et Yaoundé. On fabrique le logiciel qu'une entreprise ne trouve pas tout fait : stock, factures, accords — au même endroit, et sur téléphone.",
     areaServed: ['CM', 'FR', 'CI', 'SN', 'BE', 'CA'],
     address: {
       '@type': 'PostalAddress',

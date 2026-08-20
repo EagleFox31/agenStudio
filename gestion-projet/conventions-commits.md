@@ -66,7 +66,7 @@ chore: init git repository and project structure
 ## Checklist agent (avant chaque commit)
 
 - [ ] `git status` + `git diff` + `git log -3` exécutés
-- [ ] Aucun `.env` / secret dans le staging
+- [ ] Aucun `.env` / `.dev.vars` / secret dans le staging
 - [ ] Message conventional, impératif, ≤ 72 car. (sujet)
 - [ ] **Aucun** Co-authored-by ou attribution IA
 - [ ] Commit via HEREDOC
@@ -81,9 +81,25 @@ chore: init git repository and project structure
 |---|---|
 | `git config` modify | Jamais |
 | `--no-verify` | Demande user explicite |
-| `push --force` main | Jamais |
+| `push --force` main / staging | Jamais |
 | `commit --amend` | User demande + HEAD local + pas pushed |
-| Committer secrets | Jamais |
+| Committer `.env`, `.dev.vars`, secrets | Jamais |
+
+## GitOps-lite
+
+Prod = SHA sur `main`. Secrets dans le dashboard Cloudflare. Rollback = `git revert`. Détail : `.cursor/skills/agen-git/references/sante-git.md`.
+
+## Commit sous PowerShell
+
+```powershell
+@"
+type(scope): description
+
+Corps optionnel.
+"@ | git commit -F -
+```
+
+Ne pas coller un HEREDOC bash (`cat <<'EOF'`) dans PowerShell.
 
 ---
 
@@ -101,4 +117,6 @@ chore: init git repository and project structure
 
 ## Fichiers exclus (.gitignore)
 
-`.env` · `node_modules/` · `dist/` · `.wrangler/` · `*.log`
+`.env` · `.env.*` · `.dev.vars` · `node_modules/` · `dist/` · `.astro/` · `.wrangler/` · `*.log` · `*.pem`
+
+À versionner : `.cursor/skills/` · `.cursor/rules/` · `gestion-projet/memoire/`

@@ -72,6 +72,10 @@ const skipTo = lang === 'fr' ? 'Aller au contenu principal' : 'Skip to main cont
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@1&display=swap"
     />
 
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+
     <script
       type="application/ld+json"
       set:html={JSON.stringify(orgLd)}
@@ -95,5 +99,8 @@ const skipTo = lang === 'fr' ? 'Aller au contenu principal' : 'Skip to main cont
     </main>
 
     <Footer lang={lang} />
+    <script>
+      import '../scripts/reveal';
+    </script>
   </body>
 </html>

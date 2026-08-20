@@ -17,14 +17,6 @@ const links = [
   { label: nav.studio, href: route('studio', lang) },
   { label: nav.contact, href: route('contact', lang) },
 ];
-
-const tagline =
-  lang === 'fr'
-    ? 'Studio numérique indépendant spécialisé dans les logiciels métier, les automatisations et les systèmes sur-mesure pour PME et organisations.'
-    : 'Independent digital studio designing business software, automations, and bespoke systems for SMEs and organizations.';
-const contactLabel = lang === 'fr' ? 'Contact direct' : 'Direct contact';
-const replyLabel = lang === 'fr' ? 'Réponse sous 24h ouvrées.' : 'Reply within 24 business hours.';
-const navHeading = 'Navigation';
 ---
 
 <footer class="bg-ink text-white pt-16 pb-12 border-t border-white/10 relative overflow-hidden">
@@ -41,7 +33,7 @@ const navHeading = 'Navigation';
         <p class="font-heading font-semibold text-lg text-canvas italic">
           &ldquo;{t.tagline}&rdquo;
         </p>
-        <p class="text-sm text-ink-light max-w-md">{tagline}</p>
+        <p class="text-sm text-ink-light max-w-md">{t.blurb}</p>
         <p class="flex items-center gap-2 text-xs font-mono text-teal pt-2">
           <span aria-hidden="true">📍</span>
           <span>{t.location}</span>
@@ -50,7 +42,7 @@ const navHeading = 'Navigation';
 
       <div class="space-y-3">
         <h2 class="font-mono text-xs text-ink-light uppercase tracking-wider">
-          {navHeading}
+          {t.navHeading}
         </h2>
         <ul class="space-y-2 text-sm">
           {
@@ -67,7 +59,7 @@ const navHeading = 'Navigation';
 
       <div class="space-y-3">
         <h2 class="font-mono text-xs text-ink-light uppercase tracking-wider">
-          {contactLabel}
+          {t.contactLabel}
         </h2>
         <a
           href="mailto:contact@agenstudio.com"
@@ -76,7 +68,7 @@ const navHeading = 'Navigation';
           <span aria-hidden="true">✉︎</span>
           <span>contact@agenstudio.com</span>
         </a>
-        <p class="text-xs text-ink-light">{replyLabel}</p>
+        <p class="text-xs text-ink-light">{t.replyLabel}</p>
       </div>
     </div>
 

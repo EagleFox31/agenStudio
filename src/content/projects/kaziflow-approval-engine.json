@@ -4,46 +4,37 @@
   "order": 20,
   "featured": true,
   "title": {
-    "fr": "KaziFlow — Moteur d'automatisation des validations budgétaires",
-    "en": "KaziFlow — Operational Budget & Workflow Approval Engine"
+    "fr": "KaziFlow — Qui doit dire oui, et dans quel ordre",
+    "en": "KaziFlow — Who has to say yes, and in what order"
   },
   "subtitle": {
-    "fr": "Système de règles métiers guidant les demandes de dépense et les signatures hiérarchiques.",
-    "en": "Business rules engine orchestrating purchase requisitions and hierarchical approvals."
+    "fr": "Une demande d'achat qui avance toute seule jusqu'à la bonne signature.",
+    "en": "A purchase request that moves on its own to the right signature."
   },
   "sector": {
-    "fr": "Finance & Opérations PME",
-    "en": "SME Operations & Finance"
+    "fr": "Achats et finances, PME",
+    "en": "Purchasing and finance, SMEs"
   },
   "context": {
-    "fr": "Les processus d'approbation d'achats nécessitaient des validations physiques signées sur papier, bloquant fréquemment les achats urgents pendant plusieurs jours.",
-    "en": "Purchase approval workflows required paper sign-offs, frequently blocking urgent field procurement for several days."
+    "fr": "Les demandes d'achat circulaient sur papier, signées à la main. Un achat urgent attendait plusieurs jours qu'un responsable repasse au bureau.",
+    "en": "Purchase requests moved on paper, signed by hand. An urgent purchase waited days for a manager to come back to the office."
   },
   "friction": {
-    "fr": "Lenteur des circuits de décision, manque d'historique auditable et dépassements de budget imprévus.",
-    "en": "Sluggish decision loops, lack of audit trail, and unmonitored budget overruns."
+    "fr": "Personne ne savait où le dossier était bloqué, ni qui avait déjà signé. Les dépassements de budget se voyaient une fois l'argent parti.",
+    "en": "Nobody knew where a file was stuck, or who had already signed. Budget overruns showed up once the money was gone."
   },
   "decision": {
-    "fr": "Créer un moteur de règles conditionnelles automatisé notifiant les décideurs par lien sécurisé à action rapide sans besoin de connexion complexe.",
-    "en": "Build an automated rules engine notifying decision-makers via secure one-click action links without tedious portal logins."
+    "fr": "Envoyer la demande directement à la bonne personne, par un lien qu'elle ouvre depuis son téléphone. Pas de compte à créer, pas de portail à apprendre.",
+    "en": "Send the request straight to the right person, through a link they open on their phone. No account to create, no portal to learn."
   },
   "solution": {
-    "fr": "Workflow dynamique capturant les pièces justificatives, calculant les plafonds par rôle et conservant un journal d'audit cryptographique.",
-    "en": "Dynamic workflow capturing receipts, calculating threshold limits per role, and maintaining a cryptographic audit trail."
+    "fr": "Le justificatif, le montant et le plafond du rôle voyagent avec la demande. Chaque accord est daté et conservé : on peut dire qui a dit oui, quand, et sur quelle somme.",
+    "en": "The receipt, the amount and the role's ceiling travel with the request. Every approval is dated and kept: you can say who said yes, when, and on what amount."
   },
   "stack": ["React", "TypeScript", "State Machine Architecture", "Webhooks", "Tailwind CSS"],
   "statusLabel": {
-    "fr": "Recherche & Développement — Prototypes validés",
-    "en": "R&D — Prototype Validated"
+    "fr": "Essai — prototype validé en interne, pas encore chez un client",
+    "en": "Trial — prototype validated in-house, not yet with a client"
   },
-  "metrics": [
-    {
-      "label": { "fr": "Délai moyen de signature", "en": "Avg. approval time" },
-      "value": "Passé de 4j à 2h"
-    },
-    {
-      "label": { "fr": "Traçabilité des décisions", "en": "Audit completeness" },
-      "value": "100% Conforme"
-    }
-  ]
+  "metrics": []
 }

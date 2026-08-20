@@ -6,26 +6,15 @@ import Tag from '../ui/Tag.astro';
 
 interface Props { lang: Language; }
 const { lang } = Astro.props;
-const heading = lang === 'fr' ? 'Politique de confidentialité' : 'Privacy Policy';
-const kicker = lang === 'fr' ? 'DONNÉES & CONFIDENTIALITÉ' : 'DATA & PRIVACY';
-const updated = lang === 'fr'
-  ? 'Dernière mise à jour : Août 2026 — Statut : à valider par le conseiller juridique.'
-  : 'Last update: August 2026 — Status: to be validated by legal counsel.';
-const notice = lang === 'fr'
-  ? 'Document légal modèle préparé pour le lancement d\'AgenStudio.'
-  : 'Draft legal document prepared for the AgenStudio launch.';
-const s1Title = lang === 'fr' ? '1. Collecte des données du formulaire' : '1. Contact form data collection';
-const s1Body = lang === 'fr'
-  ? "Les données transmises via notre formulaire (nom, e-mail, entreprise, description du besoin) sont collectées uniquement pour traiter votre demande et communiquer avec vous."
-  : 'Data submitted through our form (name, email, company, request description) is collected solely to process your inquiry and reply to you.';
-const s2Title = lang === 'fr' ? '2. Absence de traçage publicitaire' : '2. No advertising tracking';
-const s2Body = lang === 'fr'
-  ? "AgenStudio ne revend et ne partage aucune donnée personnelle. Nous n'utilisons aucun tracker publicitaire ni cookie tiers de profilage commercial."
-  : 'AgenStudio does not sell or share personal data. We use no advertising trackers or third-party profiling cookies.';
-const s3Title = lang === 'fr' ? "3. Vos droits d'accès et de rectification" : '3. Your access and rectification rights';
-const s3Body = lang === 'fr'
-  ? "Vous pouvez demander l'accès, la rectification ou la suppression de vos données à : contact@agenstudio.com."
-  : 'You may request access, rectification or deletion of your data at: contact@agenstudio.com.';
+const fr = lang === 'fr';
+const heading = fr ? 'Politique de confidentialité' : 'Privacy Policy';
+const kicker = fr ? 'DONNÉES & CONFIDENTIALITÉ' : 'DATA & PRIVACY';
+const updated = fr
+  ? 'Dernière mise à jour : août 2026 — Statut : À valider par un avocat. Brouillon honnête, pas un document signé.'
+  : 'Last update: August 2026 — Status: to be validated by counsel. Honest draft, not a signed document.';
+const notice = fr
+  ? 'Ce texte décrit les traitements réels du site. Il ne remplace pas un avis juridique. Gate G4 = signature avocat.'
+  : 'This text describes the site’s real processing. It is not legal advice. Gate G4 requires counsel’s signature.';
 ---
 
 <Section variant="canvas" class="py-12 border-b border-ink/10">
@@ -41,16 +30,63 @@ const s3Body = lang === 'fr'
 <Section variant="white">
   <Container>
     <div class="max-w-prose space-y-6 text-sm text-ink-muted leading-relaxed">
-      <p class="p-4 bg-canvas border border-ink/10 rounded-lg text-xs font-mono text-ink flex items-center gap-2">
-        <span aria-hidden="true">⚠</span>
-        <span>{notice}</span>
+      <p class="p-4 bg-canvas border border-ink/10 rounded-lg text-xs font-mono text-ink">
+        {notice}
       </p>
-      <h2 class="font-heading text-lg font-bold text-ink pt-2">{s1Title}</h2>
-      <p>{s1Body}</p>
-      <h2 class="font-heading text-lg font-bold text-ink pt-2">{s2Title}</h2>
-      <p>{s2Body}</p>
-      <h2 class="font-heading text-lg font-bold text-ink pt-2">{s3Title}</h2>
-      <p>{s3Body}</p>
+
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">
+        {fr ? '1. Responsable' : '1. Controller'}
+      </h2>
+      <p>
+        {fr
+          ? 'AgenStudio, studio numérique à Douala / Yaoundé, contact@agenstudio.com. Immatriculation : À valider.'
+          : 'AgenStudio, software studio in Douala / Yaoundé, contact@agenstudio.com. Registration: to validate.'}
+      </p>
+
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">
+        {fr ? '2. Données du formulaire de contact' : '2. Contact form data'}
+      </h2>
+      <p>
+        {fr
+          ? 'Nous collectons nom, e-mail, entreprise (pas obligatoire), description du problème et délai, uniquement pour lire le message et répondre. Base : intérêt légitime / mesures précontractuelles — À valider par l’avocat.'
+          : 'We collect name, email, company (optional), description of the problem and timing, only to read the message and reply. Legal basis: legitimate interest / pre-contractual steps — to be validated by counsel.'}
+      </p>
+
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">
+        {fr ? '3. Sous-traitants (processeurs)' : '3. Processors'}
+      </h2>
+      <p>
+        {fr
+          ? 'Le message n’est pas « jamais transmis à des tiers ». Il transite par : Cloudflare (hébergement Pages, protection, Turnstile anti-spam) ; Resend (envoi de l’e-mail vers la boîte du studio). Pas de revente, pas de tracker publicitaire. Détail des DPA : À valider.'
+          : 'The message is not “never shared with third parties”. It goes through: Cloudflare (Pages hosting, protection, Turnstile anti-spam); Resend (email to the studio inbox). No resale, no ad trackers. DPA detail: to validate.'}
+      </p>
+
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">
+        {fr ? '4. Conservation' : '4. Retention'}
+      </h2>
+      <p>
+        {fr
+          ? 'Durée de conservation des messages : À valider (proposition de travail : le temps du traitement de la demande, puis suppression ou archivage minimal). Pas de CRM, pas de base de données métier sur ce site.'
+          : 'Retention of messages: to validate (working proposal: for the time needed to handle the request, then deletion or minimal archive). No CRM, no business database on this site.'}
+      </p>
+
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">
+        {fr ? '5. Cookies et Turnstile' : '5. Cookies and Turnstile'}
+      </h2>
+      <p>
+        {fr
+          ? 'Pas de cookies publicitaires. Cloudflare Turnstile peut déposer un cookie technique anti-spam. Polices : self-host prévu (pas de Google Fonts CDN). À valider selon le bandeau réellement nécessaire.'
+          : 'No advertising cookies. Cloudflare Turnstile may set a technical anti-spam cookie. Fonts: self-host planned (no Google Fonts CDN). To validate against any banner actually required.'}
+      </p>
+
+      <h2 class="font-heading text-lg font-bold text-ink pt-2">
+        {fr ? '6. Vos droits' : '6. Your rights'}
+      </h2>
+      <p>
+        {fr
+          ? 'Accès, rectification, suppression : contact@agenstudio.com. Réclamation : autorité compétente — À valider (CNIL / ANPD selon le régime retenu par l’avocat).'
+          : 'Access, rectification, deletion: contact@agenstudio.com. Complaint: competent authority — to validate (as counsel determines).'}
+      </p>
     </div>
   </Container>
 </Section>

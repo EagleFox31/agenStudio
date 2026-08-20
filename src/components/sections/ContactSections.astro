@@ -11,20 +11,6 @@ interface Props {
 const { lang } = Astro.props;
 const t = translations[lang].contactForm;
 
-const tagLabel = lang === 'fr' ? 'CONTACT & QUALIFICATION' : 'CONTACT & QUALIFICATION';
-const directLabel = lang === 'fr' ? 'Contact direct' : 'Direct contact';
-const emailHeading = lang === 'fr' ? 'Échange direct par e-mail' : 'Direct email exchange';
-const engageLabel = lang === 'fr' ? 'Engagement de réponse' : 'Response commitment';
-const engageBody =
-  lang === 'fr'
-    ? "Chaque demande fait l'objet d'un examen attentif. Nous vous recontactons sous 24h ouvrées avec une première proposition de cadrage."
-    : 'Every inquiry is carefully reviewed. We reply within 24 business hours with an initial framing proposal.';
-const privacyLabel = lang === 'fr' ? 'Confidentialité des échanges' : 'Conversation confidentiality';
-const privacyBody =
-  lang === 'fr'
-    ? 'Vos informations opérationnelles restent strictement confidentielles et ne sont jamais transmises à des tiers.'
-    : 'Your operational information remains strictly confidential and is never shared with third parties.';
-
 const copy = {
   title: t.title,
   subtitle: t.subtitle,
@@ -42,11 +28,16 @@ const copy = {
   submitting: t.submitting,
   successMessage: t.successMessage,
   errorMessage: t.errorMessage,
+  errorSummary: t.errorSummary,
+  missingTurnstile: t.missingTurnstile,
+  turnstileRequired: t.turnstileRequired,
+  networkError: t.networkError,
+  fieldErrors: t.fieldErrors,
+  apiErrors: t.apiErrors,
   directEmailText: t.directEmailText,
-  requiredLabel: lang === 'fr' ? 'Requis' : 'Required',
-  againLabel: lang === 'fr' ? 'Envoyer une autre demande' : 'Submit another inquiry',
-  successHeading:
-    lang === 'fr' ? 'Demande transmise avec succès' : 'Inquiry submitted successfully',
+  requiredLabel: t.requiredLabel,
+  againLabel: t.againLabel,
+  successHeading: t.successHeading,
 };
 
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
@@ -55,7 +46,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 <Section variant="canvas" class="py-12 md:py-16 border-b border-ink/10">
   <Container>
     <div class="max-w-3xl space-y-4">
-      <Tag variant="teal">{tagLabel}</Tag>
+      <Tag variant="teal">{t.tag}</Tag>
       <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink">
         {t.title}
       </h1>
@@ -75,13 +66,13 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
         <div class="bg-ink text-white p-6 rounded-2xl border border-teal/30 space-y-4">
           <div class="flex items-center gap-2 text-teal font-mono text-xs uppercase font-bold">
             <span aria-hidden="true">✉︎</span>
-            <span>{directLabel}</span>
+            <span>{t.directLabel}</span>
           </div>
-          <h3 class="font-heading font-bold text-lg text-white">{emailHeading}</h3>
+          <h3 class="font-heading font-bold text-lg text-white">{t.emailHeading}</h3>
           <p class="text-xs text-ink-light leading-relaxed">{t.directEmailText}</p>
           <a
             href="mailto:contact@agenstudio.com"
-            class="inline-block font-mono text-sm text-teal hover:underline font-bold break-all"
+            class="inline-block font-mono text-sm text-teal hover:underline font-bold break-all min-h-[44px] py-2"
           >
             contact@agenstudio.com
           </a>
@@ -90,17 +81,17 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
         <div class="p-6 bg-canvas rounded-2xl border border-ink/10 space-y-3 text-xs text-ink-muted">
           <div class="flex items-center gap-2 text-ink font-bold">
             <span class="text-teal" aria-hidden="true">⏱</span>
-            <span>{engageLabel}</span>
+            <span>{t.engageLabel}</span>
           </div>
-          <p>{engageBody}</p>
+          <p>{t.engageBody}</p>
         </div>
 
         <div class="p-6 bg-canvas rounded-2xl border border-ink/10 space-y-3 text-xs text-ink-muted">
           <div class="flex items-center gap-2 text-ink font-bold">
             <span class="text-teal" aria-hidden="true">🛡</span>
-            <span>{privacyLabel}</span>
+            <span>{t.privacyLabel}</span>
           </div>
-          <p>{privacyBody}</p>
+          <p>{t.privacyBody}</p>
         </div>
       </aside>
     </div>

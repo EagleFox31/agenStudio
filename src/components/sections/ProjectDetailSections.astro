@@ -5,7 +5,6 @@ import Container from '../ui/Container.astro';
 import Section from '../ui/Section.astro';
 import Button from '../ui/Button.astro';
 import Tag from '../ui/Tag.astro';
-import Reveal from '../ui/Reveal.tsx';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -18,29 +17,29 @@ const t = translations[lang].projects;
 const contactHref = route('contact', lang);
 const projectsHref = route('projects', lang);
 
-const back = lang === 'fr' ? 'Retour aux projets' : 'Back to projects';
+const back = lang === 'fr' ? 'Retour aux réalisations' : 'Back to the work';
 const sections = lang === 'fr'
   ? {
-      context: '01. Contexte opérationnel',
-      friction: '02. Problème & frictions rencontrées',
-      decision: "03. Décision d'architecture",
-      solution: '04. Solution mise en œuvre',
-      results: 'Résultats & indicateurs',
-      tech: 'Technologies mobilisées',
-      similar: 'Vous faites face à un défi similaire ?',
-      subSimilar: "Étudions vos flux et évaluons la pertinence d'une solution sur-mesure.",
-      cta: 'Discuter de votre projet',
+      context: '01. La situation',
+      friction: '02. Ce qui coinçait',
+      decision: '03. Ce qu’on a décidé',
+      solution: '04. Ce qu’on a construit',
+      results: 'Ce qu’on peut chiffrer',
+      tech: 'Ce qu’il y a dessous',
+      similar: 'Ça ressemble à chez vous ?',
+      subSimilar: 'Racontez-nous en deux phrases ce qui coince. Quelqu’un de l’équipe lit.',
+      cta: 'Nous écrire',
     }
   : {
-      context: '01. Operational context',
-      friction: '02. Problem & friction encountered',
-      decision: '03. Architectural decision',
-      solution: '04. Implemented solution',
-      results: 'Results & KPIs',
-      tech: 'Technologies used',
-      similar: 'Facing a similar challenge?',
-      subSimilar: "Let's map your workflows and assess a custom solution.",
-      cta: 'Discuss your project',
+      context: '01. The situation',
+      friction: '02. What was jamming',
+      decision: '03. What we decided',
+      solution: '04. What we built',
+      results: 'What we can put a number on',
+      tech: 'What’s underneath',
+      similar: 'Does this look like your place?',
+      subSimilar: 'Tell us in two sentences what’s jamming. Someone on the team reads.',
+      cta: 'Write to us',
     };
 ---
 
@@ -88,45 +87,37 @@ const sections = lang === 'fr'
   <Container>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
       <div class="lg:col-span-8 space-y-10">
-        <Reveal client:visible direction="up">
-          <div class="space-y-3">
-            <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-teal" aria-hidden="true"></span>
-              <span>{sections.context}</span>
-            </h2>
-            <p class="text-base text-ink-muted leading-relaxed">{project.context[lang]}</p>
-          </div>
-        </Reveal>
+        <div class="reveal space-y-3">
+          <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-teal" aria-hidden="true"></span>
+            <span>{sections.context}</span>
+          </h2>
+          <p class="text-base text-ink-muted leading-relaxed">{project.context[lang]}</p>
+        </div>
 
-        <Reveal client:visible direction="up">
-          <div class="space-y-3 p-6 bg-coral/5 border border-coral/20 rounded-xl">
-            <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-coral" aria-hidden="true"></span>
-              <span>{sections.friction}</span>
-            </h2>
-            <p class="text-base text-ink leading-relaxed">{project.friction[lang]}</p>
-          </div>
-        </Reveal>
+        <div class="reveal space-y-3 p-6 bg-coral/5 border border-coral/20 rounded-xl">
+          <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-coral" aria-hidden="true"></span>
+            <span>{sections.friction}</span>
+          </h2>
+          <p class="text-base text-ink leading-relaxed">{project.friction[lang]}</p>
+        </div>
 
-        <Reveal client:visible direction="up">
-          <div class="space-y-3">
-            <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-gold" aria-hidden="true"></span>
-              <span>{sections.decision}</span>
-            </h2>
-            <p class="text-base text-ink-muted leading-relaxed">{project.decision[lang]}</p>
-          </div>
-        </Reveal>
+        <div class="reveal space-y-3">
+          <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-gold" aria-hidden="true"></span>
+            <span>{sections.decision}</span>
+          </h2>
+          <p class="text-base text-ink-muted leading-relaxed">{project.decision[lang]}</p>
+        </div>
 
-        <Reveal client:visible direction="up">
-          <div class="space-y-3 p-6 bg-teal/5 border border-teal/20 rounded-xl">
-            <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-teal" aria-hidden="true"></span>
-              <span>{sections.solution}</span>
-            </h2>
-            <p class="text-base text-ink leading-relaxed">{project.solution[lang]}</p>
-          </div>
-        </Reveal>
+        <div class="reveal space-y-3 p-6 bg-teal/5 border border-teal/20 rounded-xl">
+          <h2 class="font-heading text-xl font-bold text-ink flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-teal" aria-hidden="true"></span>
+            <span>{sections.solution}</span>
+          </h2>
+          <p class="text-base text-ink leading-relaxed">{project.solution[lang]}</p>
+        </div>
       </div>
 
       <aside class="lg:col-span-4 space-y-8">
@@ -140,7 +131,7 @@ const sections = lang === 'fr'
                 {project.metrics.map((m) => (
                   <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
                     <dt class="text-xs text-ink-light">{m.label[lang]}</dt>
-                    <dd class="font-mono text-xl font-bold text-canvas mt-0.5">{m.value}</dd>
+                    <dd class="font-mono text-xl font-bold text-canvas mt-0.5">{m.value[lang]}</dd>
                   </div>
                 ))}
               </dl>

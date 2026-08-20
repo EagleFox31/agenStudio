@@ -1,8 +1,17 @@
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { AlertCircle, CheckCircle2, ArrowRight, Loader2 } from 'lucide-react';
+import {
+  ContactPayload,
+  TIMELINE_IDS,
+  contactFieldErrors,
+  fieldIdFromPointer,
+  type ContactFieldId,
+} from '../../lib/contact-schema';
+import type { TranslationStructure } from '../../lib/i18n';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
+type FieldErrors = Partial<Record<ContactFieldId, string>>;
 
 interface Copy {
   title: string;
@@ -21,10 +30,21 @@ interface Copy {
   submitting: string;
   successMessage: string;
   errorMessage: string;
+  errorSummary: string;
+  missingTurnstile: string;
+  turnstileRequired: string;
+  networkError: string;
   directEmailText: string;
   requiredLabel: string;
   againLabel: string;
   successHeading: string;
+  apiErrors: {
+    turnstile_failed: string;
+    rate_limited: string;
+    misconfigured: string;
+    send_failed: string;
+  };
+  fieldErrors: TranslationStructure['contactForm']['fieldErrors'];
 }
 
 interface Props {
@@ -32,6 +52,11 @@ interface Props {
   turnstileSiteKey?: string;
   copy: Copy;
 }
+
+type ProblemBody = {
+  code?: string;
+  errors?: { pointer: string; code: string }[];
+};
 
 declare global {
   interface Window {
@@ -47,12 +72,53 @@ declare global {
 const TURNSTILE_SCRIPT =
   'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onAgenTurnstileLoad&render=explicit';
 
+const FIELD_ORDER: ContactFieldId[] = ['name', 'email', 'company', 'problem'];
+
+function messageForCode(
+  code: string | undefined,
+  copy: Copy,
+  fallback: string
+): string {
+  if (code === 'turnstile_failed') return copy.apiErrors.turnstile_failed;
+  if (code === 'rate_limited') return copy.apiErrors.rate_limited;
+  if (code === 'misconfigured') return copy.apiErrors.misconfigured;
+  if (code === 'send_failed') return copy.apiErrors.send_failed;
+  return fallback;
+}
+
+function lookupFieldMessage(code: string, copy: Copy): string {
+  const known = copy.fieldErrors as Record<string, string>;
+  return known[code] ?? copy.errorMessage;
+}
+
+function mapFieldErrors(
+  items: { pointer: string; code: string }[],
+  copy: Copy
+): FieldErrors {
+  const next: FieldErrors = {};
+  for (const item of items) {
+    const id = fieldIdFromPointer(item.pointer);
+    if (id && !next[id]) next[id] = lookupFieldMessage(item.code, copy);
+  }
+  return next;
+}
+
 export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): React.ReactElement {
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [token, setToken] = useState('');
   const turnstileWidgetId = useRef<string | null>(null);
   const turnstileHost = useRef<HTMLDivElement | null>(null);
+  const summaryRef = useRef<HTMLDivElement | null>(null);
+  const idempotencyKeyRef = useRef<string | null>(null);
+
+  const getIdempotencyKey = (): string => {
+    if (!idempotencyKeyRef.current) {
+      idempotencyKeyRef.current = crypto.randomUUID();
+    }
+    return idempotencyKeyRef.current;
+  };
 
   useEffect(() => {
     if (!turnstileSiteKey) return;
@@ -89,6 +155,11 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
     };
   }, [turnstileSiteKey]);
 
+  useEffect(() => {
+    if (status !== 'error') return;
+    summaryRef.current?.focus();
+  }, [status, fieldErrors, errorMsg]);
+
   const resetTurnstile = () => {
     if (turnstileWidgetId.current && window.turnstile) {
       window.turnstile.reset(turnstileWidgetId.current);
@@ -100,6 +171,20 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
     e.preventDefault();
     if (status === 'submitting') return;
 
+    setFieldErrors({});
+    setErrorMsg('');
+
+    if (!turnstileSiteKey) {
+      setStatus('error');
+      setErrorMsg(copy.missingTurnstile);
+      return;
+    }
+    if (!token) {
+      setStatus('error');
+      setErrorMsg(copy.turnstileRequired);
+      return;
+    }
+
     const form = e.currentTarget;
     const data = new FormData(form);
     const payload = {
@@ -107,67 +192,57 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
       email: String(data.get('email') ?? '').trim(),
       company: String(data.get('company') ?? '').trim(),
       problem: String(data.get('problem') ?? '').trim(),
-      timeline: String(data.get('timeline') ?? '').trim(),
+      timeline: String(data.get('timeline') ?? 'tbd'),
       lang,
-      website: String(data.get('website') ?? ''),
+      hp_confirm: String(data.get('hp_confirm') ?? ''),
       turnstileToken: token,
     };
 
-    if (!payload.name || !payload.email || payload.problem.length < 20) {
+    const parsed = ContactPayload.safeParse(payload);
+    if (!parsed.success) {
+      setFieldErrors(mapFieldErrors(contactFieldErrors(parsed.error), copy));
       setStatus('error');
-      setErrorMsg(copy.errorMessage);
-      return;
-    }
-    if (!turnstileSiteKey) {
-      // Local dev without Turnstile: allow, server will still validate.
-    } else if (!token) {
-      setStatus('error');
-      setErrorMsg(
-        lang === 'fr'
-          ? 'Merci de valider le contrôle anti-spam.'
-          : 'Please complete the anti-spam check.'
-      );
       return;
     }
 
     setStatus('submitting');
-    setErrorMsg('');
+
+    const post = () =>
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': getIdempotencyKey(),
+        },
+        body: JSON.stringify(parsed.data),
+      });
 
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      let res = await post();
+      if (res.status === 502) {
+        await new Promise((resolve) => window.setTimeout(resolve, 400));
+        res = await post();
+      }
 
       if (res.ok) {
         setStatus('success');
         form.reset();
         resetTurnstile();
+        idempotencyKeyRef.current = null;
         return;
       }
 
-      const body = (await res.json().catch(() => ({}))) as { error?: string };
+      const body = (await res.json().catch(() => ({}))) as ProblemBody;
+      const fromServer = body.errors ? mapFieldErrors(body.errors, copy) : {};
+      setFieldErrors(fromServer);
       setStatus('error');
-      setErrorMsg(
-        body.error === 'turnstile_failed'
-          ? lang === 'fr'
-            ? 'Le contrôle anti-spam a échoué. Réessayez.'
-            : 'Anti-spam check failed. Please retry.'
-          : body.error === 'rate_limited'
-            ? lang === 'fr'
-              ? 'Trop de tentatives. Réessayez dans quelques minutes.'
-              : 'Too many attempts. Please retry in a few minutes.'
-            : copy.errorMessage
-      );
+      if (Object.keys(fromServer).length === 0) {
+        setErrorMsg(messageForCode(body.code, copy, copy.errorMessage));
+      }
       resetTurnstile();
     } catch {
       setStatus('error');
-      setErrorMsg(
-        lang === 'fr'
-          ? 'Impossible de contacter le serveur. Vérifiez votre connexion.'
-          : 'Could not reach the server. Please check your connection.'
-      );
+      setErrorMsg(copy.networkError);
       resetTurnstile();
     }
   };
@@ -186,7 +261,7 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
           <button
             type="button"
             onClick={() => setStatus('idle')}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-ink/20 text-ink hover:border-teal hover:text-teal text-sm min-h-[36px]"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-ink/20 text-ink hover:border-teal hover:text-teal text-sm min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal"
           >
             {copy.againLabel}
           </button>
@@ -195,21 +270,58 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
     );
   }
 
+  const orderedFieldErrors = FIELD_ORDER.filter((id) => fieldErrors[id]);
+  const showSummary = status === 'error' && (orderedFieldErrors.length > 0 || Boolean(errorMsg));
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-      {status === 'error' && (
+      {!turnstileSiteKey && (
         <div
-          role="alert"
-          className="p-4 bg-coral/10 border border-coral/30 rounded-xl flex items-start gap-3 text-[#C84635] text-sm"
+          role="status"
+          className="p-4 bg-coral/10 border border-coral/30 rounded-xl text-coral text-sm"
         >
-          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
-          <span>{errorMsg}</span>
+          {copy.missingTurnstile}
         </div>
       )}
 
-      <label className="hidden" aria-hidden="true">
-        <span>Do not fill</span>
-        <input type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+      {showSummary && (
+        <div
+          ref={summaryRef}
+          id="contact-error-summary"
+          role="alert"
+          tabIndex={-1}
+          className="p-4 bg-coral/10 border border-coral/30 rounded-xl text-coral text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-coral"
+        >
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" aria-hidden="true" />
+            <div className="space-y-2">
+              <p className="font-medium text-ink">{copy.errorSummary}</p>
+              {errorMsg && <p>{errorMsg}</p>}
+              {orderedFieldErrors.length > 0 && (
+                <ul className="list-disc pl-5 space-y-1">
+                  {orderedFieldErrors.map((id) => (
+                    <li key={id}>
+                      <a href={`#${id}`} className="underline hover:no-underline text-ink">
+                        {fieldErrors[id]}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <label className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+        <span>Leave blank</span>
+        <input
+          type="text"
+          name="hp_confirm"
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+        />
       </label>
 
       <Field
@@ -217,9 +329,10 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
         name="name"
         label={copy.nameLabel}
         placeholder={copy.namePlaceholder}
-        required
-        requiredLabel={copy.requiredLabel}
+        requiredMark
         autoComplete="name"
+        maxLength={120}
+        error={fieldErrors.name}
       />
       <Field
         id="email"
@@ -227,9 +340,10 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
         type="email"
         label={copy.emailLabel}
         placeholder={copy.emailPlaceholder}
-        required
-        requiredLabel={copy.requiredLabel}
+        requiredMark
         autoComplete="email"
+        maxLength={200}
+        error={fieldErrors.email}
       />
       <Field
         id="company"
@@ -237,6 +351,8 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
         label={copy.companyLabel}
         placeholder={copy.companyPlaceholder}
         autoComplete="organization"
+        maxLength={200}
+        error={fieldErrors.company}
       />
 
       <div className="space-y-1.5">
@@ -250,12 +366,17 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
           id="problem"
           name="problem"
           rows={5}
-          minLength={20}
           maxLength={4000}
           placeholder={copy.problemPlaceholder}
-          required
-          className="w-full px-4 py-3 rounded-lg border border-ink/20 bg-canvas/30 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:bg-white transition-colors resize-y"
+          aria-invalid={fieldErrors.problem ? true : undefined}
+          aria-describedby={fieldErrors.problem ? 'problem-error' : undefined}
+          className="w-full min-h-[44px] px-4 py-3 rounded-lg border border-ink/20 bg-canvas/30 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:bg-white transition-colors resize-y aria-[invalid=true]:border-coral"
         />
+        {fieldErrors.problem && (
+          <p id="problem-error" className="text-sm text-coral">
+            {fieldErrors.problem}
+          </p>
+        )}
       </div>
 
       <div className="space-y-1.5">
@@ -268,12 +389,12 @@ export default function ContactForm({ lang, turnstileSiteKey, copy }: Props): Re
         <select
           id="timeline"
           name="timeline"
-          defaultValue={copy.timelineOptions[1]}
-          className="w-full px-4 py-3 rounded-lg border border-ink/20 bg-canvas/30 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:bg-white transition-colors"
+          defaultValue="1_3m"
+          className="w-full min-h-[44px] px-4 py-3 rounded-lg border border-ink/20 bg-canvas/30 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:bg-white transition-colors"
         >
-          {copy.timelineOptions.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
+          {TIMELINE_IDS.map((id, i) => (
+            <option key={id} value={id}>
+              {copy.timelineOptions[i] ?? id}
             </option>
           ))}
         </select>
@@ -314,9 +435,10 @@ interface FieldProps {
   label: string;
   placeholder: string;
   type?: string;
-  required?: boolean;
-  requiredLabel?: string;
+  requiredMark?: boolean;
   autoComplete?: string;
+  maxLength?: number;
+  error?: string;
 }
 
 function Field({
@@ -325,27 +447,36 @@ function Field({
   label,
   placeholder,
   type = 'text',
-  required = false,
+  requiredMark = false,
   autoComplete,
+  maxLength = 200,
+  error,
 }: FieldProps): React.ReactElement {
+  const errorId = `${id}-error`;
   return (
     <div className="space-y-1.5">
       <label
         htmlFor={id}
         className="block text-xs font-mono text-ink font-bold uppercase tracking-wider"
       >
-        {label} {required && <span className="text-coral">*</span>}
+        {label} {requiredMark && <span className="text-coral">*</span>}
       </label>
       <input
         id={id}
         name={name}
         type={type}
         placeholder={placeholder}
-        required={required}
         autoComplete={autoComplete}
-        maxLength={type === 'email' ? 200 : 200}
-        className="w-full px-4 py-3 rounded-lg border border-ink/20 bg-canvas/30 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:bg-white transition-colors"
+        maxLength={maxLength}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
+        className="w-full min-h-[44px] px-4 py-3 rounded-lg border border-ink/20 bg-canvas/30 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:bg-white transition-colors aria-[invalid=true]:border-coral"
       />
+      {error && (
+        <p id={errorId} className="text-sm text-coral">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

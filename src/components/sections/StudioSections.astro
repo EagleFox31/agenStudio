@@ -6,37 +6,14 @@ import Section from '../ui/Section.astro';
 import Button from '../ui/Button.astro';
 import Card from '../ui/Card.astro';
 import Tag from '../ui/Tag.astro';
-import Reveal from '../ui/Reveal.tsx';
 
 interface Props {
   lang: Language;
 }
 const { lang } = Astro.props;
 const t = translations[lang].studioIntro;
+const cta = translations[lang].nav.ctaButton;
 const contactHref = route('contact', lang);
-
-const narrative =
-  lang === 'fr'
-    ? {
-        headline: 'Une ingénierie souveraine et internationale',
-        p1: "AgenStudio est né d'un constat direct sur le terrain : trop d'entreprises africaines et internationales dépendent d'outils numériques inadaptés, mal intégrés ou d'une complexité démesurée.",
-        p2: "Nous refusons les promesses creuses et le jargon superflu. Notre mission : apporter une rigueur produit de classe mondiale, ancrée dans la réalité opérationnelle de nos clients, au Cameroun comme à l'international.",
-        principles: 'Nos principes directeurs',
-        anchorTitle: 'Ancrage & présence',
-        anchorSubtitle:
-          'Nos équipes interviennent en mode hybride : la proximité du présentiel et l\'efficacité de la collaboration à distance synchrone.',
-        ctaLabel: "Discuter avec l'équipe du Studio",
-      }
-    : {
-        headline: 'Sovereign engineering, international standards',
-        p1: 'AgenStudio was born from a direct field observation: too many African and international companies rely on inadequate, poorly integrated or overly complex software.',
-        p2: 'We reject empty promises and corporate jargon. Our mission: bring world-class product rigor, grounded in our clients real operations, in Cameroon and internationally.',
-        principles: 'Our guiding principles',
-        anchorTitle: 'Anchoring & presence',
-        anchorSubtitle:
-          'Our teams work in a hybrid mode: the closeness of on-site engagement with the efficiency of synchronous remote collaboration.',
-        ctaLabel: 'Talk to the Studio team',
-      };
 ---
 
 <Section variant="canvas" class="py-12 md:py-20 border-b border-ink/10">
@@ -55,46 +32,32 @@ const narrative =
   <Container>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
       <div class="lg:col-span-7 space-y-8">
-        <Reveal client:visible direction="up">
-          <div class="space-y-4">
-            <h2 class="font-heading text-2xl font-bold text-ink">{narrative.headline}</h2>
-            <p class="text-base text-ink-muted leading-relaxed">{narrative.p1}</p>
-            <p class="text-base text-ink-muted leading-relaxed">{narrative.p2}</p>
+        <div class="p-6 bg-ink text-white rounded-xl space-y-3 border border-teal/30">
+          <div class="flex items-center gap-2 text-teal font-mono text-xs uppercase font-bold">
+            <span aria-hidden="true">📍</span>
+            <span>{t.craftKicker}</span>
           </div>
-        </Reveal>
-
-        <Reveal client:visible direction="up" delay={0.15}>
-          <div class="p-6 bg-ink text-white rounded-xl space-y-3 border border-teal/30">
-            <div class="flex items-center gap-2 text-teal font-mono text-xs uppercase font-bold">
-              <span aria-hidden="true">📍</span>
-              <span>{narrative.anchorTitle}</span>
-            </div>
-            <h3 class="font-heading text-lg font-bold text-white">{t.anchorage}</h3>
-            <p class="text-xs text-ink-light leading-relaxed">{narrative.anchorSubtitle}</p>
-          </div>
-        </Reveal>
+          <h2 class="font-heading text-lg font-bold text-white">{t.anchorage}</h2>
+          <p class="text-xs text-ink-light leading-relaxed">{t.craftLead}</p>
+        </div>
       </div>
 
       <div class="lg:col-span-5 space-y-6">
-        <h2 class="font-heading text-xl font-bold text-ink">{narrative.principles}</h2>
-
         {
-          t.values.map((v, idx) => (
-            <Reveal client:visible direction="up" delay={idx * 0.1}>
-              <Card variant="light" class="space-y-2">
-                <div class="flex items-center gap-2 text-teal">
-                  <span aria-hidden="true">✓</span>
-                  <h3 class="font-heading font-bold text-base text-ink">{v.title}</h3>
-                </div>
-                <p class="text-xs text-ink-muted leading-relaxed pl-6">{v.desc}</p>
-              </Card>
-            </Reveal>
+          t.values.map((v) => (
+            <Card variant="light" class="space-y-2">
+              <div class="flex items-center gap-2 text-teal">
+                <span aria-hidden="true">✓</span>
+                <h2 class="font-heading font-bold text-base text-ink">{v.title}</h2>
+              </div>
+              <p class="text-xs text-ink-muted leading-relaxed pl-6">{v.desc}</p>
+            </Card>
           ))
         }
 
         <div class="pt-4">
-          <Button href={contactHref} variant="primary" class="w-full">
-            {narrative.ctaLabel}
+          <Button href={contactHref} variant="primary" class="w-full min-h-[44px]">
+            {cta}
           </Button>
         </div>
       </div>

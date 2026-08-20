@@ -45,16 +45,17 @@ Pour chaque demande :
 | Revue qualité | QA → DA |
 | Sécurité / déploiement | RSSI → Dev → QA |
 | Go-live | RSSI → QA → DP (validation finale) |
+| Dette architecture / go-live | `plan-unifie.md` + checklists remédiation |
 | Planification / backlog | DP seul |
 
 ## Gates — critères Go/No-Go
 
 | Gate | Critères | Valideur |
 |---|---|---|
-| **G1** Fondations | Git · env · tokens · composants UI · build vert | DP + Dev |
-| **G2** Design | Pages maquettées 360→1920 · DA sign-off · 0 placeholder | DA + UI/UX |
-| **G3** Contenu | Copy FR/EN · projets JSON · SEO · 0 « À valider » bloquant | Contenu + DP |
-| **G4** Go-Live | Build prod · formulaire · RGPD · KV rate limit · Lighthouse > 90 | RSSI + QA + DP |
+| **G1** Fondations | Git · env · tokens · îlots · build vert · CI = dette | DP + GitOps + Front |
+| **G2** Contact | Un Zod · honeypot vivant · Turnstile fail-closed · 0 « jamais de tiers » | Backend + RSSI + Produit |
+| **G3** Contenu | Copy honnête **et** distinctif (swap, H1 artwork, Copy Review) · JSON · OG réel · 0 KPI inventé · légal → G4 | Contenu + DP |
+| **G4** Go-Live | KV · secrets dashboard · RGPD avocat · Lighthouse mesuré · revert | RSSI + QA + DP |
 
 ## Format de réponse
 
