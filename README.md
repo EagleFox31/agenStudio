@@ -136,3 +136,9 @@ The current site is the public-facing foundation for AgenStudio. Content, projec
 ## Delivery playbook
 
 The repository also contains the AgenStudio website playbook used to define delivery and acceptance criteria. It documents the broader design and launch process; the README stays focused on the product and how to run it.
+
+---
+
+<p align="center">
+  <sub>Built by <a href="https://github.com/EagleFox31">EagleFox31</a>.</sub>
+</p>
