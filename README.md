@@ -137,6 +137,12 @@ The current site is the public-facing foundation for AgenStudio. Content, projec
 
 The repository also contains the AgenStudio website playbook used to define delivery and acceptance criteria. It documents the broader design and launch process; the README stays focused on the product and how to run it.
 
+## License
+
+The code, original design, copy, project content and original brand assets in this repository are proprietary to **EagleFox31**, published under the **AgenStudio** brand. Public visibility does not grant permission to reuse or redistribute them.
+
+Third-party libraries and assets remain subject to their own licences and ownership terms. See [`LICENSE`](LICENSE).
+
 ---
 
 <p align="center">
