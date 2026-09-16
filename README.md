@@ -1,106 +1,138 @@
-# AgenStudio — Site officiel
+# AgenStudio
 
-Site vitrine bilingue (FR/EN) construit selon le [Playbook AgenStudio](./AgenStudio_Playbook_Site_Web.docx.pdf).
+**Official bilingual website for AgenStudio, an independent digital studio building modern web products from Cameroon.**
+
+The site presents the studio, its areas of expertise and selected projects in French and English. It is built as a mostly static Astro site, with React used only where interaction is needed.
+
+## What the site includes
+
+- bilingual **FR / EN** navigation and content;
+- project case studies powered by typed content collections;
+- responsive service and portfolio pages;
+- SEO metadata, hreflang and sitemap generation;
+- contact form with validation and abuse protection;
+- reduced-motion support and accessible interaction patterns;
+- Cloudflare Pages deployment.
 
 ## Stack
 
-- **Astro 7** + **TypeScript strict** (pages statiques, JS envoyé uniquement aux îlots)
-- **React 18** en îlots (`client:idle` / `client:visible` / `client:load`) — menu, filtres, formulaire. Pas de Reveal React par carte.
-- **Tailwind CSS 3** (tokens Canvas / Ink / Teal / Magenta / Bordeaux / Coral / Gold — via CSS variables)
-- **Reveal CSS** (respect de `prefers-reduced-motion`)
-- **MDX / Content Collections** typés pour les projets
-- **Cloudflare Pages** (hébergement + Pages Functions)
-- **Resend** + **Turnstile** + **Zod** pour le formulaire de contact
+- **Astro 7** + TypeScript
+- **React 18** islands for interactive components
+- **Tailwind CSS 3**
+- **MDX / Astro Content Collections**
+- **Cloudflare Pages** + Pages Functions
+- **Resend** for contact email delivery
+- **Cloudflare Turnstile** for bot protection
+- **Zod** for shared form validation
 
-## Démarrer
+## Architecture
+
+```text
+Static Astro pages
+      │
+      ├── React islands for interaction
+      │
+      ├── typed project content
+      │
+      └── SEO / i18n metadata
+
+Contact form
+      │
+      ▼
+Cloudflare Pages Function
+      ├── Zod validation
+      ├── Turnstile verification
+      ├── KV rate limiting / idempotency
+      └── Resend
+```
+
+The site deliberately keeps client-side JavaScript limited to the parts that need it: navigation, filters and forms. Project content is stored as typed data rather than being hard-coded into page components.
+
+## Development
+
+### Requirements
+
+- Node.js
+- npm
+
+### Setup
 
 ```bash
+git clone https://github.com/EagleFox31/agenStudio.git
+cd agenStudio
 npm install
 cp .env.example .env
 npm run dev
 ```
 
-Puis ouvrez [http://localhost:4321](http://localhost:4321). La racine redirige vers `/fr`.
+The local site is served by Astro, typically at `http://localhost:4321`.
 
-## Scripts
+### Useful commands
 
-| Commande | Effet |
-|---|---|
-| `npm run dev` | Serveur Astro local (HMR) |
-| `npm run build` | Build production (statique + Pages Functions) |
-| `npm run preview` | Preview du build |
-| `npm run check` | Astro check + TypeScript |
-| `npm run lint` | ESLint sur `.ts`, `.tsx`, `.astro` |
-| `npm run format` | Prettier sur toute la source |
-
-## Variables d'environnement
-
-Copier `.env.example` vers `.env` et remplir :
-
-| Variable | Rôle |
-|---|---|
-| `SITE_URL` | URL canonique (utilisée pour hreflang, OG, sitemap) |
-| `PUBLIC_TURNSTILE_SITE_KEY` | Site key Turnstile (visible côté client) |
-| `TURNSTILE_SECRET_KEY` | Secret Turnstile — **serveur uniquement** |
-| `RESEND_API_KEY` | Clé API Resend |
-| `CONTACT_TO_EMAIL` | Destinataire des demandes |
-| `CONTACT_FROM_EMAIL` | Expéditeur (domaine vérifié Resend) |
-
-Sur Cloudflare Pages, les configurer via **Settings → Environment variables**.
-
-**KV `RATE_LIMIT` est obligatoire en production** (rate limit IP + rejeu `Idempotency-Key`). Sans ce binding : NO-GO go-live. Le limiteur est *soft* (get-then-put, volume studio). Local : le POST fonctionne sans KV, sans persistance d’idempotence.
-
-## Structure
-
-```
-agenstudio/
-├─ astro.config.mjs           # config Astro + intégrations
-├─ tailwind.config.js         # tokens design system
-├─ functions/api/contact.ts   # endpoint Cloudflare Pages (Zod + Turnstile + Resend)
-├─ public/                    # assets statiques, robots.txt, _headers, _redirects
-├─ src/
-│  ├─ content/projects/       # études de cas typées (Content Collections)
-│  ├─ components/
-│  │  ├─ layout/              # Header (Astro) + MobileMenu (React island) + Footer
-│  │  ├─ sections/            # sections partagées FR/EN + îlots interactifs
-│  │  └─ ui/                  # Button, Card, Container, Section, Tag, Reveal
-│  ├─ layouts/BaseLayout.astro  # <head> SEO + skip link + shell
-│  ├─ lib/                    # i18n, routes, seo, contact-schema, cn
-│  ├─ pages/
-│  │  ├─ fr/                  # /fr, /fr/expertises, /fr/projets, ...
-│  │  ├─ en/                  # /en, /en/expertise, /en/projects, ...
-│  │  └─ 404.astro
-│  └─ styles/global.css
+```bash
+npm run dev      # local development
+npm run build    # production build
+npm run preview  # preview the build
+npm run check    # Astro + TypeScript checks
+npm run lint     # ESLint
+npm run format   # Prettier
 ```
 
-## Contenu
+## Environment variables
 
-- Textes bilingues : [src/lib/i18n.ts](src/lib/i18n.ts)
-- Projets : fichiers JSON dans [src/content/projects/](src/content/projects/) validés par `src/content/config.ts`
-- Ajouter un projet = créer `src/content/projects/<slug>.json` conforme au schéma Zod
+Copy `.env.example` to `.env` and configure the services required for the contact form:
 
-## Sécurité du formulaire
+```env
+SITE_URL=
+PUBLIC_TURNSTILE_SITE_KEY=
+TURNSTILE_SECRET_KEY=
+RESEND_API_KEY=
+CONTACT_TO_EMAIL=
+CONTACT_FROM_EMAIL=
+```
 
-1. Un seul schéma Zod (`.strict()`) : [`src/lib/contact-schema.ts`](src/lib/contact-schema.ts), importé par le formulaire **et** la Pages Function.
-2. Honeypot hors écran (`hp_confirm`, pas `website`) : champ rempli → **200** silencieux, pas d’e-mail. Jamais `max(0)` ni `display:none`.
-3. Turnstile validé par appel serveur à `siteverify`. Sans site key locale : le client n’envoie pas de token vide.
-4. Rate limit par IP via KV `RATE_LIMIT` (**obligatoire en prod**, 5 req / 15 min, limiteur soft).
-5. Env incomplète → **503** `misconfigured`. Resend en échec → **502**. Validation → **422** `{ code, errors[] }`. JSON illisible → **400**.
-6. Header `Idempotency-Key` (UUID au premier envoi) ; rejeu 200 si la clé existe déjà en KV. Retry client uniquement sur 502 / réseau.
-7. Envoi via Resend avec `reply_to = payload.email`. Aucune IP dans l’e-mail.
-8. Aucun secret exposé côté client (préfixes `PUBLIC_` uniquement pour la site key).
+Secrets stay server-side. Only the Turnstile site key is exposed to the browser.
 
-## Déploiement Cloudflare Pages
+## Contact form security
 
-1. Connecter le dépôt à Cloudflare Pages.
-2. Framework preset : **Astro**.
-3. Build command : `npm run build`
-4. Build output : `dist`
-5. Root : `/`
-6. Renseigner toutes les variables d'environnement listées ci-dessus.
-7. Créer un namespace KV et lier `RATE_LIMIT` (**obligatoire en production**).
-8. Ajouter le domaine + HTTPS + redirection www / non-www.
+The production form includes:
 
-## Playbook
+- strict Zod validation shared between client and server;
+- honeypot detection;
+- server-side Turnstile verification;
+- rate limiting through Cloudflare KV;
+- idempotency protection for repeated submissions;
+- explicit error handling for invalid configuration and failed email delivery.
 
-Chaque phase de livraison (00 → 14) est décrite dans le PDF racine. Le site n'est « fini » que quand la matrice de recette (Playbook §9) est verte.
+The `RATE_LIMIT` KV binding is required for the intended production configuration.
+
+## Project content
+
+- translations and shared copy: `src/lib/i18n.ts`
+- case studies: `src/content/projects/`
+- SEO and layout: `src/layouts/BaseLayout.astro`
+- contact endpoint: `functions/api/contact.ts`
+
+Adding a project means adding a typed content entry that satisfies the project schema.
+
+## Deployment
+
+The site targets **Cloudflare Pages**.
+
+```text
+Build command: npm run build
+Output directory: dist
+Root directory: /
+```
+
+Production also requires the environment variables above and the `RATE_LIMIT` KV binding.
+
+## Project status
+
+**Beta.**
+
+The current site is the public-facing foundation for AgenStudio. Content, project case studies and studio positioning continue to evolve while the technical base remains intentionally lightweight and static-first.
+
+## Delivery playbook
+
+The repository also contains the AgenStudio website playbook used to define delivery and acceptance criteria. It documents the broader design and launch process; the README stays focused on the product and how to run it.
