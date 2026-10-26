@@ -13,7 +13,7 @@
       "name": "Localized studio site",
       "description": "Publish FR/EN studio, services and project views with SEO metadata.",
       "status": "shipped",
-      "evidence": "README.md"
+      "evidence": "src/lib/i18n.ts"
     },
     {
       "name": "Typed portfolio cases",
