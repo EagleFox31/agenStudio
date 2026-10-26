@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "name": "AgenStudio",
+  "stage": "beta",
+  "tagline": "An independent bilingual digital studio presence from Cameroon, pairing deliberately lightweight web engineering with selected project case studies.",
+  "problem": "A studio portfolio cannot build trust through animations or vague claims alone. Clients need clear project work, services, multilingual navigation and an accessible contact path that does not expose server-side credentials.",
+  "scenario": "A prospective client reviews bilingual case studies, finds appropriate studio services and submits a validated inquiry through a protected backend endpoint rather than exposing the studio mailbox or email provider tokens.",
+  "differentiation": "Astro static-first pages keep presentation lean, while typed project collections, localized SEO and a Cloudflare Pages Function protect the dynamic contact flow.",
+  "architecture": "Astro 7 bilingual pages + typed case studies + targeted React islands -> Cloudflare Pages; contact form -> validation/Turnstile/KV -> Resend via server-side Pages Function.",
+  "limitations": "A deployed website does not prove agency headcount, testimonials, conversion rates or individual projects' private commercial outcomes. Contact delivery requires configured backend secrets and service bindings; project case studies must remain factual.",
+  "capabilities": [
+    {
+      "name": "Localized studio site",
+      "description": "Publish FR/EN studio, services and project views with SEO metadata.",
+      "status": "shipped",
+      "evidence": "src/lib/i18n.ts"
+    },
+    {
+      "name": "Typed portfolio cases",
+      "description": "Maintain project entries through typed collection data rather than ad-hoc components.",
+      "status": "shipped",
+      "evidence": "src/content/projects/kaziflow-approval-engine.json"
+    },
+    {
+      "name": "Protected contact form",
+      "description": "Implement validated contact handling with Turnstile and backend email dispatch.",
+      "status": "shipped",
+      "evidence": "functions/api/contact.ts"
+    }
+  ],
+  "roadmap": [
+    {
+      "name": "Editorial proof",
+      "exitCriteria": "Review published project cases and translations against real deliverables before portfolio updates."
+    },
+    {
+      "name": "Production contact checks",
+      "exitCriteria": "Verify domain, Turnstile, KV and Resend configuration with authorized non-spam test cases."
+    }
+  ],
+  "references": [
+    {
+      "name": "AppFactory README contract",
+      "url": "https://github.com/Trigenys/appfactory/blob/main/docs/product-readme-contract.md",
+      "relevance": "Central read-only verification of documentation quality and managed presentation."
+    }
+  ],
+  "requiredHeadings": [
+    "Why AgenStudio",
+    "Website and contact architecture",
+    "Maturity and evidence",
+    "What the site includes",
+    "Development",
+    "Project status"
+  ],
+  "requiredTerms": [
+    "beta",
+    "Astro",
+    "Cloudflare",
+    "FR",
+    "EN",
+    "React"
+  ],
+  "requiredFiles": [
+    "LICENSE",
+    "functions/api/contact.ts",
+    "src/content/projects/kaziflow-approval-engine.json",
+    "src/lib/i18n.ts"
+  ],
+  "presentation": {
+    "variant": "centered",
+    "headline": "Crafted digital experiences. Built for real-world use.",
+    "summary": "An independent bilingual digital studio presence from Cameroon, pairing deliberately lightweight web engineering with selected project case studies.",
+    "badges": [
+      {
+        "label": "Stage",
+        "value": "Beta",
+        "color": "orange",
+        "href": "#project-status"
+      },
+      {
+        "label": "Locale",
+        "value": "FR + EN",
+        "color": "2563eb",
+        "href": "#what-the-site-includes"
+      },
+      {
+        "label": "Web",
+        "value": "Astro",
+        "color": "263238",
+        "href": "#website-and-contact-architecture"
+      },
+      {
+        "label": "Delivery",
+        "value": "Cloudflare Pages",
+        "color": "0969da",
+        "href": "#deployment"
+      }
+    ],
+    "navigation": [
+      {
+        "label": "Studio",
+        "href": "#why-agenstudio"
+      },
+      {
+        "label": "Architecture",
+        "href": "#website-and-contact-architecture"
+      },
+      {
+        "label": "Evidence",
+        "href": "#maturity-and-evidence"
+      },
+      {
+        "label": "Stack",
+        "href": "#stack"
+      },
+      {
+        "label": "Local setup",
+        "href": "#development"
+      },
+      {
+        "label": "Projects",
+        "href": "#project-content"
+      },
+      {
+        "label": "License",
+        "href": "#license"
+      }
+    ]
+  }
+}

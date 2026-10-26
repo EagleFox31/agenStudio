@@ -1,4 +1,48 @@
+<!-- appfactory:hero:start -->
+<div align="center">
+
 # AgenStudio
+
+### Crafted digital experiences. Built for real-world use.
+
+**An independent bilingual digital studio presence from Cameroon, pairing deliberately lightweight web engineering with selected project case studies.**
+
+[![Stage: Beta](https://img.shields.io/badge/Stage-Beta-orange)](#project-status)
+[![Locale: FR + EN](https://img.shields.io/badge/Locale-FR%20%2B%20EN-2563eb)](#what-the-site-includes)
+[![Web: Astro](https://img.shields.io/badge/Web-Astro-263238)](#website-and-contact-architecture)
+[![Delivery: Cloudflare Pages](https://img.shields.io/badge/Delivery-Cloudflare%20Pages-0969da)](#deployment)
+
+[**Studio**](#why-agenstudio) · [**Architecture**](#website-and-contact-architecture) · [**Evidence**](#maturity-and-evidence) · [**Stack**](#stack) · [**Local setup**](#development) · [**Projects**](#project-content) · [**License**](#license)
+
+</div>
+
+---
+<!-- appfactory:hero:end -->
+
+## Why AgenStudio
+
+**A studio site should show work, not just describe talent.** AgenStudio gives an independent digital studio a bilingual destination for services, selected case studies and client inquiries. The technical experience is deliberately static-first and does not inherit the Trigenys product brand.
+
+## Website and contact architecture
+
+```mermaid
+flowchart LR
+  V[Visitor FR / EN] --> A[Astro static pages]
+  A --> P[Typed project case studies]
+  A --> R[Selective React islands]
+  A --> F[Cloudflare Pages contact function]
+  F --> Z[Zod / Turnstile / KV]
+  Z --> E[Server-side Resend email]
+```
+
+Contact tokens and anti-abuse credentials remain server-side. The site includes accessibility and reduced-motion patterns; this alone is not an accessibility certification.
+
+
+Source-backed artifacts: [localized content](src/lib/i18n.ts) and [a typed project case](src/content/projects/kaziflow-approval-engine.json).
+
+## Maturity and evidence
+
+**Beta website:** the project collections, internationalization and contact handling are implemented in this repository. Operational deliverability depends on deployed Cloudflare bindings and email-provider configuration. Featured case studies are curated content, not a claim of audited client results. See [case study source](src/content/projects/), [contact implementation](functions/api/contact.ts) and the existing proprietary [license](LICENSE).
 
 **Official bilingual website for AgenStudio, an independent digital studio building modern web products from Cameroon.**
 
