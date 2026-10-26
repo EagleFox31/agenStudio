@@ -37,6 +37,9 @@ flowchart LR
 
 Contact tokens and anti-abuse credentials remain server-side. The site includes accessibility and reduced-motion patterns; this alone is not an accessibility certification.
 
+
+Source-backed artifacts: [localized content](src/lib/i18n.ts) and [a typed project case](src/content/projects/kaziflow-approval-engine.json).
+
 ## Maturity and evidence
 
 **Beta website:** the project collections, internationalization and contact handling are implemented in this repository. Operational deliverability depends on deployed Cloudflare bindings and email-provider configuration. Featured case studies are curated content, not a claim of audited client results. See [case study source](src/content/projects/), [contact implementation](functions/api/contact.ts) and the existing proprietary [license](LICENSE).
